@@ -1,6 +1,15 @@
 import React from 'react'
+import {useHistory} from 'react-router'
 
 const Header = () => {
+    const history = useHistory()
+    const toProfile = () =>
+    {
+        history.push('/profile')
+    }
+    const toLogOut = () =>{
+        history.push('/')
+    }
     return (
         <header>
             <h1>Exam Manager</h1>

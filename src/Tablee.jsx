@@ -27,40 +27,39 @@ const Tablee = () => {
         style={{ marginTop: "30px", width: "max", backgroundColor: "#e6f9ff" }}
       >
         <Table className={classes.table} aria-label="simple table">
-            <TableHead>
+          <TableHead>
+            <TableRow>
+              <TableCell>ID</TableCell>
+              <TableCell align="right">Name</TableCell>
+              <TableCell align="right">Subject</TableCell>
+              <TableCell align="right">Marks</TableCell>
+              <TableCell align="right">Start date-time</TableCell>
+              <TableCell align="right">End date-time</TableCell>
+              <TableCell align="right">Status</TableCell>
+            </TableRow>
+          </TableHead>
+          <TableBody>
+            {arr == "" ? (
               <TableRow>
-                <TableCell>ID</TableCell>
-                <TableCell align="right">Name</TableCell>
-                <TableCell align="right">Subject</TableCell>
-                <TableCell align="right">Marks</TableCell>
-                <TableCell align="right">Start date-time</TableCell>
-                <TableCell align="right">End date-time</TableCell>
-                <TableCell align="right">Status</TableCell>
+                <TableCell rowspan="7">No tasks</TableCell>
               </TableRow>
-            </TableHead>
-            <TableBody>
-              {arr.map((item, key) => {
-                if (
-                  searchItem !== "" &&
-                  item.first.toLowerCase().indexOf(searchItem.toLowerCase()) ===
-                    -1
-                ) {
-                  return null;
-                }
+            ) : (
+              arr.map((item, key) => {
                 return (
                   <TableRow key={key}>
                     <TableCell component="th" scope="row">
                       {key + 1}
                     </TableCell>
-                    <TableCell align="right">{item.first}</TableCell>
-                    <TableCell align="right">{item.last}</TableCell>
-                    <TableCell align="right">{item.email}</TableCell>
-                    <TableCell align="right">{item.pno}</TableCell>
-                    <TableCell align="right">{item.desc}</TableCell>
+                    <TableCell align="right">{item.name}</TableCell>
+                    <TableCell align="right">{item.subject}</TableCell>
+                    <TableCell align="right">{item.SDT}</TableCell>
+                    <TableCell align="right">{item.EDT}</TableCell>
+                    <TableCell align="right">{item.status}</TableCell>
                   </TableRow>
                 );
-              })}
-            </TableBody>
+              })
+            )}
+          </TableBody>
         </Table>
       </TableContainer>
     </>
