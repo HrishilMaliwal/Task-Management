@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { useHistory } from "react-router";
-import "./Login.css";
+import "./style.css";
 
 const Login = () => {
   const history = useHistory();

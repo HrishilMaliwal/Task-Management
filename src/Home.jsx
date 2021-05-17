@@ -13,7 +13,7 @@ const Home = () => {
   return (
     <div>
       <Header />
-      <button onClick={() => create()}>Create an exam</button>
+      <button onClick={() => create()}  className="btn ">Create an exam</button>
       <Tablee />
     </div>
   );
