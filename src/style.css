@@ -68,3 +68,9 @@
       }
     } */
   
+
+.btn-create{
+  width: 100px;
+  float: right;
+  margin-right: 50px;
+}
