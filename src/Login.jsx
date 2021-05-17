@@ -1,7 +1,14 @@
-import React from "react";
-import './Login.css'
+import React, { useState } from "react";
+import { useHistory } from "react-router";
+import "./Login.css";
 
 const Login = () => {
+  const history = useHistory();
+
+  const vali = () => {
+    history.push("/home");
+  };
+
   return (
     <div className="container">
       <div className="imgcontainer">
@@ -24,19 +31,21 @@ const Login = () => {
           required
         />
 
-        <button type="submit">Login</button>
+        <button type="submit" onClick={() => vali()}>
+          Login
+        </button>
         <label>
           <input type="checkbox" checked="checked" name="remember" /> Remember
           me
         </label>
       </div>
 
-      <div className="container" style={{backgroundColor:"#f1f1f1"}}>
+      <div className="container" style={{ backgroundColor: "#f1f1f1" }}>
         <button type="button" className="cancelbtn">
           Cancel
         </button>
         <span className="psw">
-          htmlForgot <a href="#">password?</a>
+          Forgot <a href="#">password?</a>
         </span>
       </div>
     </div>
