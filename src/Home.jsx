@@ -1,6 +1,6 @@
 import React from "react";
 import Header from "./Header";
-import Tablee from "./Tablee";
+import ViewTable from "./ViewTable";
 import { useHistory } from "react-router";
 
 const Home = () => {
@@ -14,7 +14,7 @@ const Home = () => {
     <div>
       <Header />
       <button onClick={() => create()}  className="btn-create">Create an exam</button>
-      <Tablee />
+      <ViewTable />
     </div>
   );
 };

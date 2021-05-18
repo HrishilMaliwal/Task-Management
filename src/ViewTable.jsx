@@ -10,7 +10,7 @@ import TableRow from "@material-ui/core/TableRow";
 import Paper from "@material-ui/core/Paper";
 import TextField from "@material-ui/core/TextField";
 
-const Tablee = () => {
+const ViewTable = () => {
   const [arr, setArr] = useState([]);
   const useStyles = makeStyles({
     table: {
@@ -66,4 +66,4 @@ const Tablee = () => {
   );
 };
 
-export default Tablee;
+export default ViewTable;
