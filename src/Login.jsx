@@ -11,9 +11,9 @@ const Login = () => {
 
   return (
     <div className="container">
-      <div className="imgcontainer">
+      {/* <div className="imgcontainer">
         <img src="img_avatar2.png" alt="Avatar" className="avatar" />
-      </div>
+      </div> */}
 
       <div className="container">
         <label htmlFor="uname">
