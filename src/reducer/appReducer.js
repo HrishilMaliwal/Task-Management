@@ -12,15 +12,19 @@ const reducer = (state = initialState, action) => {
     }
 
     case actions.ADD_ASSIGNMENT: {
-    //   let newArr = [...state.assignment_array];
-    //   newArr.push(action.payload);
-    //   let newState = { ...state, assignment_array: newArr };
-    //   console.log(newState)
-    //   return newState;
       return {
-          ...state,
-          assignment_array: [...state.assignment_array, action.payload]
-      }
+        ...state,
+        assignment_array: [...state.assignment_array, action.payload],
+      };
+    }
+
+    case actions.DEL_ASSIGNMENT: {
+      let arr = [...state.assignment_array]
+      arr.splice(action.payload, 1)
+      return {
+        ...state,
+        assignment_array: arr,
+      };
     }
 
     default: {

@@ -7,11 +7,14 @@ import TableContainer from "@material-ui/core/TableContainer";
 import TableHead from "@material-ui/core/TableHead";
 import TableRow from "@material-ui/core/TableRow";
 import Paper from "@material-ui/core/Paper";
-import useGlobalState from './Context'
-
+import useGlobalState from "./Context";
+import { Button } from "@material-ui/core";
+import { del_assignment } from "./reducer/action";
+import Alert from "@material-ui/lab/Alert";
+import { useHistory } from "react-router";
 
 const ViewTable = () => {
-  const [state, dispatch] = useGlobalState()
+  const [state, dispatch] = useGlobalState();
   const useStyles = makeStyles({
     table: {
       minWidth: 650,
@@ -19,6 +22,15 @@ const ViewTable = () => {
   });
 
   const classes = useStyles();
+  const history = useHistory();
+
+  const del = (key) => {
+    dispatch(del_assignment(key));
+  };
+
+  const addQues = (key) => {
+    history.push({ pathname: "/createform", state: {key:key} });
+  };
 
   return (
     <>
@@ -36,18 +48,21 @@ const ViewTable = () => {
               <TableCell align="right">Start date-time</TableCell>
               <TableCell align="right">End date-time</TableCell>
               <TableCell align="right">Status</TableCell>
+              <TableCell align="right"></TableCell>
             </TableRow>
           </TableHead>
           <TableBody>
             {state.assignment_array == "" ? (
-              <TableRow>
-                <TableCell rowspan="7">No tasks</TableCell>
-              </TableRow>
+              <Alert severity="info">There are no tasks assigned to you</Alert>
             ) : (
               state.assignment_array.map((item, key) => {
                 return (
                   <TableRow key={key}>
-                    <TableCell component="th" scope="row">
+                    <TableCell
+                      component="th"
+                      scope="row"
+                      onClick={() => addQues(key)}
+                    >
                       {key + 1}
                     </TableCell>
                     <TableCell align="right">{item.name}</TableCell>
@@ -56,6 +71,16 @@ const ViewTable = () => {
                     <TableCell align="right">{item.SDT}</TableCell>
                     <TableCell align="right">{item.EDT}</TableCell>
                     <TableCell align="right">{item.status}</TableCell>
+                    <TableCell>
+                      <Button
+                        color="secondary"
+                        type="submit"
+                        onClick={() => del(key)}
+                        style={{ marginLeft: "20px" }}
+                      >
+                        Delete
+                      </Button>
+                    </TableCell>
                   </TableRow>
                 );
               })

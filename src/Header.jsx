@@ -11,9 +11,9 @@ const Header = () => {
         history.push('/')
     }
     return (
-        <header>
+        <header style={{backgroundColor:"lightgreen"}}>
             <h1>Exam Manager</h1>
-            <details>
+            <details style={{float:"right"}}>
                 <summary>...</summary>
                 <button onClick={()=>console.log("1")}>Profile</button>
                 <button onClick={()=>console.log("2")}>Log out</button>

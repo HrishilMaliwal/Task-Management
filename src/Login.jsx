@@ -11,15 +11,12 @@ const Login = () => {
 
   return (
     <div className="container">
-      {/* <div className="imgcontainer">
-        <img src="img_avatar2.png" alt="Avatar" className="avatar" />
-      </div> */}
 
       <div className="container">
         <label htmlFor="uname">
           <b>Username</b>
         </label>
-        <input type="text" placeholder="Enter Username" name="uname" required />
+        <input class="login" type="text" placeholder="Enter Username" name="uname" required />
 
         <label htmlFor="psw">
           <b>Password</b>
@@ -28,6 +25,7 @@ const Login = () => {
           type="password"
           placeholder="Enter Password"
           name="psw"
+          class="login"
           required
         />
 
