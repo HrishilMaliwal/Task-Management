@@ -1,21 +1,15 @@
-import React, { useState } from "react";
-import Table from "@material-ui/core/Table";
-import TableBody from "@material-ui/core/TableBody";
-import TableCell from "@material-ui/core/TableCell";
-import TextField from "@material-ui/core/TextField";
-import TableContainer from "@material-ui/core/TableContainer";
-import TableHead from "@material-ui/core/TableHead";
-import TableRow from "@material-ui/core/TableRow";
-import { makeStyles } from "@material-ui/core/styles";
-import Paper from "@material-ui/core/Paper";
-import useGlobalState from "./Context";
+import FormControl from "@material-ui/core/FormControl";
 import InputLabel from "@material-ui/core/InputLabel";
 import MenuItem from "@material-ui/core/MenuItem";
-import FormControl from "@material-ui/core/FormControl";
 import Select from "@material-ui/core/Select";
+import { makeStyles } from "@material-ui/core/styles";
+import TextField from "@material-ui/core/TextField";
+import React, { useState } from "react";
 import { useHistory } from "react-router";
 import { useLocation } from "react-router-dom";
+import useGlobalState from "./Context";
 import Header from "./Header";
+import QuestionTable from './QuestionTable'
 
 const CreateForm = () => {
   const location = useLocation();
@@ -28,9 +22,9 @@ const CreateForm = () => {
   const [option, setOption] = useState("");
   const [flag1, setFlag1] = useState(false);
   const [QTarr, setQTarr] = useState([
-    { id: 1, type: "text", text: "text" },
-    { id: 2, type: "MCQ1", text: "Multiple choice(Single correct)" },
-    { id: 3, type: "MCQ2", text: "Multiple choice(Multiple correct)" },
+    { qId: 1, type: "text", text: "Text" },
+    { qId: 2, type: "radio", text: "Multiple choice(Single type)" },
+    { qId: 3, type: "checkbox", text: "Multiple choice(Multiple type)" },
   ]);
   const useStyles = makeStyles((theme) => ({
     formControl: {
@@ -39,12 +33,13 @@ const CreateForm = () => {
     },
   }));
   const classes = useStyles();
+
   const addcompo = () => {
     var Request = {
       Ques: Ques,
     };
     if (Qtype == "text") {
-      Request = { ...Request, Qtype: Qtype, options: ["TextField"] };
+      Request = { ...Request, Qtype: Qtype, options: [""] };
     } else if (Qtype == "MCQ1") {
       Request = { ...Request, Qtype: QTarr[1].text, options: Oarr };
     } else if (Qtype == "MCQ2") {
@@ -56,23 +51,25 @@ const CreateForm = () => {
     setOarr([]);
   };
 
-  const addOptionsToggle = () => {
-    if (Qtype == "MCQ1" || Qtype == "MCQ2") {
-      setFlag1(true);
-    }
-  };
+  
 
   const addOption = () => {
     Oarr.push(option);
     setOption("");
   };
 
-  const done = () => {
-    state.assignment_array[location.state.key].questions = [...Qarr];
-    console.log(state);
-    history.push({ pathname: "/form", state: {key:location.state.key} })
-  };
 
+
+  const changeQtype =(e)=>{
+    console.log(`e`,e.target.value)
+    setQtype(e.target.value)
+    if (Qtype == 2 || Qtype == 3) {
+      setFlag1(true);
+    }
+    else{
+      setFlag1(false)
+    }
+  }
   return (
     <>
       <Header />
@@ -95,10 +92,10 @@ const CreateForm = () => {
             labelId="demo-simple-select-label"
             id="demo-simple-select"
             value={Qtype}
-            onChange={(e) => setQtype(e.target.value)}
+            onChange={(e) => changeQtype(e)}
           >
             {QTarr.map((item, key) => {
-              return <MenuItem value={item.type}>{item.text}</MenuItem>;
+              return <MenuItem value={item.qId}>{item.text}</MenuItem>;
             })}
           </Select>
         </FormControl>
@@ -112,10 +109,7 @@ const CreateForm = () => {
           value={Ques}
           onChange={(e) => setQues(e.target.value)}
         />
-        <button onClick={() => addOptionsToggle()} className="btn-create">
-          Add Option
-        </button>
-        <div id="optionsArea"></div>
+     
         {flag1 ? (
           <div>
             <TextField
@@ -136,52 +130,7 @@ const CreateForm = () => {
           ""
         )}
         <button onClick={() => addcompo()}>Add Question</button>
-        <TableContainer
-          component={Paper}
-          style={{
-            marginTop: "30px",
-            width: "max",
-            backgroundColor: "#e6f9ff",
-          }}
-        >
-          {Qarr == "" ? (
-            ""
-          ) : (
-            <>
-              <Table aria-label="simple table">
-                <TableHead>
-                  <TableRow>
-                    <TableCell>Question number</TableCell>
-                    <TableCell>Question type</TableCell>
-                    <TableCell>Question</TableCell>
-                    <TableCell>Options</TableCell>
-                  </TableRow>
-                </TableHead>
-                <TableBody>
-                  {Qarr.map((item, key) => {
-                    return (
-                      <TableRow key={key}>
-                        <TableCell component="th" scope="row">
-                          {key + 1}
-                        </TableCell>
-                        <TableCell>{item.Qtype}</TableCell>
-                        <TableCell>{item.Ques}</TableCell>
-                        <TableCell>
-                          <ul>
-                            {item.options.map((i, k) => {
-                              return <li>{i}</li>;
-                            })}
-                          </ul>
-                        </TableCell>
-                      </TableRow>
-                    );
-                  })}
-                </TableBody>
-              </Table>
-              <button onClick={() => done()}>Done</button>
-            </>
-          )}
-        </TableContainer>
+         <QuestionTable/>
       </div>
     </>
   );

@@ -61,8 +61,9 @@ const Form = () => {
   return (
     <>
       <Header />
-      <button onClick={() => generate()}>Generate exam</button>
-      <div id="form"></div>
+      {console.log(`sds`,state.assignment_array)}
+      {/* <button onClick={() => generate()}>Generate exam</button>
+      <div id="form"></div> */}
       {flag1 ?
       <button onClick={()=>done()}>Finish</button>
        : ""}

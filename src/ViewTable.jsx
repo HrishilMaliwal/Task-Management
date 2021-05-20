@@ -10,7 +10,7 @@ import Paper from "@material-ui/core/Paper";
 import useGlobalState from "./Context";
 import { Button } from "@material-ui/core";
 import { del_assignment } from "./reducer/action";
-import Alert from "@material-ui/lab/Alert";
+// import Alert from "@material-ui/lab/Alert";
 import { useHistory } from "react-router";
 
 const ViewTable = () => {
@@ -53,7 +53,7 @@ const ViewTable = () => {
           </TableHead>
           <TableBody>
             {state.assignment_array == "" ? (
-              <Alert severity="info">There are no tasks assigned to you</Alert>
+              alert("There are no tasks assigned to you")
             ) : (
               state.assignment_array.map((item, key) => {
                 return (
