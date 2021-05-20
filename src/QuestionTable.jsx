@@ -2,44 +2,22 @@ import React, { useState } from "react";
 import Table from "@material-ui/core/Table";
 import TableBody from "@material-ui/core/TableBody";
 import TableCell from "@material-ui/core/TableCell";
-import TextField from "@material-ui/core/TextField";
 import TableContainer from "@material-ui/core/TableContainer";
 import TableHead from "@material-ui/core/TableHead";
 import TableRow from "@material-ui/core/TableRow";
 import { makeStyles } from "@material-ui/core/styles";
 import Paper from "@material-ui/core/Paper";
 import useGlobalState from "./Context";
-import InputLabel from "@material-ui/core/InputLabel";
-import MenuItem from "@material-ui/core/MenuItem";
-import FormControl from "@material-ui/core/FormControl";
-import Select from "@material-ui/core/Select";
 import { useHistory } from "react-router";
-import { useLocation } from "react-router-dom";
-import Header from "./Header";
 
-const QuestionTable = () => {
-  const location = useLocation();
+const QuestionTable = (props) => {
   const history = useHistory();
   const [state, dispatch] = useGlobalState();
- 
-  const [Qarr, setQarr] = useState(state.assignment_array[location.state.key].questions);
- 
-  const useStyles = makeStyles((theme) => ({
-    formControl: {
-      margin: theme.spacing(1),
-      minWidth: 120,
-    },
-  }));
-  const classes = useStyles();
-
-  
 
   const done = () => {
-    state.assignment_array[location.state.key].questions = [...Qarr];
-    console.log(state);
-    history.push({ pathname: "/form", state: {key:location.state.key} })
+    state.assignment_array[props.ke].questions = [...props.qArr];
+    history.push({ pathname: "/form", state: {key:props.ke} })
   };
-
 
   return (
     <>
@@ -62,7 +40,7 @@ const QuestionTable = () => {
                   </TableRow>
                 </TableHead>
                 <TableBody>
-                  {Qarr.map((item, key) => {
+                  {props.qArr.map((item, key) => {
                     return (
                       <TableRow key={key}>
                         <TableCell component="th" scope="row">

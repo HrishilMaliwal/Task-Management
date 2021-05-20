@@ -5,20 +5,20 @@ import Select from "@material-ui/core/Select";
 import { makeStyles } from "@material-ui/core/styles";
 import TextField from "@material-ui/core/TextField";
 import React, { useState } from "react";
-import { useHistory } from "react-router";
 import { useLocation } from "react-router-dom";
 import useGlobalState from "./Context";
 import Header from "./Header";
-import QuestionTable from './QuestionTable'
+import QuestionTable from "./QuestionTable";
 
 const CreateForm = () => {
   const location = useLocation();
-  const history = useHistory();
   const [state, dispatch] = useGlobalState();
   const [Qtype, setQtype] = useState("");
   const [Ques, setQues] = useState("");
-  const [Qarr, setQarr] = useState(state.assignment_array[location.state.key].questions);
-  const [Oarr, setOarr] = useState([]);
+  const [qArr, setQarr] = useState(
+    state.assignment_array[location.state.key].questions
+  );
+  const [oArr, setOarr] = useState([]);
   const [option, setOption] = useState("");
   const [flag1, setFlag1] = useState(false);
   const [QTarr, setQTarr] = useState([
@@ -38,38 +38,32 @@ const CreateForm = () => {
     var Request = {
       Ques: Ques,
     };
-    if (Qtype == "text") {
-      Request = { ...Request, Qtype: Qtype, options: [""] };
-    } else if (Qtype == "MCQ1") {
-      Request = { ...Request, Qtype: QTarr[1].text, options: Oarr };
-    } else if (Qtype == "MCQ2") {
-      Request = { ...Request, Qtype: QTarr[2].text, options: Oarr };
+    if (Qtype == 1) {
+      Request = { ...Request, Qtype: QTarr[0].text, options: [] };
+    } else if (Qtype == 2) {
+      Request = { ...Request, Qtype: QTarr[1].text, options: oArr };
+    } else if (Qtype == 3) {
+      Request = { ...Request, Qtype: QTarr[2].text, options: oArr };
     }
-    Qarr.push(Request);
+    qArr.push(Request);
     setQtype("");
     setQues("");
     setOarr([]);
   };
 
-  
-
   const addOption = () => {
-    Oarr.push(option);
+    oArr.push(option);
     setOption("");
   };
 
-
-
-  const changeQtype =(e)=>{
-    console.log(`e`,e.target.value)
-    setQtype(e.target.value)
+  const changeQtype = (e) => {
+    setQtype(e.target.value);
     if (Qtype == 2 || Qtype == 3) {
       setFlag1(true);
+    } else {
+      setFlag1(false);
     }
-    else{
-      setFlag1(false)
-    }
-  }
+  };
   return (
     <>
       <Header />
@@ -109,7 +103,7 @@ const CreateForm = () => {
           value={Ques}
           onChange={(e) => setQues(e.target.value)}
         />
-     
+
         {flag1 ? (
           <div>
             <TextField
@@ -130,7 +124,7 @@ const CreateForm = () => {
           ""
         )}
         <button onClick={() => addcompo()}>Add Question</button>
-         <QuestionTable/>
+        <QuestionTable ke={location.state.key} qArr={qArr}/>
       </div>
     </>
   );
