@@ -16,7 +16,7 @@ const Login = () => {
         <label htmlFor="uname">
           <b>Username</b>
         </label>
-        <input class="login" type="text" placeholder="Enter Username" name="uname" required />
+        <input className="login" type="text" placeholder="Enter Username" name="uname" required />
 
         <label htmlFor="psw">
           <b>Password</b>
@@ -25,7 +25,7 @@ const Login = () => {
           type="password"
           placeholder="Enter Password"
           name="psw"
-          class="login"
+          className="login"
           required
         />
 

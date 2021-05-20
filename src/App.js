@@ -7,6 +7,7 @@ import './App.css';
 import { StateProvider } from "./Context";
 import ErrorBoundary from "./ErrorBoundary"
 import CreateForm from "./CreateForm";
+import Form from "./Form";
 
 
 function App() {
@@ -19,6 +20,7 @@ function App() {
         <Route exact path="/home" component={Home} />
         <Route exact path="/createtask" component={CreateTask}/>
         <Route exact path='/createform' component={CreateForm}/>
+        <Route exact path='/form' component={Form}/>
         <PrivateRoute>
 
         </PrivateRoute>

@@ -57,6 +57,7 @@ const CreateTask = () => {
         SDT: SDT,
         EDT: EDT,
         status: "Incomplete",
+        questions: []
       };
       dispatch(add_assignment(Request));
       history.push("/home");

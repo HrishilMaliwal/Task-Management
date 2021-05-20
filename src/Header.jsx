@@ -12,8 +12,8 @@ const Header = () => {
     }
     return (
         <header style={{backgroundColor:"lightgreen"}}>
-            <h1>Exam Manager</h1>
-            <details style={{float:"right"}}>
+            <h1 style={{textAlign:"center"}}>Exam Manager</h1>
+            <details style={{position:"absolute", top:"30px"}}>
                 <summary>...</summary>
                 <button onClick={()=>console.log("1")}>Profile</button>
                 <button onClick={()=>console.log("2")}>Log out</button>
