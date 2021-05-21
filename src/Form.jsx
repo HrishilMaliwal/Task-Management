@@ -10,19 +10,28 @@ const Form = () => {
   const [state, dispatch] = useGlobalState();
   const [flag1, setFlag1] = useState(false);
 
+  const back = () => {
+    history.push({
+      pathname: "/createform",
+      state: { key: location.state.key },
+    });
+  };
+
+  const done = () => {
+    console.log(state);
+    history.push('/home')
+  };
+
   const generate = () => {
-    //  console.log(location.state.key)
-    //  console.log(state.assignment_array[location.state.key])
-    //  console.log(state.assignment_array[location.state.key].questions)
     var form = document.getElementById("form");
     state.assignment_array[location.state.key].questions.map((item, key) => {
       var lb = document.createElement("label");
       var brk = document.createElement("br");
-      lb.innerHTML = item.ques;
+      lb.innerHTML = key + 1 + ". " + item.ques + ":";
       form.appendChild(lb);
       form.appendChild(brk);
 
-      if (item.options.length >= 1) {
+      if (item.options.length > 0) {
         if (item.qType == "Multiple choice(Single type)") {
           item.options.map((i, k) => {
             var brk = document.createElement("br");
@@ -31,6 +40,7 @@ const Form = () => {
             op.value = i;
             op.name = item.ques;
             var opn = document.createElement("label");
+            opn.className = "r-c button";
             opn.innerHTML = i;
             form.appendChild(opn);
             form.appendChild(op);
@@ -44,6 +54,7 @@ const Form = () => {
             op.value = i;
             op.name = i;
             var opn = document.createElement("label");
+            opn.className = "r-c button";
             opn.innerHTML = i;
             form.appendChild(opn);
             form.appendChild(op);
@@ -52,59 +63,44 @@ const Form = () => {
         }
       } else {
         var brk = document.createElement("br");
-        var ip = document.createElement("input");
-        ip.type = "text";
+        var ip = document.createElement("textarea");
+        ip.className = "ip-textarea";
+        ip.placeholder = "Type answer here..";
         form.appendChild(ip);
         form.appendChild(brk);
       }
-
-      // if (item.qType == "text") {
-      //   var brk = document.createElement("br");
-      //   var ip = document.createElement("input");
-      //   ip.type = "text";
-      //   form.appendChild(ip);
-      //   form.appendChild(brk);
-      // } else if (item.qType == "Multiple choice(Single correct)") {
-      //   item.options.map((i, k) => {
-      //     var brk = document.createElement("br");
-      //     var op = document.createElement("input");
-      //     op.type = "radio";
-      //     op.value = i;
-      //     op.name = item.ques;
-      //     var opn = document.createElement("label");
-      //     opn.innerHTML = i;
-      //     form.appendChild(opn);
-      //     form.appendChild(op);
-      //     form.appendChild(brk);
-      //   });
-      // } else if (item.qType == "Multiple choice(Multiple correct)") {
-      //   item.options.map((i, k) => {
-      //     var brk = document.createElement("br");
-      //     var op = document.createElement("input");
-      //     op.type = "checkbox";
-      //     op.value = i;
-      //     op.name = i;
-      //     var opn = document.createElement("label");
-      //     opn.innerHTML = i;
-      //     form.appendChild(opn);
-      //     form.appendChild(op);
-      //     form.appendChild(brk);
-      //   });
-      // }
     });
     setFlag1(true);
   };
 
-  const done = () => {
-    console.log(state);
-    // history.push('/home')
-  };
   return (
     <>
       <Header />
-      <button onClick={() => generate()}>Generate exam</button>
-      <div id="form"></div>
-      {flag1 ? <button onClick={() => done()}>Finish</button> : ""}
+      <button onClick={() => generate()} className="btn-cntr">
+        Generate exam
+      </button>
+      <div
+        id="form"
+        style={{ padding: "20px", position: "relative", left: "35%" }}
+      ></div>
+      {flag1 ? (
+        <>
+          <button onClick={() => back()} className="btn-cntr-dual">
+            Back
+          </button>
+          <button
+            onClick={() => done()}
+            className="btn-cntr-dual"
+            style={{
+              marginLeft: "4px",
+            }}
+          >
+            Home
+          </button>
+        </>
+      ) : (
+        ""
+      )}
     </>
   );
 };

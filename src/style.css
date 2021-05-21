@@ -72,3 +72,25 @@ span.psw {
   background-color: #f2f2f2;
   padding: 20px;
 }
+
+.btn-cntr {
+  width: 200px;
+  position: relative;
+  left: 43%;
+}
+
+.btn-cntr-dual {
+  width: 100px;
+  position: relative;
+  left: 43%;
+}
+
+.ip-textarea {
+  width: 333px;
+  height: 107px;
+  margin: 4px;
+}
+
+.r-c-button {
+  margin: 3px;
+}

@@ -110,7 +110,8 @@ const CreateTask = () => {
           value={marks}
           onChange={(e) => mVali(e)}
         />
-        <TextField
+        <label>Start Date and Time - </label>
+        <input
           id="datetime-local"
           label="Start Date and Time"
           type="datetime-local"
@@ -121,14 +122,16 @@ const CreateTask = () => {
             shrink: true,
           }}
         />
-        <TextField
+        <br/>
+        <label>End Date and Time - </label>
+        <input
           id="datetime-local"
           label="End Date and Time"
           type="datetime-local"
           value={EDT}
           min={SDT}
           onChange={(e) => setEDT(e.target.value)}
-          style={{ marginLeft: "15px" }}
+          style={{ marginLeft: "6px" }}
           InputLabelProps={{
             shrink: true,
           }}

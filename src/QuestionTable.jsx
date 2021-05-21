@@ -15,53 +15,68 @@ const QuestionTable = (props) => {
 
   const done = () => {
     state.assignment_array[props.ke].questions = [...props.qArr];
-    history.push({ pathname: "/form", state: {key:props.ke} })
+    history.push({ pathname: "/form", state: { key: props.ke } });
+  };
+
+  const back = () => {
+    state.assignment_array[props.ke].questions = [...props.qArr];
+    history.push("/home");
   };
 
   return (
     <>
-        <TableContainer
-          component={Paper}
+      <TableContainer
+        component={Paper}
+        style={{
+          marginTop: "30px",
+          width: "max",
+          backgroundColor: "#e6f9ff",
+        }}
+      >
+        <Table aria-label="simple table">
+          <TableHead>
+            <TableRow>
+              <TableCell>Question number</TableCell>
+              <TableCell>Question type</TableCell>
+              <TableCell>Question</TableCell>
+              <TableCell>Options</TableCell>
+            </TableRow>
+          </TableHead>
+          <TableBody>
+            {props.qArr.map((item, key) => {
+              return (
+                <TableRow key={key}>
+                  <TableCell component="th" scope="row">
+                    {key + 1}
+                  </TableCell>
+                  <TableCell>{item.qType}</TableCell>
+                  <TableCell>{item.ques}</TableCell>
+                  <TableCell>
+                    <ul>
+                      {item.options.map((i, k) => {
+                        return <li>{i}</li>;
+                      })}
+                    </ul>
+                  </TableCell>
+                </TableRow>
+              );
+            })}
+          </TableBody>
+        </Table>
+
+        <button onClick={() => back()} className="btn-cntr-dual">
+          Back
+        </button>
+        <button
+          onClick={() => done()}
+          className="btn-cntr-dual"
           style={{
-            marginTop: "30px",
-            width: "max",
-            backgroundColor: "#e6f9ff",
+            marginLeft: "4px",
           }}
         >
-            <>
-              <Table aria-label="simple table">
-                <TableHead>
-                  <TableRow>
-                    <TableCell>Question number</TableCell>
-                    <TableCell>Question type</TableCell>
-                    <TableCell>Question</TableCell>
-                    <TableCell>Options</TableCell>
-                  </TableRow>
-                </TableHead>
-                <TableBody>
-                  {props.qArr.map((item, key) => {
-                    return (
-                      <TableRow key={key}>
-                        <TableCell component="th" scope="row">
-                          {key + 1}
-                        </TableCell>
-                        <TableCell>{item.qType}</TableCell>
-                        <TableCell>{item.ques}</TableCell>
-                        <TableCell>
-                          <ul>
-                            {item.options.map((i, k) => {
-                              return <li>{i}</li>;
-                            })}
-                          </ul>
-                        </TableCell>
-                      </TableRow>
-                    );
-                  })}
-                </TableBody>
-              </Table>
-              <button onClick={() => done()}>Done</button>
-            </>
-        </TableContainer>
+          Preview
+        </button>
+      </TableContainer>
     </>
   );
 };

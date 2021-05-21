@@ -10,7 +10,6 @@ import Paper from "@material-ui/core/Paper";
 import useGlobalState from "./Context";
 import { Button } from "@material-ui/core";
 import { del_assignment } from "./reducer/action";
-// import Alert from "@material-ui/lab/Alert";
 import { useHistory } from "react-router";
 
 const ViewTable = () => {
@@ -29,7 +28,7 @@ const ViewTable = () => {
   };
 
   const addQues = (key) => {
-    history.push({ pathname: "/createform", state: {key:key} });
+    history.push({ pathname: "/createform", state: { key: key } });
   };
 
   return (
@@ -52,39 +51,38 @@ const ViewTable = () => {
             </TableRow>
           </TableHead>
           <TableBody>
-            {state.assignment_array == "" ? (
-              alert("There are no tasks assigned to you")
-            ) : (
-              state.assignment_array.map((item, key) => {
-                return (
-                  <TableRow key={key}>
-                    <TableCell
-                      component="th"
-                      scope="row"
-                      onClick={() => addQues(key)}
-                    >
-                      {key + 1}
-                    </TableCell>
-                    <TableCell align="right">{item.name}</TableCell>
-                    <TableCell align="right">{item.subject}</TableCell>
-                    <TableCell align="right">{item.marks}</TableCell>
-                    <TableCell align="right">{item.SDT}</TableCell>
-                    <TableCell align="right">{item.EDT}</TableCell>
-                    <TableCell align="right">{item.status}</TableCell>
-                    <TableCell>
-                      <Button
-                        color="secondary"
-                        type="submit"
-                        onClick={() => del(key)}
-                        style={{ marginLeft: "20px" }}
+            {state.assignment_array == ""
+              ? ""
+              : // Alert
+                state.assignment_array.map((item, key) => {
+                  return (
+                    <TableRow key={key}>
+                      <TableCell
+                        component="th"
+                        scope="row"
+                        onClick={() => addQues(key)}
                       >
-                        Delete
-                      </Button>
-                    </TableCell>
-                  </TableRow>
-                );
-              })
-            )}
+                        {key + 1}
+                      </TableCell>
+                      <TableCell align="right">{item.name}</TableCell>
+                      <TableCell align="right">{item.subject}</TableCell>
+                      <TableCell align="right">{item.marks}</TableCell>
+                      <TableCell align="right">{item.SDT}</TableCell>
+                      <TableCell align="right">{item.EDT}</TableCell>
+                      <TableCell align="right">{item.status}</TableCell>
+                      <TableCell>
+                        <Button
+                          color="secondary"
+                          type="submit"
+                          onClick={() => del(key)}
+                          style={{ marginLeft: "20px" }}
+                        >
+                          Delete
+                        </Button>
+                      </TableCell>
+                    </TableRow>
+                  );
+                })}
           </TableBody>
         </Table>
       </TableContainer>

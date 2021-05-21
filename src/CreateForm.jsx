@@ -31,7 +31,7 @@ const CreateForm = () => {
   const useStyles = makeStyles((theme) => ({
     formControl: {
       margin: theme.spacing(1),
-      minWidth: 120,
+      minWidth: 250,
     },
   }));
   const classes = useStyles();
@@ -54,7 +54,8 @@ const CreateForm = () => {
   };
 
   const addOption = () => {
-    oArr.push(option);
+    var tempArr = option.split(",");
+    setOarr(tempArr);
     setOption("");
   };
 
@@ -69,7 +70,7 @@ const CreateForm = () => {
   return (
     <>
       <Header />
-      <div style={{paddingLeft:"30px", paddingRight:"30px"}}>
+      <div style={{ paddingLeft: "30px", paddingRight: "30px" }}>
         <div style={{ borderBottom: "solid", paddingLeft: "20px" }}>
           <p>Assignment ID - {location.state.key + 1}</p>
           <p>
@@ -102,6 +103,7 @@ const CreateForm = () => {
           fullWidth
           label="Question"
           autoComplete="Question"
+          style = {{width:"80%"}}
           value={ques}
           onChange={(e) => setQues(e.target.value)}
         />
@@ -117,16 +119,20 @@ const CreateForm = () => {
               autoComplete="Option"
               value={option}
               onChange={(e) => setOption(e.target.value)}
-              style = {{width:"80%"}}
+              style={{ width: "80%" }}
             />
-            <button className="btn-create" onClick={() => addOption()} style={{marginTop:"25px"}}>
+            <button
+              className="btn-create"
+              onClick={() => addOption()}
+              style={{ marginTop: "25px" }}
+            >
               Add
             </button>
           </div>
         ) : (
           ""
         )}
-        <button onClick={() => addcompo()}>Add Question</button>
+        <button onClick={() => addcompo()} className="btn-cntr">Add Question</button>
         <QuestionTable ke={location.state.key} qArr={qArr} />
       </div>
     </>
