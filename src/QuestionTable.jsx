@@ -5,7 +5,6 @@ import TableCell from "@material-ui/core/TableCell";
 import TableContainer from "@material-ui/core/TableContainer";
 import TableHead from "@material-ui/core/TableHead";
 import TableRow from "@material-ui/core/TableRow";
-import { makeStyles } from "@material-ui/core/styles";
 import Paper from "@material-ui/core/Paper";
 import useGlobalState from "./Context";
 import { useHistory } from "react-router";
@@ -46,8 +45,8 @@ const QuestionTable = (props) => {
                         <TableCell component="th" scope="row">
                           {key + 1}
                         </TableCell>
-                        <TableCell>{item.Qtype}</TableCell>
-                        <TableCell>{item.Ques}</TableCell>
+                        <TableCell>{item.qType}</TableCell>
+                        <TableCell>{item.ques}</TableCell>
                         <TableCell>
                           <ul>
                             {item.options.map((i, k) => {

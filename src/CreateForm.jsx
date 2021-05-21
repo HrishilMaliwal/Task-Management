@@ -4,7 +4,7 @@ import MenuItem from "@material-ui/core/MenuItem";
 import Select from "@material-ui/core/Select";
 import { makeStyles } from "@material-ui/core/styles";
 import TextField from "@material-ui/core/TextField";
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { useLocation } from "react-router-dom";
 import useGlobalState from "./Context";
 import Header from "./Header";
@@ -13,19 +13,21 @@ import QuestionTable from "./QuestionTable";
 const CreateForm = () => {
   const location = useLocation();
   const [state, dispatch] = useGlobalState();
-  const [Qtype, setQtype] = useState("");
-  const [Ques, setQues] = useState("");
+  const [qType, setQtype] = useState("");
+  const [ques, setQues] = useState("");
   const [qArr, setQarr] = useState(
     state.assignment_array[location.state.key].questions
   );
   const [oArr, setOarr] = useState([]);
   const [option, setOption] = useState("");
   const [flag1, setFlag1] = useState(false);
-  const [QTarr, setQTarr] = useState([
+
+  const [qtArr, setQTarr] = useState([
     { qId: 1, type: "text", text: "Text" },
     { qId: 2, type: "radio", text: "Multiple choice(Single type)" },
     { qId: 3, type: "checkbox", text: "Multiple choice(Multiple type)" },
   ]);
+
   const useStyles = makeStyles((theme) => ({
     formControl: {
       margin: theme.spacing(1),
@@ -36,14 +38,14 @@ const CreateForm = () => {
 
   const addcompo = () => {
     var Request = {
-      Ques: Ques,
+      ques: ques,
     };
-    if (Qtype == 1) {
-      Request = { ...Request, Qtype: QTarr[0].text, options: [] };
-    } else if (Qtype == 2) {
-      Request = { ...Request, Qtype: QTarr[1].text, options: oArr };
-    } else if (Qtype == 3) {
-      Request = { ...Request, Qtype: QTarr[2].text, options: oArr };
+    if (qType == 1) {
+      Request = { ...Request, qType: qtArr[0].text, options: [] };
+    } else if (qType == 2) {
+      Request = { ...Request, qType: qtArr[1].text, options: oArr };
+    } else if (qType == 3) {
+      Request = { ...Request, qType: qtArr[2].text, options: oArr };
     }
     qArr.push(Request);
     setQtype("");
@@ -56,24 +58,24 @@ const CreateForm = () => {
     setOption("");
   };
 
-  const changeQtype = (e) => {
-    setQtype(e.target.value);
-    if (Qtype == 2 || Qtype == 3) {
+  useEffect(() => {
+    if (qType == 2 || qType == 3) {
       setFlag1(true);
     } else {
       setFlag1(false);
     }
-  };
+  }, [qType]);
+
   return (
     <>
       <Header />
-      <div>
-        <div style={{ borderBottom: "solid" }}>
+      <div style={{paddingLeft:"30px", paddingRight:"30px"}}>
+        <div style={{ borderBottom: "solid", paddingLeft: "20px" }}>
           <p>Assignment ID - {location.state.key + 1}</p>
           <p>
             Assignment Name - {state.assignment_array[location.state.key].name}
           </p>
-          <div style={{ position: "absolute", left: "300px", top: "88px" }}>
+          <div style={{ position: "absolute", left: "300px", top: "86px" }}>
             <p>
               Subject - {state.assignment_array[location.state.key].subject}
             </p>
@@ -85,10 +87,10 @@ const CreateForm = () => {
           <Select
             labelId="demo-simple-select-label"
             id="demo-simple-select"
-            value={Qtype}
-            onChange={(e) => changeQtype(e)}
+            value={qType}
+            onChange={(e) => setQtype(e.target.value)}
           >
-            {QTarr.map((item, key) => {
+            {qtArr.map((item, key) => {
               return <MenuItem value={item.qId}>{item.text}</MenuItem>;
             })}
           </Select>
@@ -100,7 +102,7 @@ const CreateForm = () => {
           fullWidth
           label="Question"
           autoComplete="Question"
-          value={Ques}
+          value={ques}
           onChange={(e) => setQues(e.target.value)}
         />
 
@@ -115,8 +117,9 @@ const CreateForm = () => {
               autoComplete="Option"
               value={option}
               onChange={(e) => setOption(e.target.value)}
+              style = {{width:"80%"}}
             />
-            <button className="btn-create" onClick={() => addOption()}>
+            <button className="btn-create" onClick={() => addOption()} style={{marginTop:"25px"}}>
               Add
             </button>
           </div>
@@ -124,7 +127,7 @@ const CreateForm = () => {
           ""
         )}
         <button onClick={() => addcompo()}>Add Question</button>
-        <QuestionTable ke={location.state.key} qArr={qArr}/>
+        <QuestionTable ke={location.state.key} qArr={qArr} />
       </div>
     </>
   );
