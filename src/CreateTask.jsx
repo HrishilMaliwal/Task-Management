@@ -2,7 +2,6 @@ import React, { useState } from "react";
 import { add_assignment, setFlag } from "./reducer/action";
 import ReactDOM from "react-dom";
 import useGlobalState from "./Context";
-// import Alert from "@material-ui/lab/Alert";
 import { useHistory } from "react-router";
 import Container from "@material-ui/core/Container";
 import { isPhoneNum, isNullEmpty } from "./common";
@@ -136,7 +135,7 @@ const CreateTask = () => {
             shrink: true,
           }}
         />
-        <button onClick={() => compoAdd()}>Add</button>
+        <button onClick={() => compoAdd()} className="btn-cntr">Add</button>
         <hr />
         <div id="mssg"></div>
       </Container>

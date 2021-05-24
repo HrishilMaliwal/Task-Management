@@ -11,6 +11,8 @@ import useGlobalState from "./Context";
 import { Button } from "@material-ui/core";
 import { del_assignment } from "./reducer/action";
 import { useHistory } from "react-router";
+import { confirmAlert } from "react-confirm-alert";
+import "react-confirm-alert/src/react-confirm-alert.css";
 
 const ViewTable = () => {
   const [state, dispatch] = useGlobalState();
@@ -52,9 +54,21 @@ const ViewTable = () => {
           </TableHead>
           <TableBody>
             {state.assignment_array == ""
-              ? ""
-              : // Alert
-                state.assignment_array.map((item, key) => {
+              ? confirmAlert({
+                  title: "Confirm to submit",
+                  message: "Are you sure to do this.",
+                  buttons: [
+                    {
+                      label: "Yes",
+                      onClick: () => alert("Click Yes"),
+                    },
+                    {
+                      label: "No",
+                      onClick: () => alert("Click No"),
+                    },
+                  ],
+                })
+              : state.assignment_array.map((item, key) => {
                   return (
                     <TableRow key={key}>
                       <TableCell

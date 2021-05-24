@@ -94,3 +94,39 @@ span.psw {
 .r-c-button {
   margin: 3px;
 }
+
+.nav {
+  margin-right: 10px;
+  font-size: medium;
+  border: black double;
+  padding: 10px;
+  background-color: white;
+  color: #408000;
+  width: 120px;
+}
+
+.nav:hover {
+  background-color: white;
+  color: black;
+}
+
+.links {
+  margin-right: 30px;
+  text-align: right;
+  width: 50%;
+  position: relative;
+  left: 750px;
+}
+
+#logo {
+  position: relative;
+  bottom: 110px;
+  left: 40px;
+  height: 100px;
+}
+
+#head {
+  background-color: lightgreen;
+  height: 125px;
+  border-bottom: solid black;
+}

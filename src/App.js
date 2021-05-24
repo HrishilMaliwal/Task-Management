@@ -8,6 +8,7 @@ import { StateProvider } from "./Context";
 import ErrorBoundary from "./ErrorBoundary";
 import CreateForm from "./CreateForm";
 import Form from "./Form";
+import CreateUser from "./CreateUser";
 
 function App() {
   return (
@@ -20,6 +21,7 @@ function App() {
             <Route exact path="/createtask" component={CreateTask} />
             <Route exact path="/createform" component={CreateForm} />
             <Route exact path="/form" component={Form} />
+            <Route exact path="/adduser" component={CreateUser} />
             <PrivateRoute></PrivateRoute>
           </Switch>
         </BrowserRouter>
