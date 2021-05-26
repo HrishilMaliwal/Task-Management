@@ -4,6 +4,7 @@ import * as actions from "./actionTypes";
 const reducer = (state = initialState, action) => {
   console.log(action.payload);
   switch (action.type) {
+    
     case actions.SET_FLAG: {
       return {
         ...state,
@@ -31,6 +32,18 @@ const reducer = (state = initialState, action) => {
       return {
         ...state,
         student_database: [...action.payload]
+      }
+    }
+
+    case actions.UPDATE_USER: {
+      return {
+        ...state,
+        current_user : {
+          id: action.payload.id,
+          first: action.payload.first,
+          last: action.payload.last,
+          email: action.payload.email
+        }
       }
     }
 

@@ -1,6 +1,6 @@
 import * as actions from "./actionTypes";
 
-const setFlag = (payload) => {
+const set_flag = (payload) => {
   return {
     type: actions.SET_FLAG,
     payload,
@@ -28,4 +28,11 @@ const add_users = (payload) => {
   }
 }
 
-export { setFlag, add_assignment, del_assignment, add_users };
+const update_user = (payload) => {
+  return {
+    type: actions.UPDATE_USER,
+    payload,
+  }
+}
+
+export { set_flag, add_assignment, del_assignment, add_users, update_user };

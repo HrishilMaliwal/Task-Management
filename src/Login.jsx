@@ -1,11 +1,23 @@
 import React, { useState } from "react";
 import { useHistory } from "react-router";
 import "./style.css";
+import { set_flag, update_user } from "./reducer/action";
+import useGlobalState from "./Context";
 
 const Login = () => {
   const history = useHistory();
-
+  const [state, dispatch] = useGlobalState();
+  
   const vali = () => {
+    
+    var user = {
+      id:"2",
+      first:"abc",
+      last:"def",
+      email:"xyz"
+    }
+    dispatch(update_user(user))
+    dispatch(set_flag(true))
     history.push("/home");
   };
 

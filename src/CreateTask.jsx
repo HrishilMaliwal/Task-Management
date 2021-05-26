@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { add_assignment, setFlag } from "./reducer/action";
+import { add_assignment } from "./reducer/action";
 import ReactDOM from "react-dom";
 import useGlobalState from "./Context";
 import { useHistory } from "react-router";
@@ -64,6 +64,7 @@ const CreateTask = () => {
         questions: [],
       };
       dispatch(add_assignment(Request));
+      console.log(state)
       history.push("/home");
     }
   };
@@ -74,7 +75,6 @@ const CreateTask = () => {
     } else {
       ReactDOM.render(
         alert("Marks can only have numerical data"),
-        document.getElementById("mssg")
       );
       e.preventDefault();
     }
@@ -179,7 +179,6 @@ const CreateTask = () => {
           Add
         </button>
         <hr />
-        <div id="mssg"></div>
       </Container>
     </>
   );
