@@ -7,6 +7,7 @@ import Container from "@material-ui/core/Container";
 import { isPhoneNum, isNullEmpty } from "./common";
 import Header from "./Header";
 import TextField from "@material-ui/core/TextField";
+import readXlsxFile from "read-excel-file";
 
 const CreateTask = () => {
   const [name, setName] = useState("");
@@ -43,8 +44,7 @@ const CreateTask = () => {
       isNullEmpty(EDT)
     ) {
       ReactDOM.render(
-        alert(" Name, Subject, marks or dates cannot be blank")
-        ,
+        alert(" Name, Subject, marks or dates cannot be blank"),
         document.getElementById("mssg")
       );
     } else {
@@ -55,9 +55,10 @@ const CreateTask = () => {
         SDT: SDT,
         EDT: EDT,
         status: "Incomplete",
-        questions: []
+        questions: [],
       };
       dispatch(add_assignment(Request));
+      // state.assignment_array.push(Request)
       history.push("/home");
     }
   };
@@ -67,13 +68,24 @@ const CreateTask = () => {
       setMarks(e.target.value);
     } else {
       ReactDOM.render(
-        alert("Marks can only have numerical data")
-           ,
+        alert("Marks can only have numerical data"),
         document.getElementById("mssg")
       );
       e.preventDefault();
     }
   };
+
+  const readExcel = (file) => {
+    readXlsxFile(file).then((rows) => {
+      for (let i = 1; i < rows.length; i++) {
+        const element = rows[i];
+        var Request = {
+          ID: element[0],
+          name: element[1]
+        }
+      }
+    });
+  }
 
   return (
     <>
@@ -121,7 +133,7 @@ const CreateTask = () => {
             shrink: true,
           }}
         />
-        <br/>
+        <br />
         <label>End Date and Time - </label>
         <input
           id="datetime-local"
@@ -135,7 +147,18 @@ const CreateTask = () => {
             shrink: true,
           }}
         />
-        <button onClick={() => compoAdd()} className="btn-cntr">Add</button>
+        <br />
+        <label>Add user excel file</label>
+        <br />
+        <input
+          type="file"
+          onChange={(e) => {
+            readExcel(e.target.files[0]);
+          }}
+        />
+        <button onClick={() => compoAdd()} className="btn-cntr">
+          Add
+        </button>
         <hr />
         <div id="mssg"></div>
       </Container>

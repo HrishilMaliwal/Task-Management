@@ -76,7 +76,7 @@ const CreateForm = () => {
           <p>
             Assignment Name - {state.assignment_array[location.state.key].name}
           </p>
-          <div style={{ position: "absolute", left: "300px", top: "172px" }}>
+          <div style={{ position: "absolute", left: "300px", top: "148px" }}>
             <p>
               Subject - {state.assignment_array[location.state.key].subject}
             </p>

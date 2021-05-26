@@ -29,7 +29,7 @@ const Login = () => {
           required
         />
 
-        <button type="submit" onClick={() => vali()}>
+        <button type="submit" className="btn-cntr" onClick={() => vali()}>
           Login
         </button>
         <label>

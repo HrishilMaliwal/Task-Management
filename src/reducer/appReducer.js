@@ -27,6 +27,13 @@ const reducer = (state = initialState, action) => {
       };
     }
 
+    case actions.ADD_USERS: {
+      return {
+        ...state,
+        student_database: [...action.payload]
+      }
+    }
+
     default: {
       return state;
     }

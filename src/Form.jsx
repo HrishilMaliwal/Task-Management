@@ -8,61 +8,6 @@ const Form = () => {
   const history = useHistory();
   const location = useLocation();
   const [state, dispatch] = useGlobalState();
-  const [flag1, setFlag1] = useState(false);
-  
-  useEffect(() => {
-    var form = document.getElementById("form");
-    state.assignment_array[location.state.key].questions.map((item, key) => {
-      var lb = document.createElement("label");
-      var brk = document.createElement("br");
-      lb.innerHTML = key + 1 + ". " + item.ques + ":";
-      form.appendChild(lb);
-      form.appendChild(brk);
-
-      if (item.options.length > 0) {
-        if (item.qType == "Multiple choice(Single type)") {
-          item.options.map((i, k) => {
-            var brk = document.createElement("br");
-            var op = document.createElement("input");
-            op.type = "radio";
-            op.value = i;
-            op.name = item.ques;
-            op.disabled;
-            var opn = document.createElement("label");
-            opn.className = "r-c button";
-            opn.innerHTML = i;
-            form.appendChild(opn);
-            form.appendChild(op);
-            form.appendChild(brk);
-          });
-        } else {
-          item.options.map((i, k) => {
-            var brk = document.createElement("br");
-            var op = document.createElement("input");
-            op.type = "checkbox";
-            op.value = i;
-            op.name = i;
-            op.disabled;
-            var opn = document.createElement("label");
-            opn.className = "r-c button";
-            opn.innerHTML = i;
-            form.appendChild(opn);
-            form.appendChild(op);
-            form.appendChild(brk);
-          });
-        }
-      } else {
-        var brk = document.createElement("br");
-        var ip = document.createElement("textarea");
-        ip.className = "ip-textarea";
-        ip.placeholder = "Type answer here..";
-        ip.disabled
-        form.appendChild(ip);
-        form.appendChild(brk);
-      }
-    });
-    setFlag1(true);
-  }, [state.assignment_array[location.state.key].questions]);
 
   const back = () => {
     history.push({
@@ -76,85 +21,91 @@ const Form = () => {
     history.push("/home");
   };
 
-  // const generate = () => {
-  //   var form = document.getElementById("form");
-  //   state.assignment_array[location.state.key].questions.map((item, key) => {
-  //     var lb = document.createElement("label");
-  //     var brk = document.createElement("br");
-  //     lb.innerHTML = key + 1 + ". " + item.ques + ":";
-  //     form.appendChild(lb);
-  //     form.appendChild(brk);
-
-  //     if (item.options.length > 0) {
-  //       if (item.qType == "Multiple choice(Single type)") {
-  //         item.options.map((i, k) => {
-  //           var brk = document.createElement("br");
-  //           var op = document.createElement("input");
-  //           op.type = "radio";
-  //           op.value = i;
-  //           op.name = item.ques;
-  //           var opn = document.createElement("label");
-  //           opn.className = "r-c button";
-  //           opn.innerHTML = i;
-  //           form.appendChild(opn);
-  //           form.appendChild(op);
-  //           form.appendChild(brk);
-  //         });
-  //       } else {
-  //         item.options.map((i, k) => {
-  //           var brk = document.createElement("br");
-  //           var op = document.createElement("input");
-  //           op.type = "checkbox";
-  //           op.value = i;
-  //           op.name = i;
-  //           var opn = document.createElement("label");
-  //           opn.className = "r-c button";
-  //           opn.innerHTML = i;
-  //           form.appendChild(opn);
-  //           form.appendChild(op);
-  //           form.appendChild(brk);
-  //         });
-  //       }
-  //     } else {
-  //       var brk = document.createElement("br");
-  //       var ip = document.createElement("textarea");
-  //       ip.className = "ip-textarea";
-  //       ip.placeholder = "Type answer here..";
-  //       form.appendChild(ip);
-  //       form.appendChild(brk);
-  //     }
-  //   });
-  //   setFlag1(true);
-  // };
-
   return (
     <>
       <Header />
-      {/* <button onClick={() => generate()} className="btn-cntr">
-        Generate exam
-      </button> */}
       <div
         id="form"
         style={{ padding: "20px", position: "relative", left: "35%" }}
-      ></div>
-      {flag1 ? (
-        <>
-          <button onClick={() => back()} className="btn-cntr-dual">
-            Back
-          </button>
-          <button
-            onClick={() => done()}
-            className="btn-cntr-dual"
-            style={{
-              marginLeft: "4px",
-            }}
-          >
-            Home
-          </button>
-        </>
-      ) : (
-        ""
-      )}
+      >
+        {state.assignment_array[location.state.key].questions.map(
+          (item, key) => {
+            switch (item.qType) {
+              case "Text":
+                return (
+                  <>
+                    <br />
+                    <label>
+                      {key + 1} {item.ques}:
+                    </label>
+                    <br />
+                    <textarea
+                      className="ip-textarea"
+                      placeholder="Type answer here..."
+                      disabled
+                    />
+                    <br />
+                  </>
+                );
+              case "Multiple choice(Single type)":
+                return (
+                  <>
+                    <br />
+                    <label>
+                      {key + 1} {item.ques}:
+                    </label>
+                    <br />
+                    {item.options.map((i, k) => {
+                      return (
+                        <>
+                          <label className="r-c button">{i}</label>
+                          <input
+                            type="radio"
+                            value={i}
+                            name={item.ques}
+                            disabled
+                          />
+                        </>
+                      );
+                    })}
+                  </>
+                );
+              case "Multiple choice(Multiple type)":
+                return (
+                  <>
+                    <br />
+                    <label>
+                      {key + 1} {item.ques}:
+                    </label>
+                    <br />
+                    {item.options.map((i, k) => {
+                      return (
+                        <>
+                          <label className="r-c button">{i}</label>
+                          <input type="checkbox" value={i} name={i} disabled />
+                        </>
+                      );
+                    })}
+                  </>
+                );
+              default:
+                break;
+            }
+          }
+        )}
+      </div>
+      <button onClick={() => back()} className="btn-cntr-dual">
+        Back
+      </button>
+      <button
+        onClick={() => done()}
+        className="btn-cntr-dual"
+        style={{
+          marginLeft: "4px",
+        }}
+      >
+        Home
+      </button>
     </>
   );
 };

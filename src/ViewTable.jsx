@@ -55,16 +55,11 @@ const ViewTable = () => {
           <TableBody>
             {state.assignment_array == ""
               ? confirmAlert({
-                  title: "Confirm to submit",
-                  message: "Are you sure to do this.",
+                  title: "No Assignments",
+                  message: "There are no assignments assigned to you",
                   buttons: [
                     {
-                      label: "Yes",
-                      onClick: () => alert("Click Yes"),
-                    },
-                    {
-                      label: "No",
-                      onClick: () => alert("Click No"),
+                      label: "Okay",
                     },
                   ],
                 })

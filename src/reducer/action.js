@@ -21,4 +21,11 @@ const del_assignment = (payload) => {
   }
 }
 
-export { setFlag, add_assignment, del_assignment };
+const add_users = (payload) => {
+  return {
+    type: actions.ADD_USERS,
+    payload,
+  }
+}
+
+export { setFlag, add_assignment, del_assignment, add_users };
