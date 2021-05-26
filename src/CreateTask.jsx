@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { add_assignment, setFlag } from "./reducer/action";
 import ReactDOM from "react-dom";
 import useGlobalState from "./Context";
@@ -8,6 +8,7 @@ import { isPhoneNum, isNullEmpty } from "./common";
 import Header from "./Header";
 import TextField from "@material-ui/core/TextField";
 import readXlsxFile from "read-excel-file";
+import Button from "@material-ui/core/Button";
 
 const CreateTask = () => {
   const [name, setName] = useState("");
@@ -17,6 +18,11 @@ const CreateTask = () => {
   const [EDT, setEDT] = useState("");
   const [state, dispatch] = useGlobalState();
   const history = useHistory();
+  const [message, setMessage] = useState("No file detected")
+
+  useEffect(() => {
+    localStorage.setItem("myState", JSON.stringify(state))
+  }, [state]);
 
   const setDT = () => {
     var tempDate = new Date();
@@ -58,7 +64,6 @@ const CreateTask = () => {
         questions: [],
       };
       dispatch(add_assignment(Request));
-      // state.assignment_array.push(Request)
       history.push("/home");
     }
   };
@@ -81,11 +86,12 @@ const CreateTask = () => {
         const element = rows[i];
         var Request = {
           ID: element[0],
-          name: element[1]
-        }
+          name: element[1],
+        };
       }
     });
-  }
+    setMessage("File upload successful")
+  };
 
   return (
     <>
@@ -155,7 +161,20 @@ const CreateTask = () => {
           onChange={(e) => {
             readExcel(e.target.files[0]);
           }}
+          style={{display:"none"}}
+          id="contained-button-file"
         />
+        <label htmlFor="contained-button-file">
+          <Button
+            style={{ margin: "15px 15px 0px 0px" }}
+            variant="contained"
+            color="primary"
+            component="span"
+          >
+            Upload
+          </Button>
+        </label>
+        <label>{message}</label>
         <button onClick={() => compoAdd()} className="btn-cntr">
           Add
         </button>

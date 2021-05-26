@@ -13,10 +13,10 @@ const Login = () => {
     <div className="container">
 
       <div className="container">
-        <label htmlFor="uname">
-          <b>Username</b>
+        <label htmlFor="sapID">
+          <b>SAP ID</b>
         </label>
-        <input className="login" type="text" placeholder="Enter Username" name="uname" required />
+        <input className="login" type="text" placeholder="Enter SAP ID" name="sapID" required />
 
         <label htmlFor="psw">
           <b>Password</b>

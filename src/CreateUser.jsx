@@ -4,10 +4,12 @@ import Container from "@material-ui/core/Container";
 import useGlobalState from "./Context";
 import readXlsxFile from "read-excel-file";
 import { add_users } from "./reducer/action";
+import Button from "@material-ui/core/Button";
 
 const CreateUser = () => {
   const [state, dispatch] = useGlobalState();
   const [arr, setArr] = useState([]);
+  const [message, setMessage] = useState("No file uploaded")
 
   const readExcel = (file) => {
     readXlsxFile(file).then((rows) => {
@@ -23,11 +25,10 @@ const CreateUser = () => {
         arr.push(Request);
       }
     });
+    setMessage("File upload successful")
   };
   const adduser = () => {
-    // state.student_database = [...arr]
     dispatch(add_users(arr));
-    // console.log(state);
   };
 
   return (
@@ -37,7 +38,19 @@ const CreateUser = () => {
         <Container component="main">
           <label>Add user excel file</label>
           <br />
-          <input type="file" onChange={(e) => readExcel(e.target.files[0])} />
+          <input
+            type="file"
+            onChange={(e) => readExcel(e.target.files[0])}
+            style={{ display: "none" }}
+            id="contained-button-file"
+          />
+          <label htmlFor="contained-button-file">
+            <Button style={{margin:"15px 15px 0px"}} variant="contained" color="primary" component="span">
+              Upload
+            </Button>
+          </label>
+          {/* <br/> */}
+          <label>{message}</label>
           <button onClick={() => adduser()} className="btn-cntr">
             Add User
           </button>

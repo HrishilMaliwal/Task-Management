@@ -35,8 +35,8 @@ const Form = () => {
                 return (
                   <>
                     <br />
-                    <label>
-                      {key + 1} {item.ques}:
+                    <label className="questions">
+                      {key + 1}. {item.ques}:
                     </label>
                     <br />
                     <textarea
@@ -51,14 +51,14 @@ const Form = () => {
                 return (
                   <>
                     <br />
-                    <label>
-                      {key + 1} {item.ques}:
+                    <label className="questions">
+                      {key + 1}. {item.ques}:
                     </label>
                     <br />
                     {item.options.map((i, k) => {
                       return (
                         <>
-                          <label className="r-c button">{i}</label>
+                          <label>{i}</label>
                           <input
                             type="radio"
                             value={i}
@@ -74,15 +74,15 @@ const Form = () => {
                 return (
                   <>
                     <br />
-                    <label>
-                      {key + 1} {item.ques}:
+                    <label className="questions">
+                      {key + 1}. {item.ques}:
                     </label>
                     <br />
                     {item.options.map((i, k) => {
                       return (
                         <>
-                          <label className="r-c button">{i}</label>
-                          <input type="checkbox" value={i} name={i} disabled />
+                          <label className="r-c-button">{i}</label>
+                          <input type="checkbox" value={i} name={i} disabled className="r-c-button"/>
                         </>
                       );
                     })}
