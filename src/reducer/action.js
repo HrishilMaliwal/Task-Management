@@ -35,4 +35,11 @@ const update_user = (payload) => {
   }
 }
 
-export { set_flag, add_assignment, del_assignment, add_users, update_user };
+const add_questions = (payload) => {
+  return {
+    type: actions.ADD_QUESTIONS,
+    payload,
+  }
+}
+
+export { set_flag, add_assignment, del_assignment, add_users, update_user, add_questions };

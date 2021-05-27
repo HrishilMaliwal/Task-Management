@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import Header from "./Header";
 import Container from "@material-ui/core/Container";
 import useGlobalState from "./Context";
@@ -9,24 +9,31 @@ import Button from "@material-ui/core/Button";
 const CreateUser = () => {
   const [state, dispatch] = useGlobalState();
   const [arr, setArr] = useState([]);
-  const [message, setMessage] = useState("No file uploaded")
+  const [message, setMessage] = useState("No file uploaded");
+
+  useEffect(() => {
+    localStorage.setItem("myState", JSON.stringify(state));
+  }, [state]);
 
   const readExcel = (file) => {
     readXlsxFile(file).then((rows) => {
       for (let i = 1; i < rows.length; i++) {
         const element = rows[i];
         var Request = {
-          sapID: element[0],
+          id: element[0],
           first: element[1],
           last: element[2],
           email: element[3],
-          password: 12345678,
+          password: "12345678",
+          first_login: true,
+          is_student: true
         };
         arr.push(Request);
       }
     });
-    setMessage("File upload successful")
+    setMessage("File upload successful");
   };
+
   const adduser = () => {
     dispatch(add_users(arr));
   };
@@ -45,11 +52,15 @@ const CreateUser = () => {
             id="contained-button-file"
           />
           <label htmlFor="contained-button-file">
-            <Button style={{margin:"15px 15px 0px"}} variant="contained" color="primary" component="span">
+            <Button
+              style={{ margin: "15px 15px 0px" }}
+              variant="contained"
+              color="primary"
+              component="span"
+            >
               Upload
             </Button>
           </label>
-          {/* <br/> */}
           <label>{message}</label>
           <button onClick={() => adduser()} className="btn-cntr">
             Add User

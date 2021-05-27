@@ -9,6 +9,8 @@ import ErrorBoundary from "./ErrorBoundary";
 import CreateForm from "./CreateForm";
 import Form from "./Form";
 import CreateUser from "./CreateUser";
+import Profile from "./Profile";
+import ChangePassword from "./ChangePassword";
 
 function App() {
   return (
@@ -22,6 +24,8 @@ function App() {
             <Route exact path="/createform" component={CreateForm} />
             <Route exact path="/form" component={Form} />
             <Route exact path="/adduser" component={CreateUser} />
+            <Route exact path='/profile' component={Profile}/>
+            <Route exact path='/changepass' component={ChangePassword}/>
             <PrivateRoute></PrivateRoute>
           </Switch>
         </BrowserRouter>

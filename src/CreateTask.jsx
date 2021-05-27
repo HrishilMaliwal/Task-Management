@@ -18,10 +18,11 @@ const CreateTask = () => {
   const [EDT, setEDT] = useState("");
   const [state, dispatch] = useGlobalState();
   const history = useHistory();
-  const [message, setMessage] = useState("No file detected")
+  const [message, setMessage] = useState("No file detected");
+  const [arr, setArr] = useState([]);
 
   useEffect(() => {
-    localStorage.setItem("myState", JSON.stringify(state))
+    localStorage.setItem("myState", JSON.stringify(state));
   }, [state]);
 
   const setDT = () => {
@@ -62,9 +63,10 @@ const CreateTask = () => {
         EDT: EDT,
         status: "Incomplete",
         questions: [],
+        // valid_users: [...arr]
+        valid_users: ["3"],
       };
       dispatch(add_assignment(Request));
-      console.log(state)
       history.push("/home");
     }
   };
@@ -73,9 +75,7 @@ const CreateTask = () => {
     if (isPhoneNum(e.target.value) || e.target.value == "") {
       setMarks(e.target.value);
     } else {
-      ReactDOM.render(
-        alert("Marks can only have numerical data"),
-      );
+      ReactDOM.render(alert("Marks can only have numerical data"));
       e.preventDefault();
     }
   };
@@ -84,13 +84,10 @@ const CreateTask = () => {
     readXlsxFile(file).then((rows) => {
       for (let i = 1; i < rows.length; i++) {
         const element = rows[i];
-        var Request = {
-          ID: element[0],
-          name: element[1],
-        };
+        arr.push(element[0]);
       }
     });
-    setMessage("File upload successful")
+    setMessage("File upload successful");
   };
 
   return (
@@ -161,7 +158,7 @@ const CreateTask = () => {
           onChange={(e) => {
             readExcel(e.target.files[0]);
           }}
-          style={{display:"none"}}
+          style={{ display: "none" }}
           id="contained-button-file"
         />
         <label htmlFor="contained-button-file">

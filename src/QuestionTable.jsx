@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import Table from "@material-ui/core/Table";
 import TableBody from "@material-ui/core/TableBody";
 import TableCell from "@material-ui/core/TableCell";
@@ -22,6 +22,10 @@ const QuestionTable = (props) => {
     state.assignment_array[props.ke].questions = [...props.qArr];
     history.push("/home");
   };
+
+  useEffect(() => {
+    localStorage.setItem("myState", JSON.stringify(state));
+  }, [state]);
 
   return (
     <>
@@ -63,20 +67,19 @@ const QuestionTable = (props) => {
             })}
           </TableBody>
         </Table>
-
-        <button onClick={() => back()} className="btn-cntr-dual">
-          Back
-        </button>
-        <button
-          onClick={() => done()}
-          className="btn-cntr-dual"
-          style={{
-            marginLeft: "4px",
-          }}
-        >
-          Preview
-        </button>
       </TableContainer>
+      <button onClick={() => back()} className="btn-cntr-dual">
+        Back
+      </button>
+      <button
+        onClick={() => done()}
+        className="btn-cntr-dual"
+        style={{
+          marginLeft: "4px",
+        }}
+      >
+        Preview
+      </button>
     </>
   );
 };

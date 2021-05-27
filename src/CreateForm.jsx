@@ -67,6 +67,10 @@ const CreateForm = () => {
     }
   }, [qType]);
 
+  useEffect(() => {
+    localStorage.setItem("myState", JSON.stringify(state));
+  }, [state]);
+
   return (
     <>
       <Header />

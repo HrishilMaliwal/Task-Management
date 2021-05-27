@@ -38,11 +38,14 @@ const reducer = (state = initialState, action) => {
     case actions.UPDATE_USER: {
       return {
         ...state,
-        current_user : {
+        current_user: {
           id: action.payload.id,
           first: action.payload.first,
           last: action.payload.last,
-          email: action.payload.email
+          email: action.payload.email,
+          password: action.payload.password,
+          first_login: action.payload.first_login,
+          is_student: action.payload.is_student,
         }
       }
     }

@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import { useHistory } from "react-router";
 import { useLocation } from "react-router-dom";
 import useGlobalState from "./Context";
@@ -17,9 +17,13 @@ const Form = () => {
   };
 
   const done = () => {
-    console.log(state);
     history.push("/home");
   };
+
+  const submit = () => {
+    // Answer sending
+    history.push("/home");
+  }
 
   return (
     <>
@@ -39,11 +43,18 @@ const Form = () => {
                       {key + 1}. {item.ques}:
                     </label>
                     <br />
-                    <textarea
-                      className="ip-textarea"
-                      placeholder="Type answer here..."
-                      disabled
-                    />
+                    {state.current_user.is_student ? (
+                      <textarea
+                        className="ip-textarea"
+                        placeholder="Type answer here..."
+                      />
+                    ) : (
+                      <textarea
+                        className="ip-textarea"
+                        placeholder="Type answer here..."
+                        disabled
+                      />
+                    )}
                     <br />
                   </>
                 );
@@ -59,12 +70,16 @@ const Form = () => {
                       return (
                         <>
                           <label>{i}</label>
-                          <input
-                            type="radio"
-                            value={i}
-                            name={item.ques}
-                            disabled
-                          />
+                          {state.current_user.is_student ? (
+                            <input type="radio" value={i} name={item.ques} />
+                          ) : (
+                            <input
+                              type="radio"
+                              value={i}
+                              name={item.ques}
+                              disabled
+                            />
+                          )}
                         </>
                       );
                     })}
@@ -82,7 +97,22 @@ const Form = () => {
                       return (
                         <>
                           <label className="r-c-button">{i}</label>
-                          <input type="checkbox" value={i} name={i} disabled className="r-c-button"/>
+                          {state.current_user.is_student ? (
+                            <input
+                              type="checkbox"
+                              value={i}
+                              name={i}
+                              className="r-c-button"
+                            />
+                          ) : (
+                            <input
+                              type="checkbox"
+                              value={i}
+                              name={i}
+                              disabled
+                              className="r-c-button"
+                            />
+                          )}
                         </>
                       );
                     })}
@@ -97,15 +127,27 @@ const Form = () => {
       <button onClick={() => back()} className="btn-cntr-dual">
         Back
       </button>
-      <button
-        onClick={() => done()}
-        className="btn-cntr-dual"
-        style={{
-          marginLeft: "4px",
-        }}
-      >
-        Home
-      </button>
+      {state.current_user.is_student ? (
+        <button
+          onClick={() => submit()}
+          className="btn-cntr-dual"
+          style={{
+            marginLeft: "4px",
+          }}
+        >
+          Submit
+        </button>
+      ) : (
+        <button
+          onClick={() => done()}
+          className="btn-cntr-dual"
+          style={{
+            marginLeft: "4px",
+          }}
+        >
+          Home
+        </button>
+      )}
     </>
   );
 };

@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import Table from "@material-ui/core/Table";
 import { makeStyles } from "@material-ui/core/styles";
 import TableBody from "@material-ui/core/TableBody";
@@ -25,12 +25,20 @@ const ViewTable = () => {
   const classes = useStyles();
   const history = useHistory();
 
+  useEffect(() => {
+    localStorage.setItem("myState", JSON.stringify(state));
+  }, [state]);
+
   const del = (key) => {
     dispatch(del_assignment(key));
   };
 
   const addQues = (key) => {
-    history.push({ pathname: "/createform", state: { key: key } });
+    if (state.current_user.is_student) {
+      history.push({ pathname: "/form", state: { key: key } });
+    } else {
+      history.push({ pathname: "/createform", state: { key: key } });
+    }
   };
 
   return (
@@ -49,7 +57,11 @@ const ViewTable = () => {
               <TableCell align="right">Start date-time</TableCell>
               <TableCell align="right">End date-time</TableCell>
               <TableCell align="right">Status</TableCell>
-              <TableCell align="right"></TableCell>
+              {state.current_user.is_student ? (
+                ""
+              ) : (
+                <TableCell align="right"></TableCell>
+              )}
             </TableRow>
           </TableHead>
           <TableBody>
@@ -64,33 +76,44 @@ const ViewTable = () => {
                   ],
                 })
               : state.assignment_array.map((item, key) => {
-                  return (
-                    <TableRow key={key}>
-                      <TableCell
-                        component="th"
-                        scope="row"
-                        onClick={() => addQues(key)}
-                      >
-                        {key + 1}
-                      </TableCell>
-                      <TableCell align="right">{item.name}</TableCell>
-                      <TableCell align="right">{item.subject}</TableCell>
-                      <TableCell align="right">{item.marks}</TableCell>
-                      <TableCell align="right">{item.SDT}</TableCell>
-                      <TableCell align="right">{item.EDT}</TableCell>
-                      <TableCell align="right">{item.status}</TableCell>
-                      <TableCell>
-                        <Button
-                          color="secondary"
-                          type="submit"
-                          onClick={() => del(key)}
-                          style={{ marginLeft: "20px" }}
+                  if (
+                    item.valid_users.indexOf(state.current_user.id) == -1 &&
+                    state.current_user.is_student
+                  ) {
+                    return null;
+                  } else {
+                    return (
+                      <TableRow key={key}>
+                        <TableCell
+                          component="th"
+                          scope="row"
+                          onClick={() => addQues(key)}
                         >
-                          Delete
-                        </Button>
-                      </TableCell>
-                    </TableRow>
-                  );
+                          {key + 1}
+                        </TableCell>
+                        <TableCell align="right">{item.name}</TableCell>
+                        <TableCell align="right">{item.subject}</TableCell>
+                        <TableCell align="right">{item.marks}</TableCell>
+                        <TableCell align="right">{item.SDT}</TableCell>
+                        <TableCell align="right">{item.EDT}</TableCell>
+                        <TableCell align="right">{item.status}</TableCell>
+                        {state.current_user.is_student ? (
+                          ""
+                        ) : (
+                          <TableCell>
+                            <Button
+                              color="secondary"
+                              type="submit"
+                              onClick={() => del(key)}
+                              style={{ marginLeft: "20px" }}
+                            >
+                              Delete
+                            </Button>
+                          </TableCell>
+                        )}
+                      </TableRow>
+                    );
+                  }
                 })}
           </TableBody>
         </Table>

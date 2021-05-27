@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { useHistory } from "react-router";
 import "./style.css";
 import { set_flag, update_user } from "./reducer/action";
@@ -7,28 +7,44 @@ import useGlobalState from "./Context";
 const Login = () => {
   const history = useHistory();
   const [state, dispatch] = useGlobalState();
-  
+
+  useEffect(() => {
+    localStorage.setItem("myState", JSON.stringify(state));
+  }, [state]);
+
   const vali = () => {
-    
+    //Actual validations
     var user = {
-      id:"2",
-      first:"abc",
-      last:"def",
-      email:"xyz"
+      id: "2",
+      first: "abc",
+      last: "def",
+      email: "xyz",
+      password: "12345678",
+      first_login: false,
+      is_student: false
+    };
+    dispatch(update_user(user));
+    dispatch(set_flag(true));
+    if (user.first_login) {
+      history.push('/changepass')
+    } else {
+      history.push("/home");
     }
-    dispatch(update_user(user))
-    dispatch(set_flag(true))
-    history.push("/home");
   };
 
   return (
     <div className="container">
-
       <div className="container">
         <label htmlFor="sapID">
           <b>SAP ID</b>
         </label>
-        <input className="login" type="text" placeholder="Enter SAP ID" name="sapID" required />
+        <input
+          className="login"
+          type="text"
+          placeholder="Enter SAP ID"
+          name="sapID"
+          required
+        />
 
         <label htmlFor="psw">
           <b>Password</b>

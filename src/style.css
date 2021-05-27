@@ -65,6 +65,7 @@ span.psw {
 
 .btn-cntr-dual {
   width: 100px;
+  /* height: 60px; */
   position: relative;
   left: 43%;
 }
@@ -120,4 +121,17 @@ span.psw {
   font-weight: bold;
   margin: 3px;
   padding: 3px;
+}
+
+#profile {
+  text-align: center;
+  background-color: lightblue;
+  border: solid lightskyblue 2px;
+  width: 40%;
+  border-radius: 20px;
+  position: relative;
+	top: 35%;
+	left: 30%;
+  padding: 10px;
+  margin: 10px;
 }
