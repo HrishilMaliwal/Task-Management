@@ -11,6 +11,8 @@ import Form from "./Form";
 import CreateUser from "./CreateUser";
 import Profile from "./Profile";
 import ChangePassword from "./ChangePassword";
+import ViewAnswers from "./ViewAnswers";
+import AnswerTable from "./AnswerTable";
 
 function App() {
   return (
@@ -26,6 +28,9 @@ function App() {
             <Route exact path="/adduser" component={CreateUser} />
             <Route exact path='/profile' component={Profile}/>
             <Route exact path='/changepass' component={ChangePassword}/>
+            <Route exact path='/answertable' component={AnswerTable}/>
+            <Route exact path='/viewanswers' component={ViewAnswers}/>
+            
             <PrivateRoute></PrivateRoute>
           </Switch>
         </BrowserRouter>

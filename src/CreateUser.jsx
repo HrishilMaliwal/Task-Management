@@ -3,13 +3,16 @@ import Header from "./Header";
 import Container from "@material-ui/core/Container";
 import useGlobalState from "./Context";
 import readXlsxFile from "read-excel-file";
-import { add_users } from "./reducer/action";
+import { add_users, user_indexing } from "./reducer/action";
 import Button from "@material-ui/core/Button";
+import { useHistory } from "react-router";
 
 const CreateUser = () => {
   const [state, dispatch] = useGlobalState();
-  const [arr, setArr] = useState([]);
+  const [arr1, setArr1] = useState([]);
+  const [arr2, setArr2] = useState([]);
   const [message, setMessage] = useState("No file uploaded");
+  const history = useHistory()
 
   useEffect(() => {
     localStorage.setItem("myState", JSON.stringify(state));
@@ -26,16 +29,20 @@ const CreateUser = () => {
           email: element[3],
           password: "12345678",
           first_login: true,
-          is_student: true
+          is_student: true,
+          answers_array: []
         };
-        arr.push(Request);
+        arr2.push(element[0])
+        arr1.push(Request);
       }
     });
     setMessage("File upload successful");
   };
 
   const adduser = () => {
-    dispatch(add_users(arr));
+    dispatch(user_indexing(arr2))
+    dispatch(add_users(arr1));
+    history.push('/home')
   };
 
   return (

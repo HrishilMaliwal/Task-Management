@@ -1,6 +1,6 @@
 import React from 'react'
 import NavBar from './NavBar'
-import img from './NMINS Logo.png'
+import img from './img/NMINS Logo.png'
 
 const Header = () => {
     return (

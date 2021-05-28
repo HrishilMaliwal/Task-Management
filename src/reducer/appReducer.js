@@ -35,6 +35,13 @@ const reducer = (state = initialState, action) => {
       }
     }
 
+    case actions.USER_INDEXING: {
+      return {
+        ...state,
+        student_index: [...action.payload]
+      }
+    }
+
     case actions.UPDATE_USER: {
       return {
         ...state,

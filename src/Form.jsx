@@ -8,6 +8,8 @@ const Form = () => {
   const history = useHistory();
   const location = useLocation();
   const [state, dispatch] = useGlobalState();
+  const [arr1, setArr1] = useState()
+  const [id, setId] = useState(0)
 
   const back = () => {
     history.push({
@@ -21,9 +23,26 @@ const Form = () => {
   };
 
   const submit = () => {
-    // Answer sending
-    history.push("/home");
-  }
+    state.assignment_array[location.state.key].questions.map((item, key) => {
+      switch (item.qType) {
+        case "Text":
+          
+          break;
+      
+        default:
+          break;
+      }
+      
+      var answer = {
+        qid: item.qid,
+        ques: item.ques,
+        ans: document.getElementById(id).value
+      }
+      arr1.push(answer)
+    });
+
+    // history.push("/home");
+  };
 
   return (
     <>
@@ -32,10 +51,12 @@ const Form = () => {
         id="form"
         style={{ padding: "20px", position: "relative", left: "35%" }}
       >
+        
         {state.assignment_array[location.state.key].questions.map(
           (item, key) => {
             switch (item.qType) {
               case "Text":
+                setId(id + 1)
                 return (
                   <>
                     <br />
@@ -47,6 +68,7 @@ const Form = () => {
                       <textarea
                         className="ip-textarea"
                         placeholder="Type answer here..."
+                        id={id}
                       />
                     ) : (
                       <textarea
@@ -59,6 +81,7 @@ const Form = () => {
                   </>
                 );
               case "Multiple choice(Single type)":
+                setId(id + 1)
                 return (
                   <>
                     <br />
@@ -86,6 +109,7 @@ const Form = () => {
                   </>
                 );
               case "Multiple choice(Multiple type)":
+                setId(id + 1)
                 return (
                   <>
                     <br />

@@ -64,7 +64,7 @@ const CreateTask = () => {
         status: "Incomplete",
         questions: [],
         // valid_users: [...arr]
-        valid_users: ["3"],
+        valid_users: [7001],
       };
       dispatch(add_assignment(Request));
       history.push("/home");

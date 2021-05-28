@@ -42,4 +42,11 @@ const add_questions = (payload) => {
   }
 }
 
-export { set_flag, add_assignment, del_assignment, add_users, update_user, add_questions };
+const user_indexing = (payload) => {
+  return {
+    type: actions.USER_INDEXING,
+    payload,
+  }
+}
+
+export { set_flag, add_assignment, del_assignment, add_users, update_user, add_questions, user_indexing };

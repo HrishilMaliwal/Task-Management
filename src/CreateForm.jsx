@@ -38,6 +38,7 @@ const CreateForm = () => {
 
   const addcompo = () => {
     var Request = {
+      qid: Math.floor(Math.random() * 10000),
       ques: ques,
     };
     if (qType == 1) {

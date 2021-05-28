@@ -15,7 +15,7 @@ const Login = () => {
   const vali = () => {
     //Actual validations
     var user = {
-      id: "2",
+      id: 7001,
       first: "abc",
       last: "def",
       email: "xyz",
