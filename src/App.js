@@ -13,6 +13,7 @@ import Profile from "./Profile";
 import ChangePassword from "./ChangePassword";
 import ViewAnswers from "./ViewAnswers";
 import AnswerTable from "./AnswerTable";
+import UserAnswers from "./UserAnswers";
 
 function App() {
   return (
@@ -30,6 +31,7 @@ function App() {
             <Route exact path='/changepass' component={ChangePassword}/>
             <Route exact path='/answertable' component={AnswerTable}/>
             <Route exact path='/viewanswers' component={ViewAnswers}/>
+            <Route exact path='/useranswers' component={UserAnswers}/>
             
             <PrivateRoute></PrivateRoute>
           </Switch>

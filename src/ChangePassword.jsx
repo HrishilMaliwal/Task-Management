@@ -2,15 +2,98 @@ import React, { useState, useEffect } from "react";
 import Header from "./Header";
 import useGlobalState from "./Context";
 import { useHistory } from "react-router";
+import TextField from "@material-ui/core/TextField";
+import Container from "@material-ui/core/Container";
+import { confirmAlert } from "react-confirm-alert";
+import "react-confirm-alert/src/react-confirm-alert.css";
 
 const ChangePassword = () => {
-    const [state, dispatch] = useGlobalState()
+  const [state, dispatch] = useGlobalState();
+  const history = useHistory();
+  const [opass, setOpass] = useState();
+  const [npass1, setNpass1] = useState();
+  const [npass2, setNpass2] = useState();
 
-    return (
-        <div>
-            
-        </div>
-    )
-}
+  useEffect(() => {
+    localStorage.setItem("myState", JSON.stringify(state));
+  }, [state]);
 
-export default ChangePassword
+  const vali = () => {
+    if (opass == state.current_user.password) {
+      if (npass1 == npass2) {
+        state.current_user.password = npass1;
+        var student = state.student_index.indexOf(state.current_user.id);
+        state.student_database[student].password = npass1;
+        state.current_user.first_login = false;
+        state.student_database[student].first_login = false;
+        history.push("/home");
+      } else {
+        confirmAlert({
+          title: "Password Error",
+          message: "Passwords entered do not match",
+          buttons: [
+            {
+              label: "Okay",
+            },
+          ],
+        });
+      }
+    } else {
+      confirmAlert({
+        title: "Password Error",
+        message: "Password entered is incorrect",
+        buttons: [
+          {
+            label: "Okay",
+          },
+        ],
+      });
+    }
+  };
+
+  return (
+    <>
+      <Header />
+      <Container component="main">
+        <TextField
+          type="password"
+          variant="outlined"
+          margin="normal"
+          required
+          fullWidth
+          label="Old Password"
+          autoComplete="Old Password"
+          value={opass}
+          onChange={(e) => setOpass(e.target.value)}
+        />
+        <TextField
+          type="password"
+          variant="outlined"
+          margin="normal"
+          required
+          fullWidth
+          label="New Password"
+          autoComplete="New Password"
+          value={npass1}
+          onChange={(e) => setNpass1(e.target.value)}
+        />
+        <TextField
+          type="password"
+          variant="outlined"
+          margin="normal"
+          required
+          fullWidth
+          label="Confirm New Password"
+          autoComplete="Confirm New Password"
+          value={npass2}
+          onChange={(e) => setNpass2(e.target.value)}
+        />
+        <button type="submit" className="btn-cntr" onClick={() => vali()}>
+          Login
+        </button>
+      </Container>
+    </>
+  );
+};
+
+export default ChangePassword;

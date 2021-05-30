@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from "react";
 import { add_assignment } from "./reducer/action";
-import ReactDOM from "react-dom";
 import useGlobalState from "./Context";
 import { useHistory } from "react-router";
 import Container from "@material-ui/core/Container";
@@ -9,6 +8,8 @@ import Header from "./Header";
 import TextField from "@material-ui/core/TextField";
 import readXlsxFile from "read-excel-file";
 import Button from "@material-ui/core/Button";
+import { confirmAlert } from "react-confirm-alert";
+import "react-confirm-alert/src/react-confirm-alert.css";
 
 const CreateTask = () => {
   const [name, setName] = useState("");
@@ -50,10 +51,15 @@ const CreateTask = () => {
       isNullEmpty(SDT) ||
       isNullEmpty(EDT)
     ) {
-      ReactDOM.render(
-        alert(" Name, Subject, marks or dates cannot be blank"),
-        document.getElementById("mssg")
-      );
+      confirmAlert({
+        title: "Data not found",
+        message: "Name, Subject, marks or dates cannot be blank",
+        buttons: [
+          {
+            label: "Okay",
+          },
+        ],
+      })
     } else {
       var Request = {
         name: name,
@@ -63,8 +69,8 @@ const CreateTask = () => {
         EDT: EDT,
         status: "Incomplete",
         questions: [],
-        // valid_users: [...arr]
-        valid_users: [7001],
+        valid_users: [...arr],
+        // valid_users: [7001],
       };
       dispatch(add_assignment(Request));
       history.push("/home");
@@ -75,7 +81,15 @@ const CreateTask = () => {
     if (isPhoneNum(e.target.value) || e.target.value == "") {
       setMarks(e.target.value);
     } else {
-      ReactDOM.render(alert("Marks can only have numerical data"));
+      confirmAlert({
+        title: "Invalid Data",
+        message: "Marks can only be number",
+        buttons: [
+          {
+            label: "Okay",
+          },
+        ],
+      })
       e.preventDefault();
     }
   };

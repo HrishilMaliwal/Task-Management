@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { useHistory } from "react-router";
 import { useLocation } from "react-router-dom";
 import useGlobalState from "./Context";
@@ -8,8 +8,8 @@ const Form = () => {
   const history = useHistory();
   const location = useLocation();
   const [state, dispatch] = useGlobalState();
-  const [arr1, setArr1] = useState()
-  const [id, setId] = useState(0)
+  const [arr1, setArr1] = useState([]);
+  const [temp, setTemp] = useState([]);
 
   const back = () => {
     history.push({
@@ -22,26 +22,57 @@ const Form = () => {
     history.push("/home");
   };
 
+  useEffect(() => {
+    localStorage.setItem("myState", JSON.stringify(state));
+  }, [state]);
+
   const submit = () => {
     state.assignment_array[location.state.key].questions.map((item, key) => {
+      setTemp([]);
       switch (item.qType) {
         case "Text":
-          
+          var answer = {
+            qid: item.qid,
+            ques: item.ques,
+            ans: document.getElementById(item.qid).value,
+          };
           break;
-      
-        default:
+        case "Multiple choice(Single type)":
+          document.getElementsByName(item.qid).forEach((radio) => {
+            if (radio.checked) {
+              temp.push(radio.value);
+            }
+          });
+          var answer = {
+            qid: item.qid,
+            ques: item.ques,
+            ans: [...temp],
+          };
+          temp.length = 0;
+          break;
+        case "Multiple choice(Multiple type)":
+          document.getElementsByName(item.qid).forEach((check) => {
+            if (check.checked) {
+              temp.push(check.value);
+            }
+          });
+          var answer = {
+            qid: item.qid,
+            ques: item.ques,
+            ans: [...temp],
+          };
+          temp.length = 0;
           break;
       }
-      
-      var answer = {
-        qid: item.qid,
-        ques: item.ques,
-        ans: document.getElementById(id).value
-      }
-      arr1.push(answer)
+      arr1.push(answer);
     });
-
-    // history.push("/home");
+    var answer = {
+      id: location.state.key,
+      ans: [...arr1],
+    };
+    var student = state.student_index.indexOf(state.current_user.id)
+    state.student_database[student].answers_array.push(answer)
+    history.push("/home");
   };
 
   return (
@@ -51,12 +82,10 @@ const Form = () => {
         id="form"
         style={{ padding: "20px", position: "relative", left: "35%" }}
       >
-        
         {state.assignment_array[location.state.key].questions.map(
           (item, key) => {
             switch (item.qType) {
               case "Text":
-                setId(id + 1)
                 return (
                   <>
                     <br />
@@ -68,7 +97,7 @@ const Form = () => {
                       <textarea
                         className="ip-textarea"
                         placeholder="Type answer here..."
-                        id={id}
+                        id={item.qid}
                       />
                     ) : (
                       <textarea
@@ -81,7 +110,6 @@ const Form = () => {
                   </>
                 );
               case "Multiple choice(Single type)":
-                setId(id + 1)
                 return (
                   <>
                     <br />
@@ -94,12 +122,12 @@ const Form = () => {
                         <>
                           <label>{i}</label>
                           {state.current_user.is_student ? (
-                            <input type="radio" value={i} name={item.ques} />
+                            <input type="radio" value={i} name={item.qid} />
                           ) : (
                             <input
                               type="radio"
                               value={i}
-                              name={item.ques}
+                              name={item.qid}
                               disabled
                             />
                           )}
@@ -109,7 +137,6 @@ const Form = () => {
                   </>
                 );
               case "Multiple choice(Multiple type)":
-                setId(id + 1)
                 return (
                   <>
                     <br />
@@ -125,14 +152,14 @@ const Form = () => {
                             <input
                               type="checkbox"
                               value={i}
-                              name={i}
+                              name={item.qid}
                               className="r-c-button"
                             />
                           ) : (
                             <input
                               type="checkbox"
                               value={i}
-                              name={i}
+                              name={item.qid}
                               disabled
                               className="r-c-button"
                             />

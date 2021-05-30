@@ -13,7 +13,7 @@ const Profile = () => {
     }
     const changePass = () =>
     {
-        history.push('/changepassword')
+        history.push('/changepass')
     }
   return (
     <>

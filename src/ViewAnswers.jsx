@@ -26,13 +26,20 @@ const ViewAnswers = () => {
   });
   const classes = useStyles();
 
-  const view = () => {
-      
+  const view = (key) => {
+    history.push({
+      pathname: "/useranswers",
+      state: { assignment: location.state.key, user: key },
+    });
   };
 
   const toHome = () => {
     history.push("/home");
   };
+
+  const back = () => {
+    history.push("/answertable");
+  }
 
   return (
     <>
@@ -86,7 +93,16 @@ const ViewAnswers = () => {
           </TableBody>
         </Table>
       </TableContainer>
-      <button onClick={() => toHome()} className="btn-cntr">
+      <button onClick={() => back()} className="btn-cntr-dual">
+        Back
+      </button>
+      <button
+        onClick={() => toHome()}
+        className="btn-cntr-dual"
+        style={{
+          marginLeft: "4px",
+        }}
+      >
         Home
       </button>
     </>
