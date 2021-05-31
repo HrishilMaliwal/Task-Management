@@ -6,6 +6,7 @@ import { makeStyles } from "@material-ui/core/styles";
 import TextField from "@material-ui/core/TextField";
 import React, { useState, useEffect } from "react";
 import { useLocation } from "react-router-dom";
+import { customAlert, isNullEmpty } from "./common";
 import useGlobalState from "./Context";
 import Header from "./Header";
 import QuestionTable from "./QuestionTable";
@@ -37,21 +38,30 @@ const CreateForm = () => {
   const classes = useStyles();
 
   const addcompo = () => {
-    var Request = {
-      qid: Math.floor(Math.random() * 10000),
-      ques: ques,
-    };
-    if (qType == 1) {
-      Request = { ...Request, qType: qtArr[0].text, options: [] };
-    } else if (qType == 2) {
-      Request = { ...Request, qType: qtArr[1].text, options: oArr };
-    } else if (qType == 3) {
-      Request = { ...Request, qType: qtArr[2].text, options: oArr };
+    if (isNullEmpty(qType) || isNullEmpty(ques)) {
+      customAlert("Data Error", "Question type or question cannot be empty");
+    } else if ((qType == 2 || qType == 3) && oArr.length == 0) {
+      customAlert(
+        "Missing Error",
+        "Multiple choice questions must have at least one option"
+      );
+    } else {
+      var Request = {
+        qid: Math.floor(Math.random() * 10000),
+        ques: ques,
+      };
+      if (qType == 1) {
+        Request = { ...Request, qType: qtArr[0].text, options: [] };
+      } else if (qType == 2) {
+        Request = { ...Request, qType: qtArr[1].text, options: oArr };
+      } else if (qType == 3) {
+        Request = { ...Request, qType: qtArr[2].text, options: oArr };
+      }
+      qArr.push(Request);
+      setQtype("");
+      setQues("");
+      setOarr([]);
     }
-    qArr.push(Request);
-    setQtype("");
-    setQues("");
-    setOarr([]);
   };
 
   const addOption = () => {
@@ -108,7 +118,7 @@ const CreateForm = () => {
           fullWidth
           label="Question"
           autoComplete="Question"
-          style = {{width:"80%"}}
+          style={{ width: "80%" }}
           value={ques}
           onChange={(e) => setQues(e.target.value)}
         />
@@ -137,7 +147,9 @@ const CreateForm = () => {
         ) : (
           ""
         )}
-        <button onClick={() => addcompo()} className="btn-cntr">Add Question</button>
+        <button onClick={() => addcompo()} className="btn-cntr">
+          Add Question
+        </button>
         <QuestionTable ke={location.state.key} qArr={qArr} />
       </div>
     </>

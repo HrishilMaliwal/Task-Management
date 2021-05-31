@@ -24,7 +24,25 @@ const UserAnswers = () => {
     <>
       <Header />
       <div>
-        {state.student_database[location.state.user].answers_array[
+        {state.student_database[location.state.user].answers_array.map(
+          (item, key) => {
+            if (item.id == location.state.assignment) {
+              return item.ans.map((i, k) => {
+                return (
+                  <div style={{ textAlign: "center" }}>
+                    <p style={{ fontWeight: "bold" }}>
+                      {k + 1}. {i.ques}
+                    </p>
+                    <p>Ans. {i.ans} </p>
+                  </div>
+                );
+              });
+            } else {
+              return null;
+            }
+          }
+        )}
+        {/* {state.student_database[location.state.user].answers_array[
           location.state.assignment
         ].ans.map((item, key) => {
           return (
@@ -35,7 +53,7 @@ const UserAnswers = () => {
               <p>Ans. {item.ans} </p>
             </div>
           );
-        })}
+        })} */}
       </div>
       <button onClick={() => back()} className="btn-cntr-dual">
         Back

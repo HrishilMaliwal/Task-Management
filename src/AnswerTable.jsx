@@ -13,6 +13,7 @@ import Header from "./Header";
 import { useHistory } from "react-router";
 import { confirmAlert } from "react-confirm-alert";
 import "react-confirm-alert/src/react-confirm-alert.css";
+import { customAlert } from "./common";
 
 const AnswerTable = () => {
   const [state, dispatch] = useGlobalState();
@@ -27,11 +28,11 @@ const AnswerTable = () => {
 
   const view = (key) => {
     history.push({ pathname: "/viewanswers", state: { key: key } });
-  }
+  };
 
   const toHome = () => {
-    history.push('/home')
-  }
+    history.push("/home");
+  };
 
   return (
     <>
@@ -51,22 +52,11 @@ const AnswerTable = () => {
           </TableHead>
           <TableBody>
             {state.assignment_array == ""
-              ? confirmAlert({
-                  title: "No Assignments",
-                  message: "No assignments to view answers of",
-                  buttons: [
-                    {
-                      label: "Okay",
-                    },
-                  ],
-                })
+              ? customAlert(
+                  "No Assignments",
+                  "No assignments to view answers of"
+                )
               : state.assignment_array.map((item, key) => {
-                  if (
-                    item.valid_users.indexOf(state.current_user.id) == -1 &&
-                    state.current_user.is_student
-                  ) {
-                    return null;
-                  } else {
                     return (
                       <TableRow key={key}>
                         <TableCell
@@ -82,11 +72,13 @@ const AnswerTable = () => {
                       </TableRow>
                     );
                   }
-                })}
+                )}
           </TableBody>
         </Table>
       </TableContainer>
-      <button onClick={()=>toHome()} className="btn-cntr">Home</button>
+      <button onClick={() => toHome()} className="btn-cntr">
+        Home
+      </button>
     </>
   );
 };

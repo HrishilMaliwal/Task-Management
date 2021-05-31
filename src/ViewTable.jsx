@@ -13,6 +13,7 @@ import { del_assignment } from "./reducer/action";
 import { useHistory } from "react-router";
 import { confirmAlert } from "react-confirm-alert";
 import "react-confirm-alert/src/react-confirm-alert.css";
+import { customAlert } from "./common";
 
 const ViewTable = () => {
   const [state, dispatch] = useGlobalState();
@@ -56,7 +57,6 @@ const ViewTable = () => {
               <TableCell align="right">Marks</TableCell>
               <TableCell align="right">Start date-time</TableCell>
               <TableCell align="right">End date-time</TableCell>
-              <TableCell align="right">Status</TableCell>
               {state.current_user.is_student ? (
                 ""
               ) : (
@@ -66,15 +66,10 @@ const ViewTable = () => {
           </TableHead>
           <TableBody>
             {state.assignment_array == ""
-              ? confirmAlert({
-                  title: "No Assignments",
-                  message: "There are no assignments assigned to you",
-                  buttons: [
-                    {
-                      label: "Okay",
-                    },
-                  ],
-                })
+              ? customAlert(
+                  "No Assignments",
+                  "There are no assignments assigned to you"
+                )
               : state.assignment_array.map((item, key) => {
                   if (
                     item.valid_users.indexOf(state.current_user.id) == -1 &&
@@ -96,7 +91,6 @@ const ViewTable = () => {
                         <TableCell align="right">{item.marks}</TableCell>
                         <TableCell align="right">{item.SDT}</TableCell>
                         <TableCell align="right">{item.EDT}</TableCell>
-                        <TableCell align="right">{item.status}</TableCell>
                         {state.current_user.is_student ? (
                           ""
                         ) : (

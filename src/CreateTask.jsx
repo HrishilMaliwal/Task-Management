@@ -3,7 +3,7 @@ import { add_assignment } from "./reducer/action";
 import useGlobalState from "./Context";
 import { useHistory } from "react-router";
 import Container from "@material-ui/core/Container";
-import { isPhoneNum, isNullEmpty } from "./common";
+import { isPhoneNum, isNullEmpty, customAlert } from "./common";
 import Header from "./Header";
 import TextField from "@material-ui/core/TextField";
 import readXlsxFile from "read-excel-file";
@@ -59,7 +59,9 @@ const CreateTask = () => {
             label: "Okay",
           },
         ],
-      })
+      });
+    } else if (arr.length == 0) {
+      customAlert("Data not found", "Upload user excel");
     } else {
       var Request = {
         name: name,
@@ -67,10 +69,8 @@ const CreateTask = () => {
         marks: marks,
         SDT: SDT,
         EDT: EDT,
-        status: "Incomplete",
         questions: [],
         valid_users: [...arr],
-        // valid_users: [7001],
       };
       dispatch(add_assignment(Request));
       history.push("/home");
@@ -89,7 +89,7 @@ const CreateTask = () => {
             label: "Okay",
           },
         ],
-      })
+      });
       e.preventDefault();
     }
   };

@@ -28,7 +28,6 @@ const Form = () => {
 
   const submit = () => {
     state.assignment_array[location.state.key].questions.map((item, key) => {
-      setTemp([]);
       switch (item.qType) {
         case "Text":
           var answer = {
@@ -70,8 +69,8 @@ const Form = () => {
       id: location.state.key,
       ans: [...arr1],
     };
-    var student = state.student_index.indexOf(state.current_user.id)
-    state.student_database[student].answers_array.push(answer)
+    var student = state.student_index.indexOf(state.current_user.id);
+    state.student_database[student].answers_array.push(answer);
     history.push("/home");
   };
 
@@ -175,9 +174,7 @@ const Form = () => {
           }
         )}
       </div>
-      <button onClick={() => back()} className="btn-cntr-dual">
-        Back
-      </button>
+
       {state.current_user.is_student ? (
         <button
           onClick={() => submit()}
@@ -189,16 +186,19 @@ const Form = () => {
           Submit
         </button>
       ) : (
-        <button
-          onClick={() => done()}
-          className="btn-cntr-dual"
-          style={{
-            marginLeft: "4px",
-          }}
-        >
-          Home
+        <button onClick={() => back()} className="btn-cntr-dual">
+          Back
         </button>
       )}
+      <button
+        onClick={() => done()}
+        className="btn-cntr-dual"
+        style={{
+          marginLeft: "4px",
+        }}
+      >
+        Home
+      </button>
     </>
   );
 };

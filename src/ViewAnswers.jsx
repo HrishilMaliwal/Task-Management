@@ -13,6 +13,7 @@ import { useLocation } from "react-router-dom";
 import { useHistory } from "react-router";
 import { confirmAlert } from "react-confirm-alert";
 import "react-confirm-alert/src/react-confirm-alert.css";
+import { customAlert } from "./common";
 
 const ViewAnswers = () => {
   const [state, dispatch] = useGlobalState();
@@ -39,7 +40,7 @@ const ViewAnswers = () => {
 
   const back = () => {
     history.push("/answertable");
-  }
+  };
 
   return (
     <>
@@ -58,15 +59,10 @@ const ViewAnswers = () => {
           </TableHead>
           <TableBody>
             {state.assignment_array[location.state.key].valid_users == ""
-              ? confirmAlert({
-                  title: "No Students",
-                  message: "No students were assigned to this assignment",
-                  buttons: [
-                    {
-                      label: "Okay",
-                    },
-                  ],
-                })
+              ? customAlert(
+                  "No Students",
+                  "No students were assigned to this assignment"
+                )
               : state.student_database.map((item, key) => {
                   if (
                     state.assignment_array[
