@@ -53,6 +53,8 @@ const reducer = (state = initialState, action) => {
           password: action.payload.password,
           first_login: action.payload.first_login,
           is_student: action.payload.is_student,
+          answers_array: [...action.payload.answers_array],
+          marks_array: [...action.payload.marks_array],
         }
       }
     }

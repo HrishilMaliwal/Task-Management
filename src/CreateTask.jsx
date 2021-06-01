@@ -8,8 +8,6 @@ import Header from "./Header";
 import TextField from "@material-ui/core/TextField";
 import readXlsxFile from "read-excel-file";
 import Button from "@material-ui/core/Button";
-import { confirmAlert } from "react-confirm-alert";
-import "react-confirm-alert/src/react-confirm-alert.css";
 
 const CreateTask = () => {
   const [name, setName] = useState("");
@@ -51,15 +49,7 @@ const CreateTask = () => {
       isNullEmpty(SDT) ||
       isNullEmpty(EDT)
     ) {
-      confirmAlert({
-        title: "Data not found",
-        message: "Name, Subject, marks or dates cannot be blank",
-        buttons: [
-          {
-            label: "Okay",
-          },
-        ],
-      });
+      customAlert("Data not found","Name, Subject, marks or dates cannot be blank")
     } else if (arr.length == 0) {
       customAlert("Data not found", "Upload user excel");
     } else {
@@ -71,6 +61,8 @@ const CreateTask = () => {
         EDT: EDT,
         questions: [],
         valid_users: [...arr],
+        published: false,
+        is_done: false,
       };
       dispatch(add_assignment(Request));
       history.push("/home");
@@ -81,18 +73,15 @@ const CreateTask = () => {
     if (isPhoneNum(e.target.value) || e.target.value == "") {
       setMarks(e.target.value);
     } else {
-      confirmAlert({
-        title: "Invalid Data",
-        message: "Marks can only be number",
-        buttons: [
-          {
-            label: "Okay",
-          },
-        ],
-      });
+      customAlert("Invalid Data","Marks can only be number")
       e.preventDefault();
     }
   };
+
+  const DT = (val) => {
+    setSDT(val)
+    setEDT("")
+  }
 
   const readExcel = (file) => {
     readXlsxFile(file).then((rows) => {
@@ -145,7 +134,7 @@ const CreateTask = () => {
           type="datetime-local"
           value={SDT}
           min={CDT}
-          onChange={(e) => setSDT(e.target.value)}
+          onChange={(e) => DT(e.target.value)}
           InputLabelProps={{
             shrink: true,
           }}

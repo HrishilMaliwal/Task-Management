@@ -12,9 +12,9 @@ const NavBar = () => {
   };
 
   const toLogOut = () => {
-    dispatch(set_flag(false))
-    var user = {}
-    dispatch(update_user(user))
+    dispatch(set_flag(false));
+    var user = { answers_array: [], marks_array: [], completed_array: [] };
+    dispatch(update_user(user));
     history.push("/");
   };
 
@@ -26,12 +26,17 @@ const NavBar = () => {
     history.push("/answertable");
   };
 
-  const toReport = () => {};
+  const toReport = () => {
+    history.push('/reporttable')
+  };
 
   return (
     <nav className="links">
       <button className="nav" onClick={() => toProfile()}>
         Profile
+      </button>
+      <button className="nav" onClick={() => toAnswers()}>
+        View Ansers
       </button>
       {state.current_user.is_student ? (
         ""
@@ -39,9 +44,6 @@ const NavBar = () => {
         <>
           <button className="nav" onClick={() => toCreateUser()}>
             Create User
-          </button>
-          <button className="nav" onClick={() => toAnswers()}>
-            View Ansers
           </button>
           <button className="nav" onClick={() => toReport()}>
             View report

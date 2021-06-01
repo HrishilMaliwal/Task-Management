@@ -8,19 +8,29 @@ import TableRow from "@material-ui/core/TableRow";
 import Paper from "@material-ui/core/Paper";
 import useGlobalState from "./Context";
 import { useHistory } from "react-router";
+import { Button } from "@material-ui/core";
 
 const QuestionTable = (props) => {
   const history = useHistory();
   const [state, dispatch] = useGlobalState();
+  const [arr, setArr] = useState(props.qArr);
 
-  const done = () => {
-    state.assignment_array[props.ke].questions = [...props.qArr];
+  const toPreview = () => {
+    state.assignment_array[props.ke].questions = [...arr];
     history.push({ pathname: "/form", state: { key: props.ke } });
   };
 
   const back = () => {
-    state.assignment_array[props.ke].questions = [...props.qArr];
+    state.assignment_array[props.ke].questions = [...arr];
     history.push("/home");
+  };
+
+  const deleteQues = (key) => {
+    var temp = [...arr]
+    temp.splice(key, 1)
+    setArr(temp)
+    state.assignment_array[props.ke].questions = [...arr]
+    props.delfunc(temp)
   };
 
   useEffect(() => {
@@ -28,7 +38,7 @@ const QuestionTable = (props) => {
   }, [state]);
 
   return (
-    <>
+    <div className="page-paddings">
       <TableContainer
         component={Paper}
         style={{
@@ -44,10 +54,11 @@ const QuestionTable = (props) => {
               <TableCell>Question type</TableCell>
               <TableCell>Question</TableCell>
               <TableCell>Options</TableCell>
+              <TableCell></TableCell>
             </TableRow>
           </TableHead>
           <TableBody>
-            {props.qArr.map((item, key) => {
+            {arr.map((item, key) => {
               return (
                 <TableRow key={key}>
                   <TableCell component="th" scope="row">
@@ -62,6 +73,16 @@ const QuestionTable = (props) => {
                       })}
                     </ul>
                   </TableCell>
+                  <TableCell>
+                    <Button
+                      color="secondary"
+                      type="submit"
+                      onClick={() => deleteQues(key)}
+                      style={{ marginLeft: "20px" }}
+                    >
+                      Delete
+                    </Button>
+                  </TableCell>
                 </TableRow>
               );
             })}
@@ -72,7 +93,7 @@ const QuestionTable = (props) => {
         Back
       </button>
       <button
-        onClick={() => done()}
+        onClick={() => toPreview()}
         className="btn-cntr-dual"
         style={{
           marginLeft: "4px",
@@ -80,7 +101,7 @@ const QuestionTable = (props) => {
       >
         Preview
       </button>
-    </>
+    </div>
   );
 };
 

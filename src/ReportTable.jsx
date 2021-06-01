@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import Table from "@material-ui/core/Table";
+import { makeStyles } from "@material-ui/core/styles";
 import TableBody from "@material-ui/core/TableBody";
 import TableCell from "@material-ui/core/TableCell";
 import TableContainer from "@material-ui/core/TableContainer";
@@ -11,16 +12,50 @@ import { Button } from "@material-ui/core";
 import Header from "./Header";
 import { useHistory } from "react-router";
 import { customAlert } from "./common";
+import * as FileSaver from "file-saver";
+import * as XLSX from "xlsx";
 
-const AnswerTable = () => {
+const ReportTable = () => {
   const [state, dispatch] = useGlobalState();
+  const useStyles = makeStyles({
+    table: {
+      minWidth: 650,
+    },
+  });
+
+  const classes = useStyles();
   const history = useHistory();
 
-  const view = (key) => {
-    if (state.current_user.is_student) {
-      history.push({ pathname: "/viewmarks", state: { key: key } });
+  const download = (key) => {
+    if (state.assignment_array[key].questions.length == 0) {
+      customAlert("Data error", "No questions assigned to this assignment");
     } else {
-      history.push({ pathname: "/viewanswers", state: { key: key } });
+      const fileType =
+        "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet;charset=UTF-8";
+      const fileExtension = ".xlsx";
+
+      const fileName = state.assignment_array[key].name + "_report";
+      var csvData = [];
+      var row = {};
+      state.student_database.map((student, key1) => {
+        row = {
+          id: student.id,
+        };
+        if (typeof student.answers_array[key] == "undefined") {
+          return null;
+        } else {
+          student.answers_array[key].ans.map((i, k) => {
+            const q = i.ques;
+            row = { ...row, [q]: i.ans };
+          });
+          csvData.push(row);
+        }
+      });
+      const ws = XLSX.utils.json_to_sheet(csvData);
+      const wb = { Sheets: { data: ws }, SheetNames: ["data"] };
+      const excelBuffer = XLSX.write(wb, { bookType: "xlsx", type: "array" });
+      const data = new Blob([excelBuffer], { type: fileType });
+      FileSaver.saveAs(data, fileName + fileExtension);
     }
   };
 
@@ -47,6 +82,7 @@ const AnswerTable = () => {
                 <TableCell align="right">Name</TableCell>
                 <TableCell align="right">Subject</TableCell>
                 <TableCell align="right">Marks</TableCell>
+                <TableCell></TableCell>
               </TableRow>
             </TableHead>
             <TableBody>
@@ -58,16 +94,17 @@ const AnswerTable = () => {
                 : state.assignment_array.map((item, key) => {
                     return (
                       <TableRow key={key}>
-                        <TableCell
-                          component="th"
-                          scope="row"
-                          onClick={() => view(key)}
-                        >
+                        <TableCell component="th" scope="row">
                           {key + 1}
                         </TableCell>
                         <TableCell align="right">{item.name}</TableCell>
                         <TableCell align="right">{item.subject}</TableCell>
                         <TableCell align="right">{item.marks}</TableCell>
+                        <TableCell>
+                          <Button color="primary" onClick={() => download(key)}>
+                            Download
+                          </Button>
+                        </TableCell>
                       </TableRow>
                     );
                   })}
@@ -82,4 +119,4 @@ const AnswerTable = () => {
   );
 };
 
-export default AnswerTable;
+export default ReportTable;

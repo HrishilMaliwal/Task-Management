@@ -11,31 +11,32 @@ import useGlobalState from "./Context";
 import { Button } from "@material-ui/core";
 import { del_assignment } from "./reducer/action";
 import { useHistory } from "react-router";
-import { confirmAlert } from "react-confirm-alert";
-import "react-confirm-alert/src/react-confirm-alert.css";
 import { customAlert } from "./common";
 
 const ViewTable = () => {
   const [state, dispatch] = useGlobalState();
-  const useStyles = makeStyles({
-    table: {
-      minWidth: 650,
-    },
-  });
-
-  const classes = useStyles();
   const history = useHistory();
 
   useEffect(() => {
     localStorage.setItem("myState", JSON.stringify(state));
   }, [state]);
 
-  const del = (key) => {
-    dispatch(del_assignment(key));
+  const deleteAssignment = (key) => {
+    if (state.assignment_array[key].is_done) {
+      customAlert(
+        "Delete error",
+        "Someone has answered this assignment and it cannot be deleted"
+      );
+    } else {
+      dispatch(del_assignment(key));
+    }
   };
 
   const addQues = (key) => {
-    if (state.current_user.is_student) {
+    if (
+      state.current_user.is_student ||
+      state.assignment_array[key].published
+    ) {
       history.push({ pathname: "/form", state: { key: key } });
     } else {
       history.push({ pathname: "/createform", state: { key: key } });
@@ -43,12 +44,12 @@ const ViewTable = () => {
   };
 
   return (
-    <>
+    <div className="page-paddings" style={{paddingTop:"10px"}}>
       <TableContainer
         component={Paper}
         style={{ marginTop: "30px", width: "max", backgroundColor: "#e6f9ff" }}
       >
-        <Table className={classes.table} aria-label="simple table">
+        <Table aria-label="simple table">
           <TableHead>
             <TableRow>
               <TableCell>ID</TableCell>
@@ -98,7 +99,7 @@ const ViewTable = () => {
                             <Button
                               color="secondary"
                               type="submit"
-                              onClick={() => del(key)}
+                              onClick={() => deleteAssignment(key)}
                               style={{ marginLeft: "20px" }}
                             >
                               Delete
@@ -112,7 +113,7 @@ const ViewTable = () => {
           </TableBody>
         </Table>
       </TableContainer>
-    </>
+    </div>
   );
 };
 

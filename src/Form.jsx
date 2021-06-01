@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { useHistory } from "react-router";
 import { useLocation } from "react-router-dom";
+import { customAlert } from "./common";
 import useGlobalState from "./Context";
 import Header from "./Header";
 
@@ -10,6 +11,9 @@ const Form = () => {
   const [state, dispatch] = useGlobalState();
   const [arr1, setArr1] = useState([]);
   const [temp, setTemp] = useState([]);
+  const [student, setStudent] = useState(
+    state.student_index.indexOf(state.current_user.id)
+  );
 
   const back = () => {
     history.push({
@@ -18,7 +22,12 @@ const Form = () => {
     });
   };
 
-  const done = () => {
+  const toHome = () => {
+    history.push("/home");
+  };
+
+  const publish = () => {
+    state.assignment_array[location.state.key].published = true;
     history.push("/home");
   };
 
@@ -69,14 +78,47 @@ const Form = () => {
       id: location.state.key,
       ans: [...arr1],
     };
-    var student = state.student_index.indexOf(state.current_user.id);
     state.student_database[student].answers_array.push(answer);
+    state.assignment_array[location.state.key].is_done = true;
+    state.student_database[student].completed_array.push(location.state.key);
     history.push("/home");
+  };
+
+  const ansLenLimit = (e) => {
+    if (e.target.value.length > 500) {
+      customAlert("Memory error", "Limit question to 500 characters");
+      e.preventDefault();
+    }
+  };
+
+  const view = () => {
+    state.student_database[student].answers_array.map((item, key) => {
+      if (item.id == location.state.key) {
+        return item.ans.map((i, k) => {
+          return (document.getElementById(i.qid).value = i.ans);
+        });
+      }
+    });
   };
 
   return (
     <>
       <Header />
+      {state.current_user.is_student &&
+      !(
+        state.student_database[student].completed_array.indexOf(
+          location.state.key
+        ) == -1
+      ) ? (
+        <button
+          onClick={() => view()}
+          style={{ width: "200px", position: "fixed", left: "10%" }}
+        >
+          View my answers
+        </button>
+      ) : (
+        ""
+      )}
       <div
         id="form"
         style={{ padding: "20px", position: "relative", left: "35%" }}
@@ -92,16 +134,21 @@ const Form = () => {
                       {key + 1}. {item.ques}:
                     </label>
                     <br />
-                    {state.current_user.is_student ? (
+                    {state.current_user.is_student &&
+                    state.student_database[student].completed_array.indexOf(
+                      location.state.key
+                    ) == -1 ? (
                       <textarea
                         className="ip-textarea"
-                        placeholder="Type answer here..."
+                        placeholder="Type answer(500 words limit) here..."
                         id={item.qid}
+                        onChange={(e) => ansLenLimit(e)}
                       />
                     ) : (
                       <textarea
                         className="ip-textarea"
-                        placeholder="Type answer here..."
+                        placeholder="Type answer(500 words limit) here..."
+                        id={item.qid}
                         disabled
                       />
                     )}
@@ -168,37 +215,54 @@ const Form = () => {
                     })}
                   </>
                 );
-              default:
-                break;
             }
           }
         )}
       </div>
 
       {state.current_user.is_student ? (
-        <button
-          onClick={() => submit()}
-          className="btn-cntr-dual"
-          style={{
-            marginLeft: "4px",
-          }}
-        >
-          Submit
-        </button>
+        <>
+          <button
+            onClick={() => toHome()}
+            className="btn-cntr-dual"
+            style={{
+              marginLeft: "4px",
+            }}
+          >
+            Back
+          </button>
+          {state.student_database[student].completed_array.indexOf(
+            location.state.key
+          ) == -1 ? (
+            <button
+              onClick={() => submit()}
+              className="btn-cntr-dual"
+              style={{
+                marginLeft: "4px",
+              }}
+            >
+              Submit
+            </button>
+          ) : (
+            ""
+          )}
+        </>
       ) : (
-        <button onClick={() => back()} className="btn-cntr-dual">
-          Back
-        </button>
+        <>
+          <button onClick={() => back()} className="btn-cntr-dual">
+            Back
+          </button>
+          <button
+            onClick={() => publish()}
+            className="btn-cntr-dual"
+            style={{
+              marginLeft: "4px",
+            }}
+          >
+            Publish
+          </button>
+        </>
       )}
-      <button
-        onClick={() => done()}
-        className="btn-cntr-dual"
-        style={{
-          marginLeft: "4px",
-        }}
-      >
-        Home
-      </button>
     </>
   );
 };

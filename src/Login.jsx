@@ -3,8 +3,6 @@ import { useHistory } from "react-router";
 import "./style.css";
 import { set_flag, update_user } from "./reducer/action";
 import useGlobalState from "./Context";
-import { confirmAlert } from "react-confirm-alert";
-import "react-confirm-alert/src/react-confirm-alert.css";
 import { customAlert, isNullEmpty } from "./common";
 
 const Login = () => {
@@ -17,7 +15,7 @@ const Login = () => {
     localStorage.setItem("myState", JSON.stringify(state));
   }, [state]);
 
-  const vali = () => {
+  const validate = () => {
     var user = {};
     if (isNullEmpty(id) || isNullEmpty(pass)) {
       customAlert("Data not found", "ID or password cannot be blank");
@@ -86,7 +84,7 @@ const Login = () => {
           onChange={(e) => setPass(e.target.value)}
         />
 
-        <button type="submit" className="btn-cntr" onClick={() => vali()}>
+        <button type="submit" className="btn-cntr" onClick={() => validate()}>
           Login
         </button>
       </div>

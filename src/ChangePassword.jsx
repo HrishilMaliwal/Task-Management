@@ -4,8 +4,7 @@ import useGlobalState from "./Context";
 import { useHistory } from "react-router";
 import TextField from "@material-ui/core/TextField";
 import Container from "@material-ui/core/Container";
-import { confirmAlert } from "react-confirm-alert";
-import "react-confirm-alert/src/react-confirm-alert.css";
+import { customAlert } from "./common";
 
 const ChangePassword = () => {
   const [state, dispatch] = useGlobalState();
@@ -28,26 +27,10 @@ const ChangePassword = () => {
         state.student_database[student].first_login = false;
         history.push("/home");
       } else {
-        confirmAlert({
-          title: "Password Error",
-          message: "Passwords entered do not match",
-          buttons: [
-            {
-              label: "Okay",
-            },
-          ],
-        });
+        customAlert("Password Error", "Passwords entered do not match");
       }
     } else {
-      confirmAlert({
-        title: "Password Error",
-        message: "Password entered is incorrect",
-        buttons: [
-          {
-            label: "Okay",
-          },
-        ],
-      });
+      customAlert("Password Error", "Password entered is incorrect");
     }
   };
 

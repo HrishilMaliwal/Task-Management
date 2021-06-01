@@ -12,6 +12,9 @@ const initialState = JSON.parse(localStorage.getItem("myState")) || {
       password: "1234",
       first_login: false,
       is_student: false,
+      answers_array: [],
+      marks_array: [],
+      completed_array: [],
     },
   ],
   current_user: {

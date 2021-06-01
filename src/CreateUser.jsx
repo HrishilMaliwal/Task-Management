@@ -30,7 +30,9 @@ const CreateUser = () => {
           password: "12345678",
           first_login: true,
           is_student: true,
-          answers_array: []
+          answers_array: [],
+          marks_array: [],
+          completed_array: [],
         };
         arr2.push(element[0])
         arr1.push(Request);
@@ -48,7 +50,7 @@ const CreateUser = () => {
   return (
     <>
       <Header />
-      <div>
+      <div className="page-paddings">
         <Container component="main">
           <label>Add user excel file</label>
           <br />

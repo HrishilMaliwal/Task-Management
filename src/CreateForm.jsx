@@ -64,10 +64,27 @@ const CreateForm = () => {
     }
   };
 
+  const delParent = (arr) => {
+    setQarr(arr);
+  };
+
   const addOption = () => {
-    var tempArr = option.split(",");
-    setOarr(tempArr);
-    setOption("");
+    if (isNullEmpty(option)) {
+      customAlert("Input Error", "Options cannot be blank");
+    } else {
+      var tempArr = option.split(",");
+      setOarr(tempArr);
+      setOption("");
+    }
+  };
+
+  const qLenLimit = (e) => {
+    if (e.target.value.length > 200) {
+      e.preventDefault();
+      customAlert("Memory error", "Limit question to 100 characters");
+    } else {
+      setQues(e.target.value);
+    }
   };
 
   useEffect(() => {
@@ -85,7 +102,7 @@ const CreateForm = () => {
   return (
     <>
       <Header />
-      <div style={{ paddingLeft: "30px", paddingRight: "30px" }}>
+      <div className="page-paddings">
         <div style={{ borderBottom: "solid", paddingLeft: "20px" }}>
           <p>Assignment ID - {location.state.key + 1}</p>
           <p>
@@ -120,7 +137,7 @@ const CreateForm = () => {
           autoComplete="Question"
           style={{ width: "80%" }}
           value={ques}
-          onChange={(e) => setQues(e.target.value)}
+          onChange={(e) => qLenLimit(e)}
         />
 
         {flag1 ? (
@@ -150,7 +167,11 @@ const CreateForm = () => {
         <button onClick={() => addcompo()} className="btn-cntr">
           Add Question
         </button>
-        <QuestionTable ke={location.state.key} qArr={qArr} />
+        <QuestionTable
+          ke={location.state.key}
+          qArr={qArr}
+          delfunc={delParent}
+        />
       </div>
     </>
   );
