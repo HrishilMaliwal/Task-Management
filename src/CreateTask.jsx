@@ -49,7 +49,10 @@ const CreateTask = () => {
       isNullEmpty(SDT) ||
       isNullEmpty(EDT)
     ) {
-      customAlert("Data not found","Name, Subject, marks or dates cannot be blank")
+      customAlert(
+        "Data not found",
+        "Name, Subject, marks or dates cannot be blank"
+      );
     } else if (arr.length == 0) {
       customAlert("Data not found", "Upload user excel");
     } else {
@@ -73,15 +76,15 @@ const CreateTask = () => {
     if (isPhoneNum(e.target.value) || e.target.value == "") {
       setMarks(e.target.value);
     } else {
-      customAlert("Invalid Data","Marks can only be number")
+      customAlert("Invalid Data", "Marks can only be number");
       e.preventDefault();
     }
   };
 
   const DT = (val) => {
-    setSDT(val)
-    setEDT("")
-  }
+    setSDT(val);
+    setEDT("");
+  };
 
   const readExcel = (file) => {
     readXlsxFile(file).then((rows) => {
@@ -175,9 +178,9 @@ const CreateTask = () => {
           </Button>
         </label>
         <label>{message}</label>
-        <button onClick={() => compoAdd()} className="btn-cntr">
+        <Button variant="contained" color="primary" className="btn-create" onClick={() => compoAdd()}>
           Add
-        </button>
+        </Button>
         <hr />
       </Container>
     </>

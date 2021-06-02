@@ -4,6 +4,7 @@ import "./style.css";
 import { set_flag, update_user } from "./reducer/action";
 import useGlobalState from "./Context";
 import { customAlert, isNullEmpty } from "./common";
+import { Button } from "@material-ui/core";
 
 const Login = () => {
   const history = useHistory();
@@ -83,10 +84,16 @@ const Login = () => {
           value={pass}
           onChange={(e) => setPass(e.target.value)}
         />
-
-        <button type="submit" className="btn-cntr" onClick={() => validate()}>
-          Login
-        </button>
+        <div className="btn-cntr">
+          <Button
+            variant="contained"
+            color="secondary"
+            className="btw-full"
+            onClick={() => validate()}
+          >
+            Login
+          </Button>
+        </div>
       </div>
     </div>
   );

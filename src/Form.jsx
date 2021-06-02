@@ -4,6 +4,7 @@ import { useLocation } from "react-router-dom";
 import { customAlert } from "./common";
 import useGlobalState from "./Context";
 import Header from "./Header";
+import { Button } from "@material-ui/core";
 
 const Form = () => {
   const history = useHistory();
@@ -30,6 +31,25 @@ const Form = () => {
     state.assignment_array[location.state.key].published = true;
     history.push("/home");
   };
+
+  useEffect(() => {
+    if (
+      state.current_user.is_student &&
+      !(
+        state.student_database[student].completed_array.indexOf(
+          location.state.key
+        ) == -1
+      )
+    ) {
+      state.student_database[student].answers_array.map((item, key) => {
+        if (item.id == location.state.key) {
+          return item.ans.map((i, k) => {
+            return (document.getElementById(i.qid).value = i.ans);
+          });
+        }
+      });
+    }
+  });
 
   useEffect(() => {
     localStorage.setItem("myState", JSON.stringify(state));
@@ -91,38 +111,10 @@ const Form = () => {
     }
   };
 
-  const view = () => {
-    state.student_database[student].answers_array.map((item, key) => {
-      if (item.id == location.state.key) {
-        return item.ans.map((i, k) => {
-          return (document.getElementById(i.qid).value = i.ans);
-        });
-      }
-    });
-  };
-
   return (
     <>
       <Header />
-      {state.current_user.is_student &&
-      !(
-        state.student_database[student].completed_array.indexOf(
-          location.state.key
-        ) == -1
-      ) ? (
-        <button
-          onClick={() => view()}
-          style={{ width: "200px", position: "fixed", left: "10%" }}
-        >
-          View my answers
-        </button>
-      ) : (
-        ""
-      )}
-      <div
-        id="form"
-        style={{ padding: "20px", position: "relative", left: "35%" }}
-      >
+      <div className="form">
         {state.assignment_array[location.state.key].questions.map(
           (item, key) => {
             switch (item.qType) {
@@ -222,45 +214,75 @@ const Form = () => {
 
       {state.current_user.is_student ? (
         <>
-          <button
-            onClick={() => toHome()}
-            className="btn-cntr-dual"
-            style={{
-              marginLeft: "4px",
-            }}
-          >
-            Back
-          </button>
           {state.student_database[student].completed_array.indexOf(
             location.state.key
           ) == -1 ? (
-            <button
-              onClick={() => submit()}
-              className="btn-cntr-dual"
-              style={{
-                marginLeft: "4px",
-              }}
-            >
-              Submit
-            </button>
+            <div className="btn-cntr-dual">
+              <Button
+                variant="contained"
+                color="primary"
+                onClick={() => toHome()}
+                className="btw"
+              >
+                Back
+              </Button>
+              <Button
+                className="btw"
+                variant="contained"
+                color="primary"
+                onClick={() => submit()}
+                style={{
+                  marginLeft: "10px",
+                }}
+              >
+                Submit
+              </Button>
+            </div>
           ) : (
-            ""
+            <Button
+              variant="contained"
+              color="primary"
+              onClick={() => toHome()}
+              className="btn-cntr"
+            >
+              Back
+            </Button>
           )}
         </>
       ) : (
         <>
-          <button onClick={() => back()} className="btn-cntr-dual">
-            Back
-          </button>
-          <button
-            onClick={() => publish()}
-            className="btn-cntr-dual"
-            style={{
-              marginLeft: "4px",
-            }}
-          >
-            Publish
-          </button>
+          {state.assignment_array[location.state.key].published ? (
+            <Button
+              variant="contained"
+              color="primary"
+              onClick={() => toHome()}
+              className="btn-cntr"
+            >
+              Back
+            </Button>
+          ) : (
+            <div className="btn-cntr-dual">
+              <Button
+                variant="contained"
+                color="primary"
+                onClick={() => back()}
+                className="btw"
+              >
+                Back
+              </Button>
+              <Button
+                className="btw"
+                variant="contained"
+                color="primary"
+                onClick={() => publish()}
+                style={{
+                  marginLeft: "10px",
+                }}
+              >
+                Publish
+              </Button>
+            </div>
+          )}
         </>
       )}
     </>

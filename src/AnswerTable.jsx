@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React from "react";
 import Table from "@material-ui/core/Table";
 import TableBody from "@material-ui/core/TableBody";
 import TableCell from "@material-ui/core/TableCell";
@@ -75,9 +75,16 @@ const AnswerTable = () => {
           </Table>
         </TableContainer>
       </div>
-      <button onClick={() => toHome()} className="btn-cntr">
-        Home
-      </button>
+      <div className="btn-cntr">
+        <Button
+          variant="contained"
+          color="primary"
+          onClick={() => toHome()}
+          className="btw-full"
+        >
+          Back
+        </Button>
+      </div>
     </>
   );
 };

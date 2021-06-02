@@ -95,7 +95,7 @@ const ViewTable = () => {
                         {state.current_user.is_student ? (
                           ""
                         ) : (
-                          <TableCell>
+                          <TableCell className="btw-full">
                             <Button
                               color="secondary"
                               type="submit"

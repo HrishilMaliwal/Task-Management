@@ -5,6 +5,7 @@ import { useHistory } from "react-router";
 import TextField from "@material-ui/core/TextField";
 import Container from "@material-ui/core/Container";
 import { customAlert } from "./common";
+import { Button } from "@material-ui/core";
 
 const ChangePassword = () => {
   const [state, dispatch] = useGlobalState();
@@ -36,7 +37,7 @@ const ChangePassword = () => {
 
   return (
     <>
-      <Header />
+      {state.current_user.first_login ? "" : <Header />}
       <Container component="main">
         <TextField
           type="password"
@@ -71,9 +72,25 @@ const ChangePassword = () => {
           value={npass2}
           onChange={(e) => setNpass2(e.target.value)}
         />
-        <button type="submit" className="btn-cntr" onClick={() => vali()}>
-          Login
-        </button>
+        {state.current_user.first_login ? (
+          <Button
+            variant="contained"
+            color="primary"
+            className="btn-cntr"
+            onClick={() => vali()}
+          >
+            Login
+          </Button>
+        ) : (
+          <Button
+            variant="contained"
+            color="primary"
+            className="btn-cntr"
+            onClick={() => vali()}
+          >
+            ChangePassword
+          </Button>
+        )}
       </Container>
     </>
   );

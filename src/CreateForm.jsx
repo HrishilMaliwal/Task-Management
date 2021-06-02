@@ -10,6 +10,7 @@ import { customAlert, isNullEmpty } from "./common";
 import useGlobalState from "./Context";
 import Header from "./Header";
 import QuestionTable from "./QuestionTable";
+import Button from "@material-ui/core/Button";
 
 const CreateForm = () => {
   const location = useLocation();
@@ -153,20 +154,27 @@ const CreateForm = () => {
               onChange={(e) => setOption(e.target.value)}
               style={{ width: "80%" }}
             />
-            <button
+            <Button
+              variant="contained"
+              color="primary"
               className="btn-create"
               onClick={() => addOption()}
-              style={{ marginTop: "25px" }}
+              style={{ margin: "28px" }}
             >
               Add
-            </button>
+            </Button>
           </div>
         ) : (
           ""
         )}
-        <button onClick={() => addcompo()} className="btn-cntr">
+        <Button
+          variant="contained"
+          color="primary"
+          onClick={() => addcompo()}
+          className="btn-cntr"
+        >
           Add Question
-        </button>
+        </Button>
         <QuestionTable
           ke={location.state.key}
           qArr={qArr}

@@ -26,11 +26,11 @@ const QuestionTable = (props) => {
   };
 
   const deleteQues = (key) => {
-    var temp = [...arr]
-    temp.splice(key, 1)
-    setArr(temp)
-    state.assignment_array[props.ke].questions = [...arr]
-    props.delfunc(temp)
+    var temp = [...arr];
+    temp.splice(key, 1);
+    setArr(temp);
+    state.assignment_array[props.ke].questions = [...arr];
+    props.delfunc(temp);
   };
 
   useEffect(() => {
@@ -73,12 +73,13 @@ const QuestionTable = (props) => {
                       })}
                     </ul>
                   </TableCell>
-                  <TableCell>
+                  <TableCell className="btw-full">
                     <Button
                       color="secondary"
                       type="submit"
                       onClick={() => deleteQues(key)}
                       style={{ marginLeft: "20px" }}
+                      
                     >
                       Delete
                     </Button>
@@ -89,18 +90,27 @@ const QuestionTable = (props) => {
           </TableBody>
         </Table>
       </TableContainer>
-      <button onClick={() => back()} className="btn-cntr-dual">
-        Back
-      </button>
-      <button
-        onClick={() => toPreview()}
-        className="btn-cntr-dual"
-        style={{
-          marginLeft: "4px",
-        }}
-      >
-        Preview
-      </button>
+      <div className="btn-cntr-dual">
+        <Button
+          variant="contained"
+          color="primary"
+          onClick={() => back()}
+          className="btw"
+        >
+          Back
+        </Button>
+        <Button
+          className="btw"
+          variant="contained"
+          color="primary"
+          onClick={() => toPreview()}
+          style={{
+            marginLeft: "10px",
+          }}
+        >
+          Preview
+        </Button>
+      </div>
     </div>
   );
 };

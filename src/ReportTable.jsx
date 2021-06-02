@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React from "react";
 import Table from "@material-ui/core/Table";
 import { makeStyles } from "@material-ui/core/styles";
 import TableBody from "@material-ui/core/TableBody";
@@ -17,13 +17,6 @@ import * as XLSX from "xlsx";
 
 const ReportTable = () => {
   const [state, dispatch] = useGlobalState();
-  const useStyles = makeStyles({
-    table: {
-      minWidth: 650,
-    },
-  });
-
-  const classes = useStyles();
   const history = useHistory();
 
   const download = (key) => {
@@ -100,7 +93,7 @@ const ReportTable = () => {
                         <TableCell align="right">{item.name}</TableCell>
                         <TableCell align="right">{item.subject}</TableCell>
                         <TableCell align="right">{item.marks}</TableCell>
-                        <TableCell>
+                        <TableCell className="btw-full">
                           <Button color="primary" onClick={() => download(key)}>
                             Download
                           </Button>
@@ -112,9 +105,16 @@ const ReportTable = () => {
           </Table>
         </TableContainer>
       </div>
-      <button onClick={() => toHome()} className="btn-cntr">
-        Home
-      </button>
+      <div className="btn-cntr">
+        <Button
+          variant="contained"
+          color="primary"
+          onClick={() => toHome()}
+          className="btw-full"
+        >
+          Home
+        </Button>
+      </div>
     </>
   );
 };

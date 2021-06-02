@@ -3,6 +3,7 @@ import Header from "./Header";
 import useGlobalState from "./Context";
 import { useLocation } from "react-router-dom";
 import { useHistory } from "react-router";
+import { Button } from "@material-ui/core";
 
 const UserAnswers = () => {
   const [state, dispatch] = useGlobalState();
@@ -56,7 +57,9 @@ const UserAnswers = () => {
           value={remarks}
           onChange={(e) => setRemarks(e.target.value)}
         ></textarea>
-        <button
+        <Button
+          variant="contained"
+          color="primary"
           onClick={() => submit()}
           style={{
             width: "150px",
@@ -66,20 +69,20 @@ const UserAnswers = () => {
           }}
         >
           Submit
-        </button>
+        </Button>
       </div>
-      <div>
+      <div className="form">
         {state.student_database[location.state.user].answers_array.map(
           (item, key) => {
             if (item.id == location.state.assignment) {
               return item.ans.map((i, k) => {
                 return (
-                  <div style={{ padding: "20px", position: "relative", left: "43%" }}>
+                  <>
                     <p style={{ fontWeight: "bold" }}>
                       {k + 1}. {i.ques}
                     </p>
                     <p>Ans. {i.ans} </p>
-                  </div>
+                  </>
                 );
               });
             } else {
@@ -88,18 +91,27 @@ const UserAnswers = () => {
           }
         )}
       </div>
-      <button onClick={() => back()} className="btn-cntr-dual">
-        Back
-      </button>
-      <button
-        onClick={() => toHome()}
-        className="btn-cntr-dual"
-        style={{
-          marginLeft: "4px",
-        }}
-      >
-        Home
-      </button>
+      <div className="btn-cntr-dual">
+        <Button
+          variant="contained"
+          color="primary"
+          onClick={() => back()}
+          className="btw"
+        >
+          Back
+        </Button>
+        <Button
+          className="btw"
+          variant="contained"
+          color="primary"
+          onClick={() => toHome()}
+          style={{
+            marginLeft: "10px",
+          }}
+        >
+          Home
+        </Button>
+      </div>
     </>
   );
 };

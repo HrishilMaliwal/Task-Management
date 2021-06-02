@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import Table from "@material-ui/core/Table";
-import { makeStyles } from "@material-ui/core/styles";
+import { Button } from "@material-ui/core";
 import TableBody from "@material-ui/core/TableBody";
 import TableCell from "@material-ui/core/TableCell";
 import TableContainer from "@material-ui/core/TableContainer";
@@ -86,18 +86,27 @@ const ViewAnswers = () => {
           </Table>
         </TableContainer>
       </div>
-      <button onClick={() => back()} className="btn-cntr-dual">
-        Back
-      </button>
-      <button
-        onClick={() => toHome()}
-        className="btn-cntr-dual"
-        style={{
-          marginLeft: "4px",
-        }}
-      >
-        Home
-      </button>
+      <div className="btn-cntr-dual">
+        <Button
+          variant="contained"
+          color="primary"
+          onClick={() => back()}
+          className="btw"
+        >
+          Back
+        </Button>
+        <Button
+          className="btw"
+          variant="contained"
+          color="primary"
+          onClick={() => toHome()}
+          style={{
+            marginLeft: "10px",
+          }}
+        >
+          Home
+        </Button>
+      </div>
     </>
   );
 };

@@ -1,8 +1,9 @@
-import React, { useState, useEffect } from "react";
+import React from "react";
 import Header from "./Header";
 import useGlobalState from "./Context";
 import { useHistory } from "react-router";
 import { useLocation } from "react-router-dom";
+import { Button } from "@material-ui/core";
 
 const ViewMarks = () => {
   const location = useLocation();
@@ -13,6 +14,10 @@ const ViewMarks = () => {
     history.push("/home");
   };
 
+  const back = () => {
+    history.push('/answertable')
+  }
+
   return (
     <>
       <Header />
@@ -20,7 +25,7 @@ const ViewMarks = () => {
         {state.current_user.marks_array.map((item, key) => {
           if (item.id == location.state.key) {
             return (
-              <div>
+              <div id="marks-op">
                 <p>Marks obtained - {item.marks}</p>
                 <p>Remarks - {item.remarks}</p>
               </div>
@@ -29,9 +34,30 @@ const ViewMarks = () => {
             return null;
           }
         })}
-        <button onClick={() => toHome()} className="btn-cntr">
+        {/* <button onClick={() => toHome()} className="btn-cntr">
           Home
-        </button>
+        </button> */}
+        <div className="btn-cntr-dual">
+        <Button
+          variant="contained"
+          color="primary"
+          onClick={() => back()}
+          className="btw"
+        >
+          Back
+        </Button>
+        <Button
+          className="btw"
+          variant="contained"
+          color="primary"
+          onClick={() => toHome()}
+          style={{
+            marginLeft: "10px",
+          }}
+        >
+          Home
+        </Button>
+      </div>
       </div>
     </>
   );

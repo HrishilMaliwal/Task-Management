@@ -12,7 +12,7 @@ const CreateUser = () => {
   const [arr1, setArr1] = useState([]);
   const [arr2, setArr2] = useState([]);
   const [message, setMessage] = useState("No file uploaded");
-  const history = useHistory()
+  const history = useHistory();
 
   useEffect(() => {
     localStorage.setItem("myState", JSON.stringify(state));
@@ -34,7 +34,7 @@ const CreateUser = () => {
           marks_array: [],
           completed_array: [],
         };
-        arr2.push(element[0])
+        arr2.push(element[0]);
         arr1.push(Request);
       }
     });
@@ -42,9 +42,9 @@ const CreateUser = () => {
   };
 
   const adduser = () => {
-    dispatch(user_indexing(arr2))
+    dispatch(user_indexing(arr2));
     dispatch(add_users(arr1));
-    history.push('/home')
+    history.push("/home");
   };
 
   return (
@@ -71,9 +71,14 @@ const CreateUser = () => {
             </Button>
           </label>
           <label>{message}</label>
-          <button onClick={() => adduser()} className="btn-cntr">
-            Add User
-          </button>
+          <Button
+            variant="contained"
+            color="primary"
+            onClick={() => adduser()}
+            className="btn-cntr"
+          >
+            Add Users
+          </Button>
         </Container>
       </div>
     </>

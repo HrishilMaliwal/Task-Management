@@ -3,6 +3,7 @@ import Header from "./Header";
 import ViewTable from "./ViewTable";
 import { useHistory } from "react-router";
 import useGlobalState from "./Context";
+import Button from "@material-ui/core/Button";
 
 const Home = () => {
   const history = useHistory();
@@ -17,9 +18,11 @@ const Home = () => {
       {state.current_user.is_student ? (
         ""
       ) : (
-        <button onClick={() => create()} className="btn-create" style={{}}>
-          Create an exam
-        </button>
+        <div className="btn-create">
+          <Button variant="contained" color="primary" onClick={() => create()}>
+            Create exam
+          </Button>
+        </div>
       )}
       <ViewTable />
     </div>

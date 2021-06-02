@@ -1,7 +1,8 @@
-import React, { useState, useEffect } from "react";
+import React from "react";
 import Header from "./Header";
 import useGlobalState from "./Context";
 import { useHistory } from "react-router";
+import { Button } from "@material-ui/core";
 
 const Profile = () => {
   const [state, dispatch] = useGlobalState();
@@ -24,19 +25,27 @@ const Profile = () => {
         <h3>SAP ID - {state.current_user.id}</h3>   
         <h3>Email ID - {state.current_user.email}</h3> 
       </div>
-      <button onClick={() => toHome()} className="btn-cntr-dual" style={{}}>
-            Home
-        </button>
-        <button
+        <div className="btn-cntr-dual" style = {{width:"500px", left:"38%"}}>
+        <Button
+          variant="contained"
+          color="primary"
+          onClick={() => toHome()}
+          style = {{width:"190px"}}
+        >
+          Back
+        </Button>
+        <Button
+          variant="contained"
+          color="primary"
           onClick={() => changePass()}
-          className="btn-cntr-dual"
           style={{
-            marginLeft: "4px",
-            marginTop:"10px",
+            marginLeft: "10px",
+            width: "190px"
           }}
         >
           Change Password
-        </button>
+        </Button>
+      </div>
     </>
   );
 };
