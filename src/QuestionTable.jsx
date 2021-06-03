@@ -79,7 +79,6 @@ const QuestionTable = (props) => {
                       type="submit"
                       onClick={() => deleteQues(key)}
                       style={{ marginLeft: "20px" }}
-                      
                     >
                       Delete
                     </Button>
@@ -99,17 +98,21 @@ const QuestionTable = (props) => {
         >
           Back
         </Button>
-        <Button
-          className="btw"
-          variant="contained"
-          color="primary"
-          onClick={() => toPreview()}
-          style={{
-            marginLeft: "10px",
-          }}
-        >
-          Preview
-        </Button>
+        {arr == "" ? (
+          ""
+        ) : (
+          <Button
+            className="btw"
+            variant="contained"
+            color="primary"
+            onClick={() => toPreview()}
+            style={{
+              marginLeft: "10px",
+            }}
+          >
+            Preview
+          </Button>
+        )}
       </div>
     </div>
   );

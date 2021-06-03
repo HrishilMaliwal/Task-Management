@@ -16,6 +16,7 @@ import AnswerTable from "./AnswerTable";
 import UserAnswers from "./UserAnswers";
 import ViewMarks from "./ViewMarks";
 import ReportTable from "./ReportTable";
+import EditUser from "./EditUser";
 
 function App() {
   return (
@@ -36,6 +37,7 @@ function App() {
             <Route exact path='/useranswers' component={UserAnswers}/>
             <Route exact path='/viewmarks' component={ViewMarks}/>
             <Route exact path="/reporttable" component={ReportTable} />
+            <Route exact path='/edituser' component={EditUser}/>
             
             <PrivateRoute></PrivateRoute>
           </Switch>

@@ -4,6 +4,7 @@ import useGlobalState from "./Context";
 import { useLocation } from "react-router-dom";
 import { useHistory } from "react-router";
 import { Button } from "@material-ui/core";
+import { isPhoneNum, isNullEmpty, customAlert } from "./common";
 
 const UserAnswers = () => {
   const [state, dispatch] = useGlobalState();
@@ -28,16 +29,20 @@ const UserAnswers = () => {
   }, [state]);
 
   const submit = () => {
-    var request = {
-      id: location.state.assignment,
-      marks: marks,
-      remarks: remarks,
-    };
-    state.student_database[location.state.user].marks_array.push(request);
-    history.push({
-      pathname: "/viewanswers",
-      state: { key: location.state.assignment },
-    });
+    if (isNullEmpty(marks) || isNullEmpty(remarks)) {
+      customAlert("Data error", "Please marks and remarks");
+    } else {
+      var request = {
+        id: location.state.assignment,
+        marks: marks,
+        remarks: remarks,
+      };
+      state.student_database[location.state.user].marks_array.push(request);
+      history.push({
+        pathname: "/viewanswers",
+        state: { key: location.state.assignment },
+      });
+    }
   };
 
   return (

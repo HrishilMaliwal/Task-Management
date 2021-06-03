@@ -21,12 +21,18 @@ const ChangePassword = () => {
   const vali = () => {
     if (opass == state.current_user.password) {
       if (npass1 == npass2) {
-        state.current_user.password = npass1;
-        var student = state.student_index.indexOf(state.current_user.id);
-        state.student_database[student].password = npass1;
-        state.current_user.first_login = false;
-        state.student_database[student].first_login = false;
-        history.push("/home");
+        if (state.current_user.is_student) {
+          state.current_user.password = npass1;
+          var student = state.student_index.indexOf(state.current_user.id);
+          state.student_database[student].password = npass1;
+          state.current_user.first_login = false;
+          state.student_database[student].first_login = false;
+          history.push("/home");
+        } else {
+          state.current_user.password = npass1;
+          state.teacher_database[0].password = npass1
+          history.push("/home");
+        }
       } else {
         customAlert("Password Error", "Passwords entered do not match");
       }

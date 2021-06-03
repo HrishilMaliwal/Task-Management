@@ -44,7 +44,7 @@ const ViewTable = () => {
   };
 
   return (
-    <div className="page-paddings" style={{paddingTop:"10px"}}>
+    <div className="page-paddings" style={{ paddingTop: "10px" }}>
       <TableContainer
         component={Paper}
         style={{ marginTop: "30px", width: "max", backgroundColor: "#e6f9ff" }}
@@ -78,36 +78,40 @@ const ViewTable = () => {
                   ) {
                     return null;
                   } else {
-                    return (
-                      <TableRow key={key}>
-                        <TableCell
-                          component="th"
-                          scope="row"
-                          onClick={() => addQues(key)}
-                        >
-                          {key + 1}
-                        </TableCell>
-                        <TableCell align="right">{item.name}</TableCell>
-                        <TableCell align="right">{item.subject}</TableCell>
-                        <TableCell align="right">{item.marks}</TableCell>
-                        <TableCell align="right">{item.SDT}</TableCell>
-                        <TableCell align="right">{item.EDT}</TableCell>
-                        {state.current_user.is_student ? (
-                          ""
-                        ) : (
-                          <TableCell className="btw-full">
-                            <Button
-                              color="secondary"
-                              type="submit"
-                              onClick={() => deleteAssignment(key)}
-                              style={{ marginLeft: "20px" }}
-                            >
-                              Delete
-                            </Button>
+                    if (item.published || !(state.current_user.is_student)) {
+                      return (
+                        <TableRow key={key}>
+                          <TableCell
+                            component="th"
+                            scope="row"
+                            onClick={() => addQues(key)}
+                          >
+                            {key + 1}
                           </TableCell>
-                        )}
-                      </TableRow>
-                    );
+                          <TableCell align="right">{item.name}</TableCell>
+                          <TableCell align="right">{item.subject}</TableCell>
+                          <TableCell align="right">{item.marks}</TableCell>
+                          <TableCell align="right">{item.SDT}</TableCell>
+                          <TableCell align="right">{item.EDT}</TableCell>
+                          {state.current_user.is_student ? (
+                            ""
+                          ) : (
+                            <TableCell className="btw-full">
+                              <Button
+                                color="secondary"
+                                type="submit"
+                                onClick={() => deleteAssignment(key)}
+                                style={{ marginLeft: "20px" }}
+                              >
+                                Delete
+                              </Button>
+                            </TableCell>
+                          )}
+                        </TableRow>
+                      );
+                    } else {
+                      return null;
+                    }
                   }
                 })}
           </TableBody>

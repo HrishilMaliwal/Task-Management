@@ -39,11 +39,21 @@ const ReportTable = () => {
         } else {
           student.answers_array[key].ans.map((i, k) => {
             const q = i.ques;
-            row = { ...row, [q]: i.ans };
+            ;
+            if (i.qtype == 1) {
+              row = { ...row, [q]: i.ans };
+            } else if (i.qtype == 2 || i.qtype == 3) {
+              var str = ""
+              i.ans.map((op, ke) => {
+                str = str + String(op) + " "
+              })
+              row = {...row, [q]: str}
+            }
           });
           csvData.push(row);
         }
       });
+
       const ws = XLSX.utils.json_to_sheet(csvData);
       const wb = { Sheets: { data: ws }, SheetNames: ["data"] };
       const excelBuffer = XLSX.write(wb, { bookType: "xlsx", type: "array" });

@@ -6,6 +6,8 @@ import readXlsxFile from "read-excel-file";
 import { add_users, user_indexing } from "./reducer/action";
 import Button from "@material-ui/core/Button";
 import { useHistory } from "react-router";
+import { customAlert } from "./common";
+import UserTable from "./UserTable";
 
 const CreateUser = () => {
   const [state, dispatch] = useGlobalState();
@@ -42,11 +44,17 @@ const CreateUser = () => {
   };
 
   const adduser = () => {
-    dispatch(user_indexing(arr2));
-    dispatch(add_users(arr1));
-    history.push("/home");
+    if (message == "File upload successful") {
+      dispatch(user_indexing(arr2));
+      dispatch(add_users(arr1));
+    } else {
+      customAlert("Data error", "No file uploaded");
+    }
   };
 
+  const toHome = () => {
+    history.push("/home");
+  };
   return (
     <>
       <Header />
@@ -80,6 +88,18 @@ const CreateUser = () => {
             Add Users
           </Button>
         </Container>
+        <hr />
+      </div>
+      <UserTable />
+      <div className="btn-cntr">
+        <Button
+          variant="contained"
+          color="primary"
+          onClick={() => toHome()}
+          className="btw-full"
+        >
+          Back
+        </Button>
       </div>
     </>
   );

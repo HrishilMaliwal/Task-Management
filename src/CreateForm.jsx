@@ -20,7 +20,6 @@ const CreateForm = () => {
   const [qArr, setQarr] = useState(
     state.assignment_array[location.state.key].questions
   );
-  const [oArr, setOarr] = useState([]);
   const [option, setOption] = useState("");
   const [flag1, setFlag1] = useState(false);
 
@@ -41,42 +40,46 @@ const CreateForm = () => {
   const addcompo = () => {
     if (isNullEmpty(qType) || isNullEmpty(ques)) {
       customAlert("Data Error", "Question type or question cannot be empty");
-    } else if ((qType == 2 || qType == 3) && oArr.length == 0) {
+    } else if (
+      qArr.length > parseInt(state.assignment_array[location.state.key].marks) - 1
+    ) {
       customAlert(
-        "Missing Error",
-        "Multiple choice questions must have at least one option"
+        "Too many questions",
+        "Keep questions less than the marks number"
       );
     } else {
-      var Request = {
-        qid: Math.floor(Math.random() * 10000),
-        ques: ques,
-      };
-      if (qType == 1) {
-        Request = { ...Request, qType: qtArr[0].text, options: [] };
-      } else if (qType == 2) {
-        Request = { ...Request, qType: qtArr[1].text, options: oArr };
-      } else if (qType == 3) {
-        Request = { ...Request, qType: qtArr[2].text, options: oArr };
+      var tempArr = [];
+      var tempFlag = true;
+      if (qType == 2 || qType == 3) {
+        if (isNullEmpty(option)) {
+          customAlert("Input Error", "Options cannot be blank");
+          tempFlag = false;
+        } else {
+          tempArr = option.split(",");
+          setOption("");
+        }
       }
-      qArr.push(Request);
-      setQtype("");
-      setQues("");
-      setOarr([]);
+      if (tempFlag) {
+        var Request = {
+          qid: Math.floor(Math.random() * 10000),
+          ques: ques,
+        };
+        if (qType == 1) {
+          Request = { ...Request, qType: qtArr[0].text, options: [] };
+        } else if (qType == 2) {
+          Request = { ...Request, qType: qtArr[1].text, options: tempArr };
+        } else if (qType == 3) {
+          Request = { ...Request, qType: qtArr[2].text, options: tempArr };
+        }
+        qArr.push(Request);
+        setQtype("");
+        setQues("");
+      }
     }
   };
 
   const delParent = (arr) => {
     setQarr(arr);
-  };
-
-  const addOption = () => {
-    if (isNullEmpty(option)) {
-      customAlert("Input Error", "Options cannot be blank");
-    } else {
-      var tempArr = option.split(",");
-      setOarr(tempArr);
-      setOption("");
-    }
   };
 
   const qLenLimit = (e) => {
@@ -154,15 +157,6 @@ const CreateForm = () => {
               onChange={(e) => setOption(e.target.value)}
               style={{ width: "80%" }}
             />
-            <Button
-              variant="contained"
-              color="primary"
-              className="btn-create"
-              onClick={() => addOption()}
-              style={{ margin: "28px" }}
-            >
-              Add
-            </Button>
           </div>
         ) : (
           ""

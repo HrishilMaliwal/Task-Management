@@ -44,7 +44,17 @@ const Form = () => {
       state.student_database[student].answers_array.map((item, key) => {
         if (item.id == location.state.key) {
           return item.ans.map((i, k) => {
-            return (document.getElementById(i.qid).value = i.ans);
+            if (i.qtype == 1) {
+              return (document.getElementById(i.qid).value = i.ans);
+            } else if (i.qtype == 2) {
+              return(document.getElementById(i.ans).checked = true);
+            } else if (i.qtype == 3)
+            {
+              i.ans.map((op, ke) => {
+                document.getElementById(op).checked = true
+              })
+              console.log()
+            }
           });
         }
       });
@@ -63,6 +73,7 @@ const Form = () => {
             qid: item.qid,
             ques: item.ques,
             ans: document.getElementById(item.qid).value,
+            qtype: 1,
           };
           break;
         case "Multiple choice(Single type)":
@@ -75,6 +86,7 @@ const Form = () => {
             qid: item.qid,
             ques: item.ques,
             ans: [...temp],
+            qtype: 2,
           };
           temp.length = 0;
           break;
@@ -88,6 +100,7 @@ const Form = () => {
             qid: item.qid,
             ques: item.ques,
             ans: [...temp],
+            qtype: 3,
           };
           temp.length = 0;
           break;
@@ -159,12 +172,22 @@ const Form = () => {
                       return (
                         <>
                           <label>{i}</label>
-                          {state.current_user.is_student ? (
-                            <input type="radio" value={i} name={item.qid} />
+                          {state.current_user.is_student &&
+                          state.student_database[
+                            student
+                          ].completed_array.indexOf(location.state.key) ==
+                            -1 ? (
+                            <input
+                              type="radio"
+                              value={i}
+                              name={item.qid}
+                              id={i}
+                            />
                           ) : (
                             <input
                               type="radio"
                               value={i}
+                              id={i}
                               name={item.qid}
                               disabled
                             />
@@ -186,10 +209,15 @@ const Form = () => {
                       return (
                         <>
                           <label className="r-c-button">{i}</label>
-                          {state.current_user.is_student ? (
+                          {state.current_user.is_student &&
+                          state.student_database[
+                            student
+                          ].completed_array.indexOf(location.state.key) ==
+                            -1 ? (
                             <input
                               type="checkbox"
                               value={i}
+                              id={i}
                               name={item.qid}
                               className="r-c-button"
                             />
@@ -197,6 +225,7 @@ const Form = () => {
                             <input
                               type="checkbox"
                               value={i}
+                              id={i}
                               name={item.qid}
                               disabled
                               className="r-c-button"
