@@ -1,6 +1,5 @@
-import React from "react";
+import React, { useState } from "react";
 import Table from "@material-ui/core/Table";
-import { makeStyles } from "@material-ui/core/styles";
 import TableBody from "@material-ui/core/TableBody";
 import TableCell from "@material-ui/core/TableCell";
 import TableContainer from "@material-ui/core/TableContainer";
@@ -14,52 +13,49 @@ import { useHistory } from "react-router";
 import { customAlert } from "./common";
 import * as FileSaver from "file-saver";
 import * as XLSX from "xlsx";
+import TextField from "@material-ui/core/TextField";
 
 const ReportTable = () => {
   const [state, dispatch] = useGlobalState();
   const history = useHistory();
+  const [searchItem, setSearch] = useState("");
 
   const download = (key) => {
-    if (state.assignment_array[key].questions.length == 0) {
-      customAlert("Data error", "No questions assigned to this assignment");
-    } else {
-      const fileType =
-        "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet;charset=UTF-8";
-      const fileExtension = ".xlsx";
+    const fileType =
+      "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet;charset=UTF-8";
+    const fileExtension = ".xlsx";
 
-      const fileName = state.assignment_array[key].name + "_report";
-      var csvData = [];
-      var row = {};
-      state.student_database.map((student, key1) => {
-        row = {
-          id: student.id,
-        };
-        if (typeof student.answers_array[key] == "undefined") {
-          return null;
-        } else {
-          student.answers_array[key].ans.map((i, k) => {
+    const fileName = state.assignment_array[key].name + "_report";
+    var csvData = [];
+    var row = {};
+    state.student_database.map((student, key1) => {
+      student.answers_array.map((assignment, key2) => {
+        if (assignment.id == key) {
+          row = {
+            id: student.id,
+          };
+          assignment.ans.map((i, k) => {
             const q = i.ques;
-            ;
-            if (i.qtype == 1) {
+            if (i.qtype == 1 || i.qtype == 4) {
               row = { ...row, [q]: i.ans };
             } else if (i.qtype == 2 || i.qtype == 3) {
-              var str = ""
+              var str = "";
               i.ans.map((op, ke) => {
-                str = str + String(op) + " "
-              })
-              row = {...row, [q]: str}
+                str = str + String(op) + " ";
+              });
+              row = { ...row, [q]: str };
             }
           });
           csvData.push(row);
         }
       });
+    });
 
-      const ws = XLSX.utils.json_to_sheet(csvData);
-      const wb = { Sheets: { data: ws }, SheetNames: ["data"] };
-      const excelBuffer = XLSX.write(wb, { bookType: "xlsx", type: "array" });
-      const data = new Blob([excelBuffer], { type: fileType });
-      FileSaver.saveAs(data, fileName + fileExtension);
-    }
+    const ws = XLSX.utils.json_to_sheet(csvData);
+    const wb = { Sheets: { data: ws }, SheetNames: ["data"] };
+    const excelBuffer = XLSX.write(wb, { bookType: "xlsx", type: "array" });
+    const data = new Blob([excelBuffer], { type: fileType });
+    FileSaver.saveAs(data, fileName + fileExtension);
   };
 
   const toHome = () => {
@@ -70,6 +66,14 @@ const ReportTable = () => {
     <>
       <Header />
       <div className="page-paddings">
+        <h2 style={{ textAlign: "center" }}>Reports</h2>
+        <TextField
+          id="outlined-basic"
+          variant="outlined"
+          label="Search"
+          className="searchbar"
+          onChange={(e) => setSearch(e.target.value)}
+        />
         <TableContainer
           component={Paper}
           style={{
@@ -82,9 +86,9 @@ const ReportTable = () => {
             <TableHead>
               <TableRow>
                 <TableCell>ID</TableCell>
-                <TableCell align="right">Name</TableCell>
-                <TableCell align="right">Subject</TableCell>
-                <TableCell align="right">Marks</TableCell>
+                <TableCell>Name</TableCell>
+                <TableCell>Subject</TableCell>
+                <TableCell>Marks</TableCell>
                 <TableCell></TableCell>
               </TableRow>
             </TableHead>
@@ -95,21 +99,36 @@ const ReportTable = () => {
                     "No assignments to view answers of"
                   )
                 : state.assignment_array.map((item, key) => {
-                    return (
-                      <TableRow key={key}>
-                        <TableCell component="th" scope="row">
-                          {key + 1}
-                        </TableCell>
-                        <TableCell align="right">{item.name}</TableCell>
-                        <TableCell align="right">{item.subject}</TableCell>
-                        <TableCell align="right">{item.marks}</TableCell>
-                        <TableCell className="btw-full">
-                          <Button color="primary" onClick={() => download(key)}>
-                            Download
-                          </Button>
-                        </TableCell>
-                      </TableRow>
-                    );
+                    if (item.published) {
+                      if (
+                        searchItem !== "" &&
+                        item.name
+                          .toLowerCase()
+                          .indexOf(searchItem.toLowerCase()) === -1
+                      ) {
+                        return null;
+                      }
+                      return (
+                        <TableRow key={key}>
+                          <TableCell component="th" scope="row">
+                            {key + 1}
+                          </TableCell>
+                          <TableCell>{item.name}</TableCell>
+                          <TableCell>{item.subject}</TableCell>
+                          <TableCell>{item.marks}</TableCell>
+                          <TableCell className="btw-full">
+                            <Button
+                              color="primary"
+                              onClick={() => download(key)}
+                            >
+                              Download
+                            </Button>
+                          </TableCell>
+                        </TableRow>
+                      );
+                    } else {
+                      return null;
+                    }
                   })}
             </TableBody>
           </Table>

@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from "react";
 import Table from "@material-ui/core/Table";
-import { makeStyles } from "@material-ui/core/styles";
 import TableBody from "@material-ui/core/TableBody";
 import TableCell from "@material-ui/core/TableCell";
 import TableContainer from "@material-ui/core/TableContainer";
@@ -12,10 +11,12 @@ import { Button } from "@material-ui/core";
 import { del_assignment } from "./reducer/action";
 import { useHistory } from "react-router";
 import { customAlert } from "./common";
+import TextField from "@material-ui/core/TextField";
 
 const ViewTable = () => {
   const [state, dispatch] = useGlobalState();
   const history = useHistory();
+  const [searchItem, setSearch] = useState("");
 
   useEffect(() => {
     localStorage.setItem("myState", JSON.stringify(state));
@@ -32,19 +33,43 @@ const ViewTable = () => {
     }
   };
 
-  const addQues = (key) => {
-    if (
-      state.current_user.is_student ||
-      state.assignment_array[key].published
-    ) {
-      history.push({ pathname: "/form", state: { key: key } });
+  const editAssignment = (key) => {
+    if (state.assignment_array[key].is_done) {
+      customAlert(
+        "Edit error",
+        "Someone has answered this assignment and it cannot be Edited"
+      );
     } else {
-      history.push({ pathname: "/createform", state: { key: key } });
+      history.push({ pathname: "/editassignment", state: { key: key } });
+    }
+  };
+
+  const addQues = (key) => {
+    if (state.current_user.is_student) {
+      var student = state.student_index.indexOf(state.current_user.id);
+      if (state.student_database[student].completed_array.indexOf(key) == -1) {
+        history.push({ pathname: "/form", state: { key: key, flag: false } });
+      } else {
+        history.push({ pathname: "/form", state: { key: key, flag: true } });
+      }
+    } else {
+      if (state.assignment_array[key].published) {
+        history.push({ pathname: "/form", state: { key: key, flag: true } });
+      } else {
+        history.push({ pathname: "/createform", state: { key: key } });
+      }
     }
   };
 
   return (
     <div className="page-paddings" style={{ paddingTop: "10px" }}>
+      <TextField
+        id="outlined-basic"
+        variant="outlined"
+        label="Search"
+        className="searchbar"
+        onChange={(e) => setSearch(e.target.value)}
+      />
       <TableContainer
         component={Paper}
         style={{ marginTop: "30px", width: "max", backgroundColor: "#e6f9ff" }}
@@ -53,16 +78,17 @@ const ViewTable = () => {
           <TableHead>
             <TableRow>
               <TableCell>ID</TableCell>
-              <TableCell align="right">Name</TableCell>
-              <TableCell align="right">Subject</TableCell>
-              <TableCell align="right">Marks</TableCell>
-              <TableCell align="right">Start date-time</TableCell>
-              <TableCell align="right">End date-time</TableCell>
+              <TableCell>Name</TableCell>
+              <TableCell>Subject</TableCell>
+              <TableCell>Marks</TableCell>
               {state.current_user.is_student ? (
                 ""
               ) : (
-                <TableCell align="right"></TableCell>
+                <TableCell>Status</TableCell>
               )}
+              <TableCell>Start date-time</TableCell>
+              <TableCell>End date-time</TableCell>
+              {state.current_user.is_student ? "" : <TableCell></TableCell>}
             </TableRow>
           </TableHead>
           <TableBody>
@@ -78,7 +104,15 @@ const ViewTable = () => {
                   ) {
                     return null;
                   } else {
-                    if (item.published || !(state.current_user.is_student)) {
+                    if (item.published || !state.current_user.is_student) {
+                      if (
+                        searchItem !== "" &&
+                        item.name
+                          .toLowerCase()
+                          .indexOf(searchItem.toLowerCase()) === -1
+                      ) {
+                        return null;
+                      }
                       return (
                         <TableRow key={key}>
                           <TableCell
@@ -88,11 +122,18 @@ const ViewTable = () => {
                           >
                             {key + 1}
                           </TableCell>
-                          <TableCell align="right">{item.name}</TableCell>
-                          <TableCell align="right">{item.subject}</TableCell>
-                          <TableCell align="right">{item.marks}</TableCell>
-                          <TableCell align="right">{item.SDT}</TableCell>
-                          <TableCell align="right">{item.EDT}</TableCell>
+                          <TableCell>{item.name}</TableCell>
+                          <TableCell>{item.subject}</TableCell>
+                          <TableCell>{item.marks}</TableCell>
+                          {state.current_user.is_student ? (
+                            ""
+                          ) : (
+                            <TableCell>
+                              {item.published ? "Published" : "Not published"}
+                            </TableCell>
+                          )}
+                          <TableCell>{item.SDT}</TableCell>
+                          <TableCell>{item.EDT}</TableCell>
                           {state.current_user.is_student ? (
                             ""
                           ) : (
@@ -101,9 +142,16 @@ const ViewTable = () => {
                                 color="secondary"
                                 type="submit"
                                 onClick={() => deleteAssignment(key)}
-                                style={{ marginLeft: "20px" }}
                               >
                                 Delete
+                              </Button>
+                              <Button
+                                color="primary"
+                                type="submit"
+                                onClick={() => editAssignment(key)}
+                                style={{ marginLeft: "20px" }}
+                              >
+                                Edit
                               </Button>
                             </TableCell>
                           )}

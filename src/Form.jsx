@@ -15,6 +15,9 @@ const Form = () => {
   const [student, setStudent] = useState(
     state.student_index.indexOf(state.current_user.id)
   );
+  const [flag, setFlag] = useState(location.state.flag);
+
+  useEffect(() => {});
 
   const back = () => {
     history.push({
@@ -44,16 +47,14 @@ const Form = () => {
       state.student_database[student].answers_array.map((item, key) => {
         if (item.id == location.state.key) {
           return item.ans.map((i, k) => {
-            if (i.qtype == 1) {
+            if (i.qtype == 1 || i.qtype == 4) {
               return (document.getElementById(i.qid).value = i.ans);
             } else if (i.qtype == 2) {
-              return(document.getElementById(i.ans).checked = true);
-            } else if (i.qtype == 3)
-            {
+              return (document.getElementById(i.ans).checked = true);
+            } else if (i.qtype == 3) {
               i.ans.map((op, ke) => {
-                document.getElementById(op).checked = true
-              })
-              console.log()
+                document.getElementById(op).checked = true;
+              });
             }
           });
         }
@@ -67,42 +68,59 @@ const Form = () => {
 
   const submit = () => {
     state.assignment_array[location.state.key].questions.map((item, key) => {
+      var answer = {
+        qid: item.qid,
+        ques: item.ques,
+        qtype: item.qType,
+      };
       switch (item.qType) {
-        case "Text":
-          var answer = {
-            qid: item.qid,
-            ques: item.ques,
-            ans: document.getElementById(item.qid).value,
-            qtype: 1,
-          };
+        case 1:
+          // var answer = {
+          //   qid: item.qid,
+          //   ques: item.ques,
+          //   ans: document.getElementById(item.qid).value,
+          //   qtype: 1,
+          // };
+          answer = { ...answer, ans: document.getElementById(item.qid).value };
           break;
-        case "Multiple choice(Single type)":
+        case 2:
           document.getElementsByName(item.qid).forEach((radio) => {
             if (radio.checked) {
               temp.push(radio.value);
             }
           });
-          var answer = {
-            qid: item.qid,
-            ques: item.ques,
-            ans: [...temp],
-            qtype: 2,
-          };
+          // var answer = {
+          //   qid: item.qid,
+          //   ques: item.ques,
+          //   ans: [...temp],
+          //   qtype: 2,
+          // };
+          answer = { ...answer, ans: [...temp] };
           temp.length = 0;
           break;
-        case "Multiple choice(Multiple type)":
+        case 3:
           document.getElementsByName(item.qid).forEach((check) => {
             if (check.checked) {
               temp.push(check.value);
             }
           });
-          var answer = {
-            qid: item.qid,
-            ques: item.ques,
-            ans: [...temp],
-            qtype: 3,
-          };
+          // var answer = {
+          //   qid: item.qid,
+          //   ques: item.ques,
+          //   ans: [...temp],
+          //   qtype: 3,
+          // };
+          answer = { ...answer, ans: [...temp] };
           temp.length = 0;
+          break;
+        case 4:
+          // var answer = {
+          //   qid: item.qid,
+          //   ques: item.ques,
+          //   ans: document.getElementById(item.qid).value,
+          //   qtype: 4,
+          // };
+          answer = { ...answer, ans: document.getElementById(item.qid).value };
           break;
       }
       arr1.push(answer);
@@ -131,7 +149,7 @@ const Form = () => {
         {state.assignment_array[location.state.key].questions.map(
           (item, key) => {
             switch (item.qType) {
-              case "Text":
+              case 1:
                 return (
                   <>
                     <br />
@@ -139,28 +157,17 @@ const Form = () => {
                       {key + 1}. {item.ques}:
                     </label>
                     <br />
-                    {state.current_user.is_student &&
-                    state.student_database[student].completed_array.indexOf(
-                      location.state.key
-                    ) == -1 ? (
-                      <textarea
-                        className="ip-textarea"
-                        placeholder="Type answer(500 words limit) here..."
-                        id={item.qid}
-                        onChange={(e) => ansLenLimit(e)}
-                      />
-                    ) : (
-                      <textarea
-                        className="ip-textarea"
-                        placeholder="Type answer(500 words limit) here..."
-                        id={item.qid}
-                        disabled
-                      />
-                    )}
+                    <textarea
+                      className="ip-textarea"
+                      placeholder="Type answer(500 words limit) here..."
+                      id={item.qid}
+                      onChange={(e) => ansLenLimit(e)}
+                      disabled={flag}
+                    />
                     <br />
                   </>
                 );
-              case "Multiple choice(Single type)":
+              case 2:
                 return (
                   <>
                     <br />
@@ -171,33 +178,23 @@ const Form = () => {
                     {item.options.map((i, k) => {
                       return (
                         <>
-                          <label>{i}</label>
-                          {state.current_user.is_student &&
-                          state.student_database[
-                            student
-                          ].completed_array.indexOf(location.state.key) ==
-                            -1 ? (
-                            <input
-                              type="radio"
-                              value={i}
-                              name={item.qid}
-                              id={i}
-                            />
-                          ) : (
-                            <input
-                              type="radio"
-                              value={i}
-                              id={i}
-                              name={item.qid}
-                              disabled
-                            />
-                          )}
+                          <input
+                            type="radio"
+                            value={i}
+                            name={item.qid}
+                            id={i}
+                            disabled={flag}
+                          />
+                          <label style={{ margin: "10px 10px 0px 3px" }}>
+                            {i}
+                          </label>
                         </>
                       );
                     })}
+                    <br />
                   </>
                 );
-              case "Multiple choice(Multiple type)":
+              case 3:
                 return (
                   <>
                     <br />
@@ -208,32 +205,37 @@ const Form = () => {
                     {item.options.map((i, k) => {
                       return (
                         <>
-                          <label className="r-c-button">{i}</label>
-                          {state.current_user.is_student &&
-                          state.student_database[
-                            student
-                          ].completed_array.indexOf(location.state.key) ==
-                            -1 ? (
-                            <input
-                              type="checkbox"
-                              value={i}
-                              id={i}
-                              name={item.qid}
-                              className="r-c-button"
-                            />
-                          ) : (
-                            <input
-                              type="checkbox"
-                              value={i}
-                              id={i}
-                              name={item.qid}
-                              disabled
-                              className="r-c-button"
-                            />
-                          )}
+                          <input
+                            type="checkbox"
+                            value={i}
+                            id={i}
+                            name={item.qid}
+                            disabled={flag}
+                          />
+                          <label style={{ margin: "10px 10px 0px 3px" }}>
+                            {i}
+                          </label>
                         </>
                       );
                     })}
+                    <br />
+                  </>
+                );
+              case 4:
+                return (
+                  <>
+                    <br />
+                    <label className="questions">
+                      {key + 1}. {item.ques}:
+                    </label>
+                    <br />
+                    <input
+                      type="number"
+                      id={item.qid}
+                      disabled={flag}
+                      className="ip-num"
+                    />
+                    <br />
                   </>
                 );
             }

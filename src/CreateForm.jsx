@@ -27,6 +27,7 @@ const CreateForm = () => {
     { qId: 1, type: "text", text: "Text" },
     { qId: 2, type: "radio", text: "Multiple choice(Single type)" },
     { qId: 3, type: "checkbox", text: "Multiple choice(Multiple type)" },
+    { qId: 4, type: "number", text: "Integer"}
   ]);
 
   const useStyles = makeStyles((theme) => ({
@@ -65,11 +66,13 @@ const CreateForm = () => {
           ques: ques,
         };
         if (qType == 1) {
-          Request = { ...Request, qType: qtArr[0].text, options: [] };
+          Request = { ...Request, qText: qtArr[0].text, options: [], qType: 1};
         } else if (qType == 2) {
-          Request = { ...Request, qType: qtArr[1].text, options: tempArr };
+          Request = { ...Request, qText: qtArr[1].text, options: tempArr, qType: 2 };
         } else if (qType == 3) {
-          Request = { ...Request, qType: qtArr[2].text, options: tempArr };
+          Request = { ...Request, qText: qtArr[2].text, options: tempArr, qType: 3 };
+        } else if (qType == 4) {
+          Request = { ...Request, qText: qtArr[3].text, options: [], qType: 4}
         }
         qArr.push(Request);
         setQtype("");
@@ -90,6 +93,7 @@ const CreateForm = () => {
       setQues(e.target.value);
     }
   };
+
 
   useEffect(() => {
     if (qType == 2 || qType == 3) {
@@ -112,7 +116,7 @@ const CreateForm = () => {
           <p>
             Assignment Name - {state.assignment_array[location.state.key].name}
           </p>
-          <div style={{ position: "absolute", left: "300px", top: "148px" }}>
+          <div style={{ position: "absolute", left: "320px", top: "148px" }}>
             <p>
               Subject - {state.assignment_array[location.state.key].subject}
             </p>

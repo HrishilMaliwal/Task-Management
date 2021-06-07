@@ -36,11 +36,6 @@ button:hover {
   width: 30px;
 }
 
-/* .form {
-  border-radius: 5px;
-  background-color: #f2f2f2;
-} */
-
 .btn-cntr {
   width: 200px;
   position: relative;
@@ -154,4 +149,19 @@ button:hover {
   margin: 20px;
   position: relative;
   left: 36%;
+}
+
+.searchbar {
+  margin-top: 30px;
+}
+
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+.ip-num {
+  width: 333px;
+  height: 20px;
 }

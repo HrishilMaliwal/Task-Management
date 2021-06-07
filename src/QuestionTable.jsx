@@ -14,10 +14,11 @@ const QuestionTable = (props) => {
   const history = useHistory();
   const [state, dispatch] = useGlobalState();
   const [arr, setArr] = useState(props.qArr);
+  const [searchItem, setSearch] = useState("");
 
   const toPreview = () => {
     state.assignment_array[props.ke].questions = [...arr];
-    history.push({ pathname: "/form", state: { key: props.ke } });
+    history.push({ pathname: "/form", state: { key: props.ke, flag: true } });
   };
 
   const back = () => {
@@ -64,7 +65,7 @@ const QuestionTable = (props) => {
                   <TableCell component="th" scope="row">
                     {key + 1}
                   </TableCell>
-                  <TableCell>{item.qType}</TableCell>
+                  <TableCell>{item.qText}</TableCell>
                   <TableCell>{item.ques}</TableCell>
                   <TableCell>
                     <ul>
@@ -78,7 +79,6 @@ const QuestionTable = (props) => {
                       color="secondary"
                       type="submit"
                       onClick={() => deleteQues(key)}
-                      style={{ marginLeft: "20px" }}
                     >
                       Delete
                     </Button>

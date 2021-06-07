@@ -8,17 +8,22 @@ import Header from "./Header";
 import TextField from "@material-ui/core/TextField";
 import readXlsxFile from "read-excel-file";
 import Button from "@material-ui/core/Button";
+import ReactExport from "react-data-export";
 
 const CreateTask = () => {
+  const [state, dispatch] = useGlobalState();
   const [name, setName] = useState("");
   const [subject, setSubject] = useState("");
   const [marks, setMarks] = useState("");
   const [SDT, setSDT] = useState("");
   const [EDT, setEDT] = useState("");
-  const [state, dispatch] = useGlobalState();
   const history = useHistory();
   const [message, setMessage] = useState("No file detected");
   const [arr, setArr] = useState([]);
+  const ExcelFile = ReactExport.ExcelFile;
+  const ExcelSheet = ReactExport.ExcelFile.ExcelSheet;
+  const ExcelColumn = ReactExport.ExcelFile.ExcelColumn;
+  const sample = [];
 
   useEffect(() => {
     localStorage.setItem("myState", JSON.stringify(state));
@@ -56,12 +61,18 @@ const CreateTask = () => {
     } else if (arr.length == 0) {
       customAlert("Data not found", "Upload user excel");
     } else {
+      var Stemp = SDT.split('T')
+      var Stemp1 = Stemp[0].split('-')
+      var Stemp3 = Stemp1[2] + '-' + Stemp1[1] + '-' + Stemp1[0] + ' ' + Stemp[1]
+      var Etemp = EDT.split('T')
+      var Etemp1 = Etemp[0].split('-')
+      var Etemp3 = Etemp1[2] + '-' + Etemp1[1] + '-' + Etemp1[0] + ' ' + Etemp[1]
       var Request = {
         name: name,
         subject: subject,
         marks: marks,
-        SDT: SDT,
-        EDT: EDT,
+        SDT: Stemp3,
+        EDT: Etemp3   ,
         questions: [],
         valid_users: [...arr],
         published: false,
@@ -178,7 +189,22 @@ const CreateTask = () => {
           </Button>
         </label>
         <label>{message}</label>
-        <Button variant="contained" color="primary" className="btn-create" onClick={() => compoAdd()}>
+        <br />
+        <ExcelFile
+          element={<Button style={{ color: "red" }}>Download sample</Button>}
+        >
+          <ExcelSheet data={sample} name="Users">
+            <ExcelColumn label="ID" value="ID" />
+            <ExcelColumn label="first name" value="first" />
+            <ExcelColumn label="last name" value="last" />
+          </ExcelSheet>
+        </ExcelFile>
+        <Button
+          variant="contained"
+          color="primary"
+          className="btn-create"
+          onClick={() => compoAdd()}
+        >
           Add
         </Button>
         <hr />

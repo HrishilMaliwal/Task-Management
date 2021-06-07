@@ -12,16 +12,18 @@ import Header from "./Header";
 import { useLocation } from "react-router-dom";
 import { useHistory } from "react-router";
 import { customAlert } from "./common";
+import TextField from "@material-ui/core/TextField";
 
 const ViewAnswers = () => {
   const [state, dispatch] = useGlobalState();
   const history = useHistory();
   const location = useLocation();
+  const [searchItem, setSearch] = useState("");
 
   const view = (key) => {
     history.push({
       pathname: "/useranswers",
-      state: { assignment: location.state.key, user: key },
+      state: { assignment: location.state.key, user: key, flag: false },
     });
   };
 
@@ -37,6 +39,14 @@ const ViewAnswers = () => {
     <>
       <Header />
       <div className="page-paddings">
+        <h2 style={{ textAlign: "center" }}>Users</h2>
+        <TextField
+          id="outlined-basic"
+          variant="outlined"
+          label="Search"
+          className="searchbar"
+          onChange={(e) => setSearch(e.target.value)}
+        />
         <TableContainer
           component={Paper}
           style={{
@@ -49,8 +59,8 @@ const ViewAnswers = () => {
             <TableHead>
               <TableRow>
                 <TableCell>SAP ID</TableCell>
-                <TableCell align="right">First name</TableCell>
-                <TableCell align="right">Last name</TableCell>
+                <TableCell>First name</TableCell>
+                <TableCell>Last name</TableCell>
               </TableRow>
             </TableHead>
             <TableBody>
@@ -67,6 +77,14 @@ const ViewAnswers = () => {
                     ) {
                       return null;
                     } else {
+                      if (
+                        searchItem !== "" &&
+                        item.first
+                          .toLowerCase()
+                          .indexOf(searchItem.toLowerCase()) === -1
+                      ) {
+                        return null;
+                      }
                       return (
                         <TableRow key={key}>
                           <TableCell
@@ -76,8 +94,8 @@ const ViewAnswers = () => {
                           >
                             {item.id}
                           </TableCell>
-                          <TableCell align="right">{item.first}</TableCell>
-                          <TableCell align="right">{item.last}</TableCell>
+                          <TableCell>{item.first}</TableCell>
+                          <TableCell>{item.last}</TableCell>
                         </TableRow>
                       );
                     }

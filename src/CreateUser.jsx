@@ -7,7 +7,7 @@ import { add_users, user_indexing } from "./reducer/action";
 import Button from "@material-ui/core/Button";
 import { useHistory } from "react-router";
 import { customAlert } from "./common";
-import UserTable from "./UserTable";
+import ReactExport from "react-data-export";
 
 const CreateUser = () => {
   const [state, dispatch] = useGlobalState();
@@ -15,6 +15,10 @@ const CreateUser = () => {
   const [arr2, setArr2] = useState([]);
   const [message, setMessage] = useState("No file uploaded");
   const history = useHistory();
+  const ExcelFile = ReactExport.ExcelFile;
+  const ExcelSheet = ReactExport.ExcelFile.ExcelSheet;
+  const ExcelColumn = ReactExport.ExcelFile.ExcelColumn;
+  const sample = [];
 
   useEffect(() => {
     localStorage.setItem("myState", JSON.stringify(state));
@@ -50,11 +54,13 @@ const CreateUser = () => {
     } else {
       customAlert("Data error", "No file uploaded");
     }
+    history.push('/usertable')
   };
 
-  const toHome = () => {
-    history.push("/home");
+  const back = () => {
+    history.push("/usertable");
   };
+
   return (
     <>
       <Header />
@@ -70,7 +76,7 @@ const CreateUser = () => {
           />
           <label htmlFor="contained-button-file">
             <Button
-              style={{ margin: "15px 15px 0px" }}
+              style={{ margin: "15px 15px 5px 15px" }}
               variant="contained"
               color="primary"
               component="span"
@@ -79,23 +85,31 @@ const CreateUser = () => {
             </Button>
           </label>
           <label>{message}</label>
+          <br/>
+          <ExcelFile element={<Button style={{color:"red"}}>Download sample</Button>}>
+            <ExcelSheet data={sample} name="Users">
+              <ExcelColumn label="ID" value="ID" />
+              <ExcelColumn label="first name" value="first" />
+              <ExcelColumn label="last name" value="last" />
+              <ExcelColumn label="email" value="email" />
+            </ExcelSheet>
+          </ExcelFile>
           <Button
             variant="contained"
             color="primary"
             onClick={() => adduser()}
-            className="btn-cntr"
+            className="btn-create"
           >
             Add Users
           </Button>
         </Container>
         <hr />
       </div>
-      <UserTable />
       <div className="btn-cntr">
         <Button
           variant="contained"
           color="primary"
-          onClick={() => toHome()}
+          onClick={() => back()}
           className="btw-full"
         >
           Back

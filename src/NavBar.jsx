@@ -19,7 +19,7 @@ const NavBar = () => {
   };
 
   const toCreateUser = () => {
-    history.push("/adduser");
+    history.push("/usertable");
   };
 
   const toAnswers = () => {
@@ -43,7 +43,7 @@ const NavBar = () => {
       ) : (
         <>
           <button className="nav" onClick={() => toCreateUser()}>
-            Create User
+            User list
           </button>
           <button className="nav" onClick={() => toReport()}>
             View report
