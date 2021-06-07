@@ -75,12 +75,6 @@ const Form = () => {
       };
       switch (item.qType) {
         case 1:
-          // var answer = {
-          //   qid: item.qid,
-          //   ques: item.ques,
-          //   ans: document.getElementById(item.qid).value,
-          //   qtype: 1,
-          // };
           answer = { ...answer, ans: document.getElementById(item.qid).value };
           break;
         case 2:
@@ -89,12 +83,6 @@ const Form = () => {
               temp.push(radio.value);
             }
           });
-          // var answer = {
-          //   qid: item.qid,
-          //   ques: item.ques,
-          //   ans: [...temp],
-          //   qtype: 2,
-          // };
           answer = { ...answer, ans: [...temp] };
           temp.length = 0;
           break;
@@ -104,23 +92,14 @@ const Form = () => {
               temp.push(check.value);
             }
           });
-          // var answer = {
-          //   qid: item.qid,
-          //   ques: item.ques,
-          //   ans: [...temp],
-          //   qtype: 3,
-          // };
           answer = { ...answer, ans: [...temp] };
           temp.length = 0;
           break;
         case 4:
-          // var answer = {
-          //   qid: item.qid,
-          //   ques: item.ques,
-          //   ans: document.getElementById(item.qid).value,
-          //   qtype: 4,
-          // };
           answer = { ...answer, ans: document.getElementById(item.qid).value };
+          break;
+        case 5:
+          answer = { ...answer, ans: document.getElementById(item.qid).value }
           break;
       }
       arr1.push(answer);
@@ -167,6 +146,7 @@ const Form = () => {
                     <br />
                   </>
                 );
+
               case 2:
                 return (
                   <>
@@ -194,6 +174,7 @@ const Form = () => {
                     <br />
                   </>
                 );
+
               case 3:
                 return (
                   <>
@@ -221,6 +202,7 @@ const Form = () => {
                     <br />
                   </>
                 );
+
               case 4:
                 return (
                   <>
@@ -236,6 +218,22 @@ const Form = () => {
                       className="ip-num"
                     />
                     <br />
+                  </>
+                );
+
+              case 5:
+                return (
+                  <>
+                    <br />
+                    <label className="questions">
+                      {key + 1}. {item.ques}:
+                    </label>
+                    <br />
+                    <input
+                      type="datetime-local"
+                      id={item.qid}
+                      disabled={flag}
+                    />
                   </>
                 );
             }

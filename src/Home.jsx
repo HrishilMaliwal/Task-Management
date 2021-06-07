@@ -9,7 +9,7 @@ const Home = () => {
   const history = useHistory();
   const [state, dispatch] = useGlobalState();
   const create = () => {
-    history.push("/createtask");
+    history.push({ pathname: "/createtask", state: { flag: false } })
   };
 
   return (

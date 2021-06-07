@@ -22,12 +22,15 @@ const CreateForm = () => {
   );
   const [option, setOption] = useState("");
   const [flag1, setFlag1] = useState(false);
+  const [flag2, setFlag2] = useState(false)
+  const [index, setIndex] = useState("")
 
   const [qtArr, setQTarr] = useState([
-    { qId: 1, type: "text", text: "Text" },
-    { qId: 2, type: "radio", text: "Multiple choice(Single type)" },
-    { qId: 3, type: "checkbox", text: "Multiple choice(Multiple type)" },
-    { qId: 4, type: "number", text: "Integer"}
+    { qId: 1, text: "Text" },
+    { qId: 2, text: "Multiple choice(Single type)" },
+    { qId: 3, text: "Multiple choice(Multiple type)" },
+    { qId: 4, text: "Integer"},
+    { qId: 5, text: "Date and Time"}
   ]);
 
   const useStyles = makeStyles((theme) => ({
@@ -73,10 +76,20 @@ const CreateForm = () => {
           Request = { ...Request, qText: qtArr[2].text, options: tempArr, qType: 3 };
         } else if (qType == 4) {
           Request = { ...Request, qText: qtArr[3].text, options: [], qType: 4}
+        } else if (qType == 5) {
+          Request = { ...Request, qText: qtArr[4].text, options: [], qType: 5}
         }
-        qArr.push(Request);
-        setQtype("");
-        setQues("");
+        if(flag2){
+          qArr.splice(index, 1, Request)
+          setQtype("");
+          setQues("");
+          setFlag2(false)
+        } else {
+          qArr.push(Request);
+          setQtype("");
+          setQues("");
+        }
+
       }
     }
   };
@@ -93,6 +106,14 @@ const CreateForm = () => {
       setQues(e.target.value);
     }
   };
+
+  const edit = (key) => {
+    setIndex(key)
+    setQtype(state.assignment_array[location.state.key].questions[key].qType)
+    setQues(state.assignment_array[location.state.key].questions[key].ques)
+    setOption(String(state.assignment_array[location.state.key].questions[key].options))
+    setFlag2(true)
+  }
 
 
   useEffect(() => {
@@ -116,7 +137,7 @@ const CreateForm = () => {
           <p>
             Assignment Name - {state.assignment_array[location.state.key].name}
           </p>
-          <div style={{ position: "absolute", left: "320px", top: "148px" }}>
+          <div style={{ position: "absolute", left: "420px", top: "148px" }}>
             <p>
               Subject - {state.assignment_array[location.state.key].subject}
             </p>
@@ -177,6 +198,7 @@ const CreateForm = () => {
           ke={location.state.key}
           qArr={qArr}
           delfunc={delParent}
+          editfunc={edit}
         />
       </div>
     </>

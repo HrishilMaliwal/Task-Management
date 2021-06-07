@@ -40,7 +40,7 @@ const ViewTable = () => {
         "Someone has answered this assignment and it cannot be Edited"
       );
     } else {
-      history.push({ pathname: "/editassignment", state: { key: key } });
+      history.push({ pathname: "/createtask", state: { key: key, flag: true } });
     }
   };
 

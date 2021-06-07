@@ -9,9 +9,11 @@ import TextField from "@material-ui/core/TextField";
 import readXlsxFile from "read-excel-file";
 import Button from "@material-ui/core/Button";
 import ReactExport from "react-data-export";
+import { useLocation } from "react-router-dom";
 
 const CreateTask = () => {
   const [state, dispatch] = useGlobalState();
+  const location = useLocation();
   const [name, setName] = useState("");
   const [subject, setSubject] = useState("");
   const [marks, setMarks] = useState("");
@@ -20,6 +22,8 @@ const CreateTask = () => {
   const history = useHistory();
   const [message, setMessage] = useState("No file detected");
   const [arr, setArr] = useState([]);
+  const [flag1, setFlag1] = useState(location.state.flag);
+  const [index, setIndex] = useState("");
   const ExcelFile = ReactExport.ExcelFile;
   const ExcelSheet = ReactExport.ExcelFile.ExcelSheet;
   const ExcelColumn = ReactExport.ExcelFile.ExcelColumn;
@@ -28,6 +32,15 @@ const CreateTask = () => {
   useEffect(() => {
     localStorage.setItem("myState", JSON.stringify(state));
   }, [state]);
+
+  useEffect(() => {
+    if (flag1) {
+      setIndex(location.state.key);
+      setName(state.assignment_array[location.state.key].name);
+      setSubject(state.assignment_array[location.state.key].subject);
+      setMarks(state.assignment_array[location.state.key].marks);
+    }
+  },[]);
 
   const setDT = () => {
     var tempDate = new Date();
@@ -61,24 +74,30 @@ const CreateTask = () => {
     } else if (arr.length == 0) {
       customAlert("Data not found", "Upload user excel");
     } else {
-      var Stemp = SDT.split('T')
-      var Stemp1 = Stemp[0].split('-')
-      var Stemp3 = Stemp1[2] + '-' + Stemp1[1] + '-' + Stemp1[0] + ' ' + Stemp[1]
-      var Etemp = EDT.split('T')
-      var Etemp1 = Etemp[0].split('-')
-      var Etemp3 = Etemp1[2] + '-' + Etemp1[1] + '-' + Etemp1[0] + ' ' + Etemp[1]
+      var Stemp = SDT.split("T");
+      var Stemp1 = Stemp[0].split("-");
+      var Stemp3 =
+        Stemp1[2] + "-" + Stemp1[1] + "-" + Stemp1[0] + " " + Stemp[1];
+      var Etemp = EDT.split("T");
+      var Etemp1 = Etemp[0].split("-");
+      var Etemp3 =
+        Etemp1[2] + "-" + Etemp1[1] + "-" + Etemp1[0] + " " + Etemp[1];
       var Request = {
         name: name,
         subject: subject,
         marks: marks,
         SDT: Stemp3,
-        EDT: Etemp3   ,
+        EDT: Etemp3,
         questions: [],
         valid_users: [...arr],
         published: false,
         is_done: false,
       };
-      dispatch(add_assignment(Request));
+      if (flag1) {
+        state.assignment_array.splice(index, 1, Request);
+      } else {
+        dispatch(add_assignment(Request));
+      }
       history.push("/home");
     }
   };
@@ -144,7 +163,6 @@ const CreateTask = () => {
         <label>Start Date and Time - </label>
         <input
           id="datetime-local"
-          label="Start Date and Time"
           type="datetime-local"
           value={SDT}
           min={CDT}

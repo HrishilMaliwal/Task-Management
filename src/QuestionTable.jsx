@@ -82,6 +82,13 @@ const QuestionTable = (props) => {
                     >
                       Delete
                     </Button>
+                    <Button
+                      color="primary"
+                      type="submit"
+                      onClick={() => props.editfunc(key)}
+                    >
+                      Edit
+                    </Button>
                   </TableCell>
                 </TableRow>
               );
