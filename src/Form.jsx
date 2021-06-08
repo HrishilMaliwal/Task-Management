@@ -12,6 +12,7 @@ const Form = () => {
   const [state, dispatch] = useGlobalState();
   const [arr1, setArr1] = useState([]);
   const [temp, setTemp] = useState([]);
+  const [message, setMessage] = useState("No file detected");
   const [student, setStudent] = useState(
     state.student_index.indexOf(state.current_user.id)
   );
@@ -47,7 +48,7 @@ const Form = () => {
       state.student_database[student].answers_array.map((item, key) => {
         if (item.id == location.state.key) {
           return item.ans.map((i, k) => {
-            if (i.qtype == 1 || i.qtype == 4) {
+            if (i.qtype == 1 || i.qtype == 4 || i.qtype == 5) {
               return (document.getElementById(i.qid).value = i.ans);
             } else if (i.qtype == 2) {
               return (document.getElementById(i.ans).checked = true);
@@ -73,34 +74,24 @@ const Form = () => {
         ques: item.ques,
         qtype: item.qType,
       };
-      switch (item.qType) {
-        case 1:
-          answer = { ...answer, ans: document.getElementById(item.qid).value };
-          break;
-        case 2:
-          document.getElementsByName(item.qid).forEach((radio) => {
-            if (radio.checked) {
-              temp.push(radio.value);
-            }
-          });
-          answer = { ...answer, ans: [...temp] };
-          temp.length = 0;
-          break;
-        case 3:
-          document.getElementsByName(item.qid).forEach((check) => {
-            if (check.checked) {
-              temp.push(check.value);
-            }
-          });
-          answer = { ...answer, ans: [...temp] };
-          temp.length = 0;
-          break;
-        case 4:
-          answer = { ...answer, ans: document.getElementById(item.qid).value };
-          break;
-        case 5:
-          answer = { ...answer, ans: document.getElementById(item.qid).value }
-          break;
+      if (item.qType == 1 || item.qType == 4 || item.qType == 5) {
+        answer = { ...answer, ans: document.getElementById(item.qid).value };
+      } else if (item.qType == 2 || item.qType == 3) {
+        document.getElementsByName(item.qid).forEach((radio) => {
+          if (radio.checked) {
+            temp.push(radio.value);
+          }
+        });
+        answer = { ...answer, ans: [...temp] };
+        temp.length = 0;
+      } else if (item.qType == 6) {
+        var temp2;
+        if (document.getElementById(item.qid) == "File upload successful") {
+          temp2 = "file uploaded";
+        } else {
+          temp2 = "no file";
+        }
+        answer = { ...answer, ans: "file uploaded" };
       }
       arr1.push(answer);
     });
@@ -233,7 +224,38 @@ const Form = () => {
                       type="datetime-local"
                       id={item.qid}
                       disabled={flag}
+                      className="ip-num"
                     />
+                  </>
+                );
+              case 6:
+                return (
+                  <>
+                    <br />
+                    <label className="questions">
+                      {key + 1}. {item.ques}:
+                    </label>
+                    <br />
+                    <input
+                      type="file"
+                      onChange={() => {
+                        setMessage("File upload successful");
+                      }}
+                      style={{ display: "none" }}
+                      id="contained-button-file"
+                    />
+                    <label htmlFor="contained-button-file">
+                      <Button
+                        style={{ margin: "15px 15px 0px 0px" }}
+                        variant="contained"
+                        color="primary"
+                        component="span"
+                        disabled={flag}
+                      >
+                        Upload
+                      </Button>
+                    </label>
+                    {/* <label id={item.qid}>{message}</label> */}
                   </>
                 );
             }

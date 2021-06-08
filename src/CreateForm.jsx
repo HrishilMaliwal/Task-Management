@@ -22,15 +22,17 @@ const CreateForm = () => {
   );
   const [option, setOption] = useState("");
   const [flag1, setFlag1] = useState(false);
-  const [flag2, setFlag2] = useState(false)
-  const [index, setIndex] = useState("")
+  const [flag2, setFlag2] = useState(false);
+  const [flag3, setFlag3] = useState(false);
+  const [index, setIndex] = useState("");
 
   const [qtArr, setQTarr] = useState([
     { qId: 1, text: "Text" },
     { qId: 2, text: "Multiple choice(Single type)" },
     { qId: 3, text: "Multiple choice(Multiple type)" },
-    { qId: 4, text: "Integer"},
-    { qId: 5, text: "Date and Time"}
+    { qId: 4, text: "Integer" },
+    { qId: 5, text: "Date and Time" },
+    { qId: 6, text: "File Upload"}
   ]);
 
   const useStyles = makeStyles((theme) => ({
@@ -45,7 +47,8 @@ const CreateForm = () => {
     if (isNullEmpty(qType) || isNullEmpty(ques)) {
       customAlert("Data Error", "Question type or question cannot be empty");
     } else if (
-      qArr.length > parseInt(state.assignment_array[location.state.key].marks) - 1
+      qArr.length >
+      parseInt(state.assignment_array[location.state.key].marks) - 1
     ) {
       customAlert(
         "Too many questions",
@@ -69,27 +72,39 @@ const CreateForm = () => {
           ques: ques,
         };
         if (qType == 1) {
-          Request = { ...Request, qText: qtArr[0].text, options: [], qType: 1};
+          Request = { ...Request, qText: qtArr[0].text, options: [], qType: 1 };
         } else if (qType == 2) {
-          Request = { ...Request, qText: qtArr[1].text, options: tempArr, qType: 2 };
+          Request = {
+            ...Request,
+            qText: qtArr[1].text,
+            options: tempArr,
+            qType: 2,
+          };
         } else if (qType == 3) {
-          Request = { ...Request, qText: qtArr[2].text, options: tempArr, qType: 3 };
+          Request = {
+            ...Request,
+            qText: qtArr[2].text,
+            options: tempArr,
+            qType: 3,
+          };
         } else if (qType == 4) {
-          Request = { ...Request, qText: qtArr[3].text, options: [], qType: 4}
+          Request = { ...Request, qText: qtArr[3].text, options: [], qType: 4 };
         } else if (qType == 5) {
-          Request = { ...Request, qText: qtArr[4].text, options: [], qType: 5}
+          Request = { ...Request, qText: qtArr[4].text, options: [], qType: 5 };
+        } else if (qType == 6) {
+          Request = { ...Request, qText: qtArr[5].text, options: [], qType: 6 }
         }
-        if(flag2){
-          qArr.splice(index, 1, Request)
+        if (flag2) {
+          qArr.splice(index, 1, Request);
           setQtype("");
           setQues("");
-          setFlag2(false)
+          setFlag2(false);
+          setFlag3(false)
         } else {
           qArr.push(Request);
           setQtype("");
           setQues("");
         }
-
       }
     }
   };
@@ -108,13 +123,15 @@ const CreateForm = () => {
   };
 
   const edit = (key) => {
-    setIndex(key)
-    setQtype(state.assignment_array[location.state.key].questions[key].qType)
-    setQues(state.assignment_array[location.state.key].questions[key].ques)
-    setOption(String(state.assignment_array[location.state.key].questions[key].options))
-    setFlag2(true)
-  }
-
+    setIndex(key);
+    setQtype(state.assignment_array[location.state.key].questions[key].qType);
+    setQues(state.assignment_array[location.state.key].questions[key].ques);
+    setOption(
+      String(state.assignment_array[location.state.key].questions[key].options)
+    );
+    setFlag3(true)
+    setFlag2(true);
+  };
 
   useEffect(() => {
     if (qType == 2 || qType == 3) {
@@ -151,6 +168,7 @@ const CreateForm = () => {
             id="demo-simple-select"
             value={qType}
             onChange={(e) => setQtype(e.target.value)}
+            disabled={flag3}
           >
             {qtArr.map((item, key) => {
               return <MenuItem value={item.qId}>{item.text}</MenuItem>;

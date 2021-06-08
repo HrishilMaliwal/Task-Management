@@ -4,7 +4,7 @@ import useGlobalState from "./Context";
 import { useLocation } from "react-router-dom";
 import { useHistory } from "react-router";
 import { Button } from "@material-ui/core";
-import { isPhoneNum, isNullEmpty, customAlert } from "./common";
+import { isPhoneNum, isNullEmpty, customAlert, DTConvert } from "./common";
 
 const UserAnswers = () => {
   const [state, dispatch] = useGlobalState();
@@ -61,7 +61,6 @@ const UserAnswers = () => {
     <>
       <Header />
       <div id="marks-area">
-        {console.log(location.state)}
         <input
           type="number"
           placeholder="marks"
@@ -103,18 +102,28 @@ const UserAnswers = () => {
             (item, key) => {
               if (item.id == location.state.assignment) {
                 return item.ans.map((i, k) => {
+                  var temp;
+                  if (i.qtype == 5) {
+                    if (i.ans == "") {
+                      temp = "";
+                    } else {
+                      temp = DTConvert(i.ans);
+                    }
+                  } else {
+                    temp = i.ans;
+                  }
                   return (
                     <>
                       <p style={{ fontWeight: "bold" }}>
                         {k + 1}. {i.ques}
                       </p>
-                      <p>Ans. {i.ans} </p>
+                      <p>Ans. {temp} </p>
                     </>
                   );
                 });
               } else {
                 // return <p>The user has not submitted any answers2</p>;
-                return null
+                return null;
               }
             }
           )

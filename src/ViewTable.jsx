@@ -40,7 +40,8 @@ const ViewTable = () => {
         "Someone has answered this assignment and it cannot be Edited"
       );
     } else {
-      history.push({ pathname: "/createtask", state: { key: key, flag: true } });
+      history.push({ pathname: "/editassignment", state: { key: key } });
+      // history.push({ pathname: "/createtask", state: { key: key, flag: true } });
     }
   };
 
@@ -66,7 +67,7 @@ const ViewTable = () => {
       <TextField
         id="outlined-basic"
         variant="outlined"
-        label="Search"
+        label="Search Name"
         className="searchbar"
         onChange={(e) => setSearch(e.target.value)}
       />
@@ -88,7 +89,7 @@ const ViewTable = () => {
               )}
               <TableCell>Start date-time</TableCell>
               <TableCell>End date-time</TableCell>
-              {state.current_user.is_student ? "" : <TableCell></TableCell>}
+              {state.current_user.is_student ? "" : <TableCell style={{textAlign:"center"}}>Action</TableCell>}
             </TableRow>
           </TableHead>
           <TableBody>

@@ -3,7 +3,7 @@ import { add_assignment } from "./reducer/action";
 import useGlobalState from "./Context";
 import { useHistory } from "react-router";
 import Container from "@material-ui/core/Container";
-import { isPhoneNum, isNullEmpty, customAlert } from "./common";
+import { isPhoneNum, isNullEmpty, customAlert, DTConvert } from "./common";
 import Header from "./Header";
 import TextField from "@material-ui/core/TextField";
 import readXlsxFile from "read-excel-file";
@@ -74,20 +74,14 @@ const CreateTask = () => {
     } else if (arr.length == 0) {
       customAlert("Data not found", "Upload user excel");
     } else {
-      var Stemp = SDT.split("T");
-      var Stemp1 = Stemp[0].split("-");
-      var Stemp3 =
-        Stemp1[2] + "-" + Stemp1[1] + "-" + Stemp1[0] + " " + Stemp[1];
-      var Etemp = EDT.split("T");
-      var Etemp1 = Etemp[0].split("-");
-      var Etemp3 =
-        Etemp1[2] + "-" + Etemp1[1] + "-" + Etemp1[0] + " " + Etemp[1];
+      var Stemp = DTConvert(SDT)
+      var Etemp = DTConvert(EDT)
       var Request = {
         name: name,
         subject: subject,
         marks: marks,
-        SDT: Stemp3,
-        EDT: Etemp3,
+        SDT: Stemp,
+        EDT: Etemp,
         questions: [],
         valid_users: [...arr],
         published: false,

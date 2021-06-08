@@ -164,4 +164,14 @@ input::-webkit-inner-spin-button {
 .ip-num {
   width: 333px;
   height: 20px;
+  margin-top: 5px;
 }
+
+#user-id {
+  position: absolute;
+  top: 30px;
+  right: 50px;
+  font-weight: bolder;
+  font-size: large;
+}
+

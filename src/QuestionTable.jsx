@@ -55,7 +55,7 @@ const QuestionTable = (props) => {
               <TableCell>Question type</TableCell>
               <TableCell>Question</TableCell>
               <TableCell>Options</TableCell>
-              <TableCell></TableCell>
+              <TableCell>Action</TableCell>
             </TableRow>
           </TableHead>
           <TableBody>

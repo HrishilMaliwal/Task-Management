@@ -42,7 +42,7 @@ const AnswerTable = () => {
         <TextField
           id="outlined-basic"
           variant="outlined"
-          label="Search"
+          label="Search Name"
           className="searchbar"
           onChange={(e) => setSearch(e.target.value)}
         />

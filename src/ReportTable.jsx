@@ -10,7 +10,7 @@ import useGlobalState from "./Context";
 import { Button } from "@material-ui/core";
 import Header from "./Header";
 import { useHistory } from "react-router";
-import { customAlert } from "./common";
+import { customAlert, DTConvert } from "./common";
 import * as FileSaver from "file-saver";
 import * as XLSX from "xlsx";
 import TextField from "@material-ui/core/TextField";
@@ -36,7 +36,7 @@ const ReportTable = () => {
           };
           assignment.ans.map((i, k) => {
             const q = i.ques;
-            if (i.qtype == 1 || i.qtype == 4 || i.qtype == 5) {
+            if (i.qtype == 1 || i.qtype == 4 || i.qtype == 6) {
               row = { ...row, [q]: i.ans };
             } else if (i.qtype == 2 || i.qtype == 3) {
               var str = "";
@@ -44,6 +44,9 @@ const ReportTable = () => {
                 str = str + String(op) + " ";
               });
               row = { ...row, [q]: str };
+            } else if (i.qtype == 5) {
+              var temp = DTConvert(i.ans)
+              row = { ...row, [q]: temp}
             }
           });
           csvData.push(row);
@@ -70,7 +73,7 @@ const ReportTable = () => {
         <TextField
           id="outlined-basic"
           variant="outlined"
-          label="Search"
+          label="Search Name"
           className="searchbar"
           onChange={(e) => setSearch(e.target.value)}
         />
@@ -89,7 +92,7 @@ const ReportTable = () => {
                 <TableCell>Name</TableCell>
                 <TableCell>Subject</TableCell>
                 <TableCell>Marks</TableCell>
-                <TableCell></TableCell>
+                <TableCell>Action</TableCell>
               </TableRow>
             </TableHead>
             <TableBody>
