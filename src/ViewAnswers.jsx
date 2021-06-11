@@ -94,7 +94,9 @@ const ViewAnswers = () => {
                           >
                             {item.id}
                           </TableCell>
-                          <TableCell>{item.first}</TableCell>
+                          <TableCell onClick={() => view(key)}>
+                            {item.first}
+                          </TableCell>
                           <TableCell>{item.last}</TableCell>
                         </TableRow>
                       );

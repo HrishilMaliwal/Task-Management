@@ -89,7 +89,11 @@ const ViewTable = () => {
               )}
               <TableCell>Start date-time</TableCell>
               <TableCell>End date-time</TableCell>
-              {state.current_user.is_student ? "" : <TableCell style={{textAlign:"center"}}>Action</TableCell>}
+              {state.current_user.is_student ? (
+                ""
+              ) : (
+                <TableCell style={{ textAlign: "center" }}>Action</TableCell>
+              )}
             </TableRow>
           </TableHead>
           <TableBody>
@@ -123,7 +127,9 @@ const ViewTable = () => {
                           >
                             {key + 1}
                           </TableCell>
-                          <TableCell>{item.name}</TableCell>
+                          <TableCell onClick={() => addQues(key)}>
+                            {item.name}
+                          </TableCell>
                           <TableCell>{item.subject}</TableCell>
                           <TableCell>{item.marks}</TableCell>
                           {state.current_user.is_student ? (

@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import Header from "./Header";
 import useGlobalState from "./Context";
 import { useLocation } from "react-router-dom";
+import { BrowserRouter as Router, Route, Link } from "react-router-dom";
 import { useHistory } from "react-router";
 import { Button } from "@material-ui/core";
 import { isPhoneNum, isNullEmpty, customAlert, DTConvert } from "./common";
@@ -55,6 +56,11 @@ const UserAnswers = () => {
         state: { key: location.state.assignment },
       });
     }
+  };
+
+  const toImage = (i) => {
+    console.log(i.img);
+    history.push({ pathname: "/viewimage", state: { image: i.img } });
   };
 
   return (

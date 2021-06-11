@@ -36,7 +36,7 @@ const ReportTable = () => {
           };
           assignment.ans.map((i, k) => {
             const q = i.ques;
-            if (i.qtype == 1 || i.qtype == 4 || i.qtype == 6) {
+            if (i.qtype == 1 || i.qtype == 4) {
               row = { ...row, [q]: i.ans };
             } else if (i.qtype == 2 || i.qtype == 3) {
               var str = "";

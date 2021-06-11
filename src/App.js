@@ -18,6 +18,7 @@ import ReportTable from "./ReportTable";
 import EditUser from "./EditUser";
 import UserTable from "./UserTable";
 import EditAssignment from "./EditAssignment";
+import ViewImage from "./ViewImage";
 
 function App() {
   return (
@@ -40,6 +41,7 @@ function App() {
             <Route exact path='/edituser' component={EditUser}/>
             <Route exact path='/usertable' component={UserTable} />
             <Route exact path='/editassignment' component={EditAssignment} />
+            <Route exact path='/viewimage' component={ViewImage} />
 
             <PrivateRoute></PrivateRoute>
           </Switch>

@@ -10,15 +10,13 @@ const Form = () => {
   const history = useHistory();
   const location = useLocation();
   const [state, dispatch] = useGlobalState();
-  const [arr1, setArr1] = useState([]);
   const [temp, setTemp] = useState([]);
   const [message, setMessage] = useState("No file detected");
   const [student, setStudent] = useState(
     state.student_index.indexOf(state.current_user.id)
   );
   const [flag, setFlag] = useState(location.state.flag);
-
-  useEffect(() => {});
+  const [arr2, setArr2] = useState([]);
 
   const back = () => {
     history.push({
@@ -68,41 +66,50 @@ const Form = () => {
   }, [state]);
 
   const submit = () => {
+    var arr1 = [];
+    var flag3 = true;
     state.assignment_array[location.state.key].questions.map((item, key) => {
       var answer = {
         qid: item.qid,
         ques: item.ques,
         qtype: item.qType,
       };
-      if (item.qType == 1 || item.qType == 4 || item.qType == 5) {
-        answer = { ...answer, ans: document.getElementById(item.qid).value };
-      } else if (item.qType == 2 || item.qType == 3) {
-        document.getElementsByName(item.qid).forEach((radio) => {
-          if (radio.checked) {
-            temp.push(radio.value);
-          }
-        });
-        answer = { ...answer, ans: [...temp] };
-        temp.length = 0;
-      } else if (item.qType == 6) {
-        var temp2;
-        if (document.getElementById(item.qid) == "File upload successful") {
-          temp2 = "file uploaded";
-        } else {
-          temp2 = "no file";
+      var answer2 = { ...answer };
+      if (!(item.qType == 4)) {
+        if (item.qType == 1 || item.qType == 5) {
+          answer = { ...answer, ans: document.getElementById(item.qid).value };
+        } else if (item.qType == 2 || item.qType == 3) {
+          document.getElementsByName(item.qid).forEach((radio) => {
+            if (radio.checked) {
+              temp.push(radio.value);
+            }
+          });
+          answer = { ...answer, ans: [...temp] };
+          temp.length = 0;
         }
-        answer = { ...answer, ans: "file uploaded" };
+        arr1.push(answer);
+      } else {
+        var num = String(document.getElementById(item.qid).value);
+        if (item.min <= num.length && num.length <= item.max) {
+          answer2 = { ...answer2, ans: num };
+          arr1.push(answer2);
+        } else {
+          customAlert("Invalid", "Input out of constrains");
+          arr1.length = 0;
+          flag3 = false;
+        }
       }
-      arr1.push(answer);
     });
-    var answer = {
-      id: location.state.key,
-      ans: [...arr1],
-    };
-    state.student_database[student].answers_array.push(answer);
-    state.assignment_array[location.state.key].is_done = true;
-    state.student_database[student].completed_array.push(location.state.key);
-    history.push("/home");
+    if (flag3) {
+      var answer = {
+        id: location.state.key,
+        ans: [...arr1],
+      };
+      state.student_database[student].answers_array.push(answer);
+      state.assignment_array[location.state.key].is_done = true;
+      state.student_database[student].completed_array.push(location.state.key);
+      history.push("/home");
+    }
   };
 
   const ansLenLimit = (e) => {
@@ -207,6 +214,7 @@ const Form = () => {
                       id={item.qid}
                       disabled={flag}
                       className="ip-num"
+                      placeholder={String(item.min + " to " + item.max)}
                     />
                     <br />
                   </>
@@ -226,36 +234,6 @@ const Form = () => {
                       disabled={flag}
                       className="ip-num"
                     />
-                  </>
-                );
-              case 6:
-                return (
-                  <>
-                    <br />
-                    <label className="questions">
-                      {key + 1}. {item.ques}:
-                    </label>
-                    <br />
-                    <input
-                      type="file"
-                      onChange={() => {
-                        setMessage("File upload successful");
-                      }}
-                      style={{ display: "none" }}
-                      id="contained-button-file"
-                    />
-                    <label htmlFor="contained-button-file">
-                      <Button
-                        style={{ margin: "15px 15px 0px 0px" }}
-                        variant="contained"
-                        color="primary"
-                        component="span"
-                        disabled={flag}
-                      >
-                        Upload
-                      </Button>
-                    </label>
-                    {/* <label id={item.qid}>{message}</label> */}
                   </>
                 );
             }

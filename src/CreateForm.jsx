@@ -24,6 +24,7 @@ const CreateForm = () => {
   const [flag1, setFlag1] = useState(false);
   const [flag2, setFlag2] = useState(false);
   const [flag3, setFlag3] = useState(false);
+  const [flag4, setFlag4] = useState();
   const [index, setIndex] = useState("");
 
   const [qtArr, setQTarr] = useState([
@@ -32,7 +33,6 @@ const CreateForm = () => {
     { qId: 3, text: "Multiple choice(Multiple type)" },
     { qId: 4, text: "Integer" },
     { qId: 5, text: "Date and Time" },
-    { qId: 6, text: "File Upload"}
   ]);
 
   const useStyles = makeStyles((theme) => ({
@@ -70,36 +70,34 @@ const CreateForm = () => {
         var Request = {
           qid: Math.floor(Math.random() * 10000),
           ques: ques,
+          qText: qtArr[qType - 1].text,
+          qType: qType,
         };
-        if (qType == 1) {
-          Request = { ...Request, qText: qtArr[0].text, options: [], qType: 1 };
-        } else if (qType == 2) {
-          Request = {
-            ...Request,
-            qText: qtArr[1].text,
-            options: tempArr,
-            qType: 2,
-          };
-        } else if (qType == 3) {
-          Request = {
-            ...Request,
-            qText: qtArr[2].text,
-            options: tempArr,
-            qType: 3,
-          };
+        if (qType == 1 || qType == 5) {
+          Request = { ...Request, options: [] };
+        } else if (qType == 2 || qType == 3) {
+          Request = { ...Request, options: tempArr };
         } else if (qType == 4) {
-          Request = { ...Request, qText: qtArr[3].text, options: [], qType: 4 };
-        } else if (qType == 5) {
-          Request = { ...Request, qText: qtArr[4].text, options: [], qType: 5 };
-        } else if (qType == 6) {
-          Request = { ...Request, qText: qtArr[5].text, options: [], qType: 6 }
+          var min = 1;
+          var max = 15;
+          tempArr = option.split(",");
+          if (tempArr.length == 1) {
+            if (!(tempArr[0] == "")) {
+              min = parseInt(tempArr[0]);
+            }
+          } else if (tempArr.length == 2) {
+            min = parseInt(tempArr[0]);
+            max = parseInt(tempArr[1]);
+          }
+          setOption("");
+          Request = { ...Request, options: [], min: min, max: max };
         }
         if (flag2) {
           qArr.splice(index, 1, Request);
           setQtype("");
           setQues("");
           setFlag2(false);
-          setFlag3(false)
+          setFlag3(false);
         } else {
           qArr.push(Request);
           setQtype("");
@@ -108,6 +106,8 @@ const CreateForm = () => {
       }
     }
   };
+
+  const setminmax = () => {};
 
   const delParent = (arr) => {
     setQarr(arr);
@@ -129,12 +129,16 @@ const CreateForm = () => {
     setOption(
       String(state.assignment_array[location.state.key].questions[key].options)
     );
-    setFlag3(true)
+    setFlag3(true);
     setFlag2(true);
   };
 
   useEffect(() => {
     if (qType == 2 || qType == 3) {
+      setFlag1(true);
+      setFlag4(true);
+    } else if (qType == 4) {
+      setFlag4(false);
       setFlag1(true);
     } else {
       setFlag1(false);
@@ -194,8 +198,8 @@ const CreateForm = () => {
               margin="normal"
               required
               fullWidth
-              label="Option"
-              autoComplete="Option"
+              label={flag4 ? "Option" : "Min/Max"}
+              autoComplete={flag4 ? "Option" : "Min/Max"}
               value={option}
               onChange={(e) => setOption(e.target.value)}
               style={{ width: "80%" }}

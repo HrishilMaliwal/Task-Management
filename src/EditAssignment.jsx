@@ -36,10 +36,14 @@ const EditAssignment = () => {
   };
 
   const edit = () => {
+    if (marks < state.assignment_array[location.state.key].questions.length) {
+      customAlert("Not allowed", "Marks cant be this low")
+    }
+    else {
     state.assignment_array[location.state.key].name = name
     state.assignment_array[location.state.key].subject = subject
     state.assignment_array[location.state.key].marks = marks
-    history.push('/home')
+    history.push('/home')}
   }
 
   return (

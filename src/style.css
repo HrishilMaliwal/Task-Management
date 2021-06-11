@@ -98,7 +98,7 @@ button:hover {
 }
 
 #logo {
-  position: absolute; 
+  position: absolute;
   left: 40px;
   top: 40px;
   height: 100px;
@@ -175,3 +175,15 @@ input::-webkit-inner-spin-button {
   font-size: large;
 }
 
+.confirm-btn {
+  background-color: midnightblue;
+  border: 2px solid black;
+  border-radius: 10px;
+}
+
+.custom-ui {
+  border: 2px solid black;
+  border-radius: 20px;
+  padding: 20px;
+  background-color: ghostwhite;
+}

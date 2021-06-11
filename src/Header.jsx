@@ -11,11 +11,15 @@ const Header = () => {
     const toHome = () => {
         history.push('/home')
     }
+
+    const toProfile = () => {
+        history.push('/profile')
+    }
     
     return (
         <header id="head">
             <h1 style={{textAlign:"center"}} onClick={()=>toHome()}>Exam Manager</h1>
-            <p id="user-id">{state.current_user.id}</p>
+            <p id="user-id" onClick={()=>toProfile()}>SAP - {state.current_user.id}</p>
             <NavBar/>
             <img id="logo" src={img} onClick={()=>toHome()}/>
         </header>

@@ -20,10 +20,13 @@ const AnswerTable = () => {
 
   const view = (key) => {
     if (state.current_user.is_student) {
-      // history.push({ pathname: "/viewmarks", state: { key: key } });
       history.push({
         pathname: "/useranswers",
-        state: { assignment: key, user: state.student_index.indexOf(state.current_user.id), flag: true },
+        state: {
+          assignment: key,
+          user: state.student_index.indexOf(state.current_user.id),
+          flag: true,
+        },
       });
     } else {
       history.push({ pathname: "/viewanswers", state: { key: key } });
@@ -88,7 +91,9 @@ const AnswerTable = () => {
                           >
                             {key + 1}
                           </TableCell>
-                          <TableCell>{item.name}</TableCell>
+                          <TableCell onClick={() => view(key)}>
+                            {item.name}
+                          </TableCell>
                           <TableCell>{item.subject}</TableCell>
                           <TableCell>{item.marks}</TableCell>
                         </TableRow>
