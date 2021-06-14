@@ -14,7 +14,6 @@ const QuestionTable = (props) => {
   const history = useHistory();
   const [state, dispatch] = useGlobalState();
   const [arr, setArr] = useState(props.qArr);
-  const [searchItem, setSearch] = useState("");
 
   const toPreview = () => {
     state.assignment_array[props.ke].questions = [...arr];

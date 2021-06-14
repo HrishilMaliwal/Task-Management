@@ -40,7 +40,7 @@ const CreateTask = () => {
       setSubject(state.assignment_array[location.state.key].subject);
       setMarks(state.assignment_array[location.state.key].marks);
     }
-  },[]);
+  }, []);
 
   const setDT = () => {
     var tempDate = new Date();
@@ -74,8 +74,8 @@ const CreateTask = () => {
     } else if (arr.length == 0) {
       customAlert("Data not found", "Upload user excel");
     } else {
-      var Stemp = DTConvert(SDT)
-      var Etemp = DTConvert(EDT)
+      var Stemp = DTConvert(SDT);
+      var Etemp = DTConvert(EDT);
       var Request = {
         name: name,
         subject: subject,

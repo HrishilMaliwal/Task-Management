@@ -54,7 +54,7 @@ const CreateUser = () => {
     } else {
       customAlert("Data error", "No file uploaded");
     }
-    history.push('/usertable')
+    history.push("/usertable");
   };
 
   const back = () => {
@@ -85,8 +85,10 @@ const CreateUser = () => {
             </Button>
           </label>
           <label>{message}</label>
-          <br/>
-          <ExcelFile element={<Button style={{color:"red"}}>Download sample</Button>}>
+          <br />
+          <ExcelFile
+            element={<Button style={{ color: "red" }}>Download sample</Button>}
+          >
             <ExcelSheet data={sample} name="Users">
               <ExcelColumn label="ID" value="ID" />
               <ExcelColumn label="first name" value="first" />

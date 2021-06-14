@@ -11,12 +11,10 @@ const Form = () => {
   const location = useLocation();
   const [state, dispatch] = useGlobalState();
   const [temp, setTemp] = useState([]);
-  const [message, setMessage] = useState("No file detected");
   const [student, setStudent] = useState(
     state.student_index.indexOf(state.current_user.id)
   );
   const [flag, setFlag] = useState(location.state.flag);
-  const [arr2, setArr2] = useState([]);
 
   const back = () => {
     history.push({
@@ -240,7 +238,6 @@ const Form = () => {
           }
         )}
       </div>
-
       {state.current_user.is_student ? (
         <>
           {state.student_database[student].completed_array.indexOf(

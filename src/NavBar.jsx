@@ -27,7 +27,7 @@ const NavBar = () => {
   };
 
   const toReport = () => {
-    history.push('/reporttable')
+    history.push("/reporttable");
   };
 
   return (

@@ -21,13 +21,15 @@ export function customAlert(title, message) {
   confirmAlert({
     customUI: ({ onClose }) => {
       return (
-        <div className='custom-ui'>
+        <div className="custom-ui">
           <h1>{title}</h1>
           <p>{message}</p>
-          <button className="confirm-btn" onClick={onClose}>Okay</button>
+          <button className="confirm-btn" onClick={onClose}>
+            Okay
+          </button>
         </div>
       );
-    }
+    },
   });
 }
 

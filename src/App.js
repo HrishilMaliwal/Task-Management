@@ -18,7 +18,6 @@ import ReportTable from "./ReportTable";
 import EditUser from "./EditUser";
 import UserTable from "./UserTable";
 import EditAssignment from "./EditAssignment";
-import ViewImage from "./ViewImage";
 
 function App() {
   return (
@@ -32,16 +31,15 @@ function App() {
             <Route exact path="/createform" component={CreateForm} />
             <Route exact path="/form" component={Form} />
             <Route exact path="/adduser" component={CreateUser} />
-            <Route exact path='/profile' component={Profile}/>
-            <Route exact path='/changepass' component={ChangePassword}/>
-            <Route exact path='/answertable' component={AnswerTable}/>
-            <Route exact path='/viewanswers' component={ViewAnswers}/>
-            <Route exact path='/useranswers' component={UserAnswers}/>
+            <Route exact path="/profile" component={Profile} />
+            <Route exact path="/changepass" component={ChangePassword} />
+            <Route exact path="/answertable" component={AnswerTable} />
+            <Route exact path="/viewanswers" component={ViewAnswers} />
+            <Route exact path="/useranswers" component={UserAnswers} />
             <Route exact path="/reporttable" component={ReportTable} />
-            <Route exact path='/edituser' component={EditUser}/>
-            <Route exact path='/usertable' component={UserTable} />
-            <Route exact path='/editassignment' component={EditAssignment} />
-            <Route exact path='/viewimage' component={ViewImage} />
+            <Route exact path="/edituser" component={EditUser} />
+            <Route exact path="/usertable" component={UserTable} />
+            <Route exact path="/editassignment" component={EditAssignment} />
 
             <PrivateRoute></PrivateRoute>
           </Switch>

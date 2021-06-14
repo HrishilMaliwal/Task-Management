@@ -30,7 +30,7 @@ const ChangePassword = () => {
           history.push("/home");
         } else {
           state.current_user.password = npass1;
-          state.teacher_database[0].password = npass1
+          state.teacher_database[0].password = npass1;
           history.push("/home");
         }
       } else {

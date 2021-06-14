@@ -45,8 +45,8 @@ const ReportTable = () => {
               });
               row = { ...row, [q]: str };
             } else if (i.qtype == 5) {
-              var temp = DTConvert(i.ans)
-              row = { ...row, [q]: temp}
+              var temp = DTConvert(i.ans);
+              row = { ...row, [q]: temp };
             }
           });
           csvData.push(row);

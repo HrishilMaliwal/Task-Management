@@ -2,10 +2,9 @@ import React, { useState, useEffect } from "react";
 import Header from "./Header";
 import useGlobalState from "./Context";
 import { useLocation } from "react-router-dom";
-import { BrowserRouter as Router, Route, Link } from "react-router-dom";
 import { useHistory } from "react-router";
 import { Button } from "@material-ui/core";
-import { isPhoneNum, isNullEmpty, customAlert, DTConvert } from "./common";
+import { isNullEmpty, customAlert, DTConvert } from "./common";
 
 const UserAnswers = () => {
   const [state, dispatch] = useGlobalState();
@@ -44,6 +43,10 @@ const UserAnswers = () => {
   const submit = () => {
     if (isNullEmpty(marks) || isNullEmpty(remarks)) {
       customAlert("Data error", "Please marks and remarks");
+    } else if (
+      marks > parseInt(state.assignment_array[location.state.assignment].marks)
+    ) {
+      customAlert("Invalid marks", "Marks exceed maximum marks");
     } else {
       var request = {
         id: location.state.assignment,
@@ -56,11 +59,6 @@ const UserAnswers = () => {
         state: { key: location.state.assignment },
       });
     }
-  };
-
-  const toImage = (i) => {
-    console.log(i.img);
-    history.push({ pathname: "/viewimage", state: { image: i.img } });
   };
 
   return (

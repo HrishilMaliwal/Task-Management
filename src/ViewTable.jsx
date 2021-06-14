@@ -41,7 +41,6 @@ const ViewTable = () => {
       );
     } else {
       history.push({ pathname: "/editassignment", state: { key: key } });
-      // history.push({ pathname: "/createtask", state: { key: key, flag: true } });
     }
   };
 
